@@ -1,0 +1,1034 @@
+<!--
+  ╔══════════════════════════════════════════════════════════════════╗
+  ║  PLANVIEW ANVI — Automated Executive Briefing                   ║
+  ║  Generated: 2026-04-06T07:00:00-04:00                          ║
+  ║  Model: anvi-enterprise-v3.2 · Context: portfolio-steerco       ║
+  ║  Data Sources: Planview Portfolios, Planview AgilePlace,        ║
+  ║    OKR Module, Flow Metrics, Risk Register                      ║
+  ║  Confidence: 0.94 (high) · Refresh Cadence: Weekly              ║
+  ║  Org Scope: Better Banking Division (all product areas)          ║
+  ╚══════════════════════════════════════════════════════════════════╝
+-->
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- anvi:asset-pipeline fonts=Inter,JetBrains+Mono cdn=google-fonts -->
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap');
+
+  :root {
+    --pv-primary: #1656B1;
+    --pv-primary-dark: #0f3f86;
+    --pv-success: #008622;
+    --pv-warning: #d97706;
+    --pv-danger: #D41616;
+    --pv-text-900: #222222;
+    --pv-text-700: #555555;
+    --pv-text-500: #949494;
+    --pv-surface-0: #ffffff;
+    --pv-surface-1: #f8f9fb;
+    --pv-border: #e4e7ee;
+    --pv-radius: 10px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Segoe UI', 'Inter', -apple-system, sans-serif;
+    background: #ffffff;
+    color: var(--pv-text-900);
+    padding: 24px 32px;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+  }
+
+  /* Header */
+  .header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    padding: 20px 28px;
+    border-bottom: 3px solid var(--pv-primary);
+    background: var(--pv-surface-1);
+    border-radius: var(--pv-radius);
+  }
+
+  .header h1 {
+    font-size: 30px;
+    font-weight: 900;
+    color: var(--pv-text-900);
+    letter-spacing: -0.5px;
+    line-height: 1.1;
+  }
+
+  .header-sub {
+    font-size: 14px;
+    color: var(--pv-text-500);
+    margin-top: 6px;
+    font-weight: 500;
+  }
+
+  .anvi-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: linear-gradient(135deg, #00b894, #009975);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    border-radius: 6px;
+    margin-bottom: 8px;
+  }
+
+  .anvi-pulse {
+    width: 6px;
+    height: 6px;
+    background: #fff;
+    border-radius: 50%;
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  .header-right { text-align: right; }
+
+  .header-date {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--pv-text-500);
+  }
+
+  .header-date strong {
+    display: block;
+    color: var(--pv-text-700);
+    font-size: 15px;
+    margin-bottom: 2px;
+  }
+
+  /* ---- KPI STRIP ---- */
+  .kpi-strip {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .kpi-card {
+    background: var(--pv-surface-1);
+    border-radius: var(--pv-radius);
+    padding: 20px 24px;
+    border: 1px solid var(--pv-border);
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .kpi-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+  }
+
+  .kpi-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--pv-text-500);
+    margin-bottom: 8px;
+  }
+
+  .kpi-value {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 32px;
+    font-weight: 800;
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+
+  .kpi-detail {
+    font-size: 13px;
+    color: var(--pv-text-500);
+    font-weight: 500;
+  }
+
+  /* Standard KPI cards */
+  .kpi-blue::before { background: var(--pv-primary); }
+  .kpi-blue .kpi-value { color: var(--pv-primary); }
+
+  .kpi-green::before { background: var(--pv-success); }
+  .kpi-green .kpi-value { color: var(--pv-success); }
+
+  /* Clickable alert cards */
+  .kpi-alert {
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+
+  .kpi-alert:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+  }
+
+  .kpi-danger::before { background: var(--pv-danger); }
+  .kpi-danger {
+    border-color: #fecaca;
+    background: #fffbfb;
+  }
+  .kpi-danger .kpi-value { color: var(--pv-danger); }
+  .kpi-danger .kpi-label { color: var(--pv-danger); }
+
+  .kpi-warning::before { background: var(--pv-warning); }
+  .kpi-warning {
+    border-color: #fde68a;
+    background: #fffdf5;
+  }
+  .kpi-warning .kpi-value { color: var(--pv-warning); }
+  .kpi-warning .kpi-label { color: var(--pv-warning); }
+
+  .kpi-click-hint {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 8px;
+    opacity: 0.6;
+  }
+
+  .kpi-danger .kpi-click-hint { color: var(--pv-danger); }
+  .kpi-warning .kpi-click-hint { color: var(--pv-warning); }
+
+  /* Grid */
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+
+  .grid-full { grid-column: 1 / -1; }
+
+  /* Panel */
+  .panel {
+    background: var(--pv-surface-1);
+    border-radius: var(--pv-radius);
+    padding: 28px;
+    border: 1px solid var(--pv-border);
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  }
+
+  .panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--pv-border);
+  }
+
+  .panel-title {
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--pv-text-500);
+  }
+
+  .panel-badge {
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 6px;
+    letter-spacing: 0.3px;
+  }
+
+  .badge-red { background: #fef2f2; color: var(--pv-danger); border: 1px solid #fecaca; }
+  .badge-amber { background: #fffbeb; color: var(--pv-warning); border: 1px solid #fde68a; }
+  .badge-green { background: #f0fdf4; color: var(--pv-success); border: 1px solid #bbf7d0; }
+  .badge-blue { background: #eff6ff; color: var(--pv-primary); border: 1px solid #bfdbfe; }
+
+  /* ---- OKR + Connected Work ---- */
+  .okr-section {
+    margin-bottom: 28px;
+    padding-bottom: 28px;
+    border-bottom: 1px solid #f1f5f9;
+  }
+
+  .okr-section:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+
+  .okr-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+
+  .okr-status {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .os-green { background: var(--pv-success); box-shadow: 0 0 6px rgba(0,134,34,0.35); }
+  .os-amber { background: var(--pv-warning); box-shadow: 0 0 6px rgba(217,119,6,0.35); }
+  .os-red { background: var(--pv-danger); box-shadow: 0 0 6px rgba(212,22,22,0.35); }
+
+  .okr-tag {
+    font-size: 10px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 3px 8px;
+    border-radius: 4px;
+    flex-shrink: 0;
+  }
+
+  .okr-tag-green { background: #f0fdf4; color: var(--pv-success); border: 1px solid #bbf7d0; }
+  .okr-tag-amber { background: #fffbeb; color: var(--pv-warning); border: 1px solid #fde68a; }
+  .okr-tag-red { background: #fef2f2; color: var(--pv-danger); border: 1px solid #fecaca; }
+
+  .okr-title {
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--pv-text-900);
+    flex: 1;
+    letter-spacing: -0.2px;
+  }
+
+  .okr-bar-wrap {
+    width: 200px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .okr-bar-bg {
+    flex: 1;
+    background: #e2e8f0;
+    height: 10px;
+    border-radius: 5px;
+    overflow: hidden;
+  }
+
+  .okr-bar-fill { height: 100%; border-radius: 5px; }
+  .of-green { background: linear-gradient(90deg, #22c55e, #4ade80); }
+  .of-amber { background: linear-gradient(90deg, #f59e0b, #fbbf24); }
+  .of-red { background: linear-gradient(90deg, #ef4444, #f87171); }
+
+  .okr-pct {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 15px;
+    font-weight: 700;
+    width: 42px;
+    text-align: right;
+  }
+
+  /* Connected work items */
+  .connected-items {
+    margin-left: 26px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .work-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 16px;
+    border-radius: var(--pv-radius);
+    background: #ffffff;
+    gap: 14px;
+    transition: background 0.15s;
+    border: 1px solid var(--pv-border);
+  }
+
+  .work-item:hover { background: #f4f6fa; }
+
+  .work-type-tag {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    padding: 3px 8px;
+    border-radius: 4px;
+    flex-shrink: 0;
+    width: 72px;
+    text-align: center;
+  }
+
+  .tag-initiative { background: #dbeafe; color: #1d4ed8; }
+  .tag-program { background: #e0e7ff; color: #4338ca; }
+  .tag-project { background: #f3e8ff; color: #7c3aed; }
+  .tag-epic { background: #fef3c7; color: #92400e; }
+
+  .work-delivery-mode {
+    font-size: 10px;
+    font-weight: 600;
+    padding: 3px 8px;
+    border-radius: 4px;
+    flex-shrink: 0;
+  }
+
+  .dm-agile { background: #ecfdf5; color: #059669; border: 1px solid #a7f3d0; }
+  .dm-waterfall { background: #eff6ff; color: #2563eb; border: 1px solid #bfdbfe; }
+
+  .work-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--pv-text-900);
+    flex: 1;
+  }
+
+  .work-org {
+    font-size: 12px;
+    color: var(--pv-text-500);
+    font-weight: 500;
+    width: 160px;
+    text-align: right;
+  }
+
+  .work-status {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .ws-green { background: var(--pv-success); }
+  .ws-amber { background: var(--pv-warning); }
+  .ws-red { background: var(--pv-danger); }
+
+  .work-progress { width: 80px; text-align: right; }
+
+  .work-mini-bar {
+    background: #e2e8f0;
+    height: 4px;
+    border-radius: 2px;
+    overflow: hidden;
+    margin-bottom: 4px;
+  }
+
+  .work-mini-fill { height: 100%; border-radius: 2px; }
+  .wmf-green { background: var(--pv-success); }
+  .wmf-amber { background: var(--pv-warning); }
+  .wmf-red { background: var(--pv-danger); }
+
+  .work-pct {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--pv-text-500);
+  }
+
+  /* ---- Capacity ---- */
+  .capacity-row {
+    display: flex;
+    align-items: center;
+    padding: 12px 0;
+  }
+
+  .capacity-product {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--pv-text-900);
+    width: 180px;
+  }
+
+  .capacity-bar-wrap {
+    flex: 1;
+    margin: 0 20px;
+    position: relative;
+  }
+
+  .capacity-bar-bg {
+    background: #e2e8f0;
+    height: 32px;
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .capacity-bar-fill {
+    height: 100%;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    padding-left: 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    font-weight: 700;
+    color: #fff;
+  }
+
+  .cap-critical {
+    background: linear-gradient(90deg, #ef4444, #dc2626);
+    animation: cap-pulse 3s ease-in-out infinite;
+  }
+
+  @keyframes cap-pulse {
+    0%, 100% { box-shadow: inset 0 0 20px rgba(0,0,0,0); }
+    50% { box-shadow: inset 0 0 20px rgba(255,255,255,0.15); }
+  }
+
+  .cap-warm { background: linear-gradient(90deg, #f59e0b, #d97706); }
+  .cap-good { background: linear-gradient(90deg, #22c55e, #16a34a); }
+  .cap-cool { background: linear-gradient(90deg, #3b82f6, #2563eb); }
+
+  .capacity-threshold {
+    position: absolute;
+    top: -4px;
+    bottom: -4px;
+    width: 2px;
+    background: var(--pv-danger);
+    left: 76.9%;
+    opacity: 0.5;
+  }
+
+  .threshold-label {
+    position: absolute;
+    top: -18px;
+    left: 76.9%;
+    transform: translateX(-50%);
+    font-size: 9px;
+    font-weight: 700;
+    color: var(--pv-danger);
+    opacity: 0.6;
+    letter-spacing: 0.5px;
+  }
+
+  .capacity-pct {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 18px;
+    font-weight: 700;
+    width: 64px;
+    text-align: right;
+  }
+
+  .pct-crit { color: var(--pv-danger); }
+  .pct-warm { color: var(--pv-warning); }
+  .pct-good { color: var(--pv-success); }
+  .pct-cool { color: var(--pv-primary); }
+
+  /* ---- Risk Register ---- */
+  .risk-row {
+    display: flex;
+    align-items: flex-start;
+    padding: 16px;
+    margin-bottom: 8px;
+    border-radius: var(--pv-radius);
+    gap: 16px;
+  }
+
+  .risk-critical { background: #fef2f2; border: 1px solid #fecaca; }
+  .risk-high { background: var(--pv-surface-1); border: 1px solid var(--pv-border); }
+
+  .risk-rank {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    font-weight: 700;
+    color: #fff;
+    flex-shrink: 0;
+  }
+
+  .rr-1 { background: var(--pv-danger); box-shadow: 0 2px 8px rgba(212,22,22,0.3); }
+  .rr-2 { background: var(--pv-warning); }
+  .rr-3 { background: var(--pv-warning); }
+
+  .risk-content { flex: 1; }
+
+  .risk-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--pv-text-900);
+    margin-bottom: 4px;
+  }
+
+  .risk-desc {
+    font-size: 13px;
+    color: var(--pv-text-700);
+    line-height: 1.5;
+  }
+
+  .risk-meta { text-align: right; white-space: nowrap; }
+
+  .risk-time {
+    font-size: 11px;
+    color: var(--pv-text-500);
+    font-weight: 500;
+  }
+
+  .risk-severity {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    margin-top: 4px;
+    letter-spacing: 1px;
+  }
+
+  .sev-crit { color: var(--pv-danger); }
+  .sev-high { color: var(--pv-warning); }
+
+  /* ---- M&A Pipeline ---- */
+  .mna-card {
+    background: linear-gradient(135deg, #eff6ff, #f0fdf4);
+    border: 1px solid #bfdbfe;
+    border-radius: var(--pv-radius);
+    padding: 24px;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+  }
+
+  .mna-icon {
+    width: 56px;
+    height: 56px;
+    background: linear-gradient(135deg, var(--pv-primary), var(--pv-primary-dark));
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    flex-shrink: 0;
+    box-shadow: 0 4px 16px rgba(22,86,177,0.25);
+  }
+
+  .mna-details { flex: 1; }
+
+  .mna-company {
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--pv-text-900);
+    margin-bottom: 4px;
+    letter-spacing: -0.3px;
+  }
+
+  .mna-type {
+    font-size: 13px;
+    color: var(--pv-text-700);
+    line-height: 1.4;
+  }
+
+  .mna-status {
+    background: #fffbeb;
+    color: var(--pv-warning);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 8px 16px;
+    border-radius: 8px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border: 1px solid #fde68a;
+    white-space: nowrap;
+  }
+
+  .mna-context {
+    margin-top: 16px;
+    padding: 16px;
+    background: var(--pv-surface-1);
+    border-radius: 8px;
+    font-size: 13px;
+    color: var(--pv-text-700);
+    line-height: 1.6;
+    border-left: 3px solid var(--pv-warning);
+  }
+
+  /* Section highlight for anchor scrolling */
+  .highlight-target {
+    scroll-margin-top: 20px;
+  }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    margin-top: 32px;
+    padding-top: 24px;
+    border-top: 1px solid var(--pv-border);
+    font-size: 12px;
+    color: var(--pv-text-500);
+  }
+
+  .footer-brand {
+    font-weight: 800;
+    color: #009975;
+    letter-spacing: 0.5px;
+  }
+</style>
+</head>
+<body>
+
+<!-- anvi:section type="header" confidence=1.0 -->
+<!-- anvi:data-source portfolios.org_hierarchy, portfolios.calendar -->
+<!-- HEADER -->
+<div class="header">
+  <div>
+    <div class="anvi-tag"><div class="anvi-pulse"></div> Anvi Generated</div>
+    <h1>Connected Work SteerCo</h1>
+    <div class="header-sub">Executive Portfolio Briefing — Better Banking Division</div>
+  </div>
+  <div class="header-right">
+    <!-- anvi:branding source=org_settings.logo_url -->
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAUAAAAFACAMAAAD6TlWYAAAC/VBMVEVHcEwAAAAAAAASBAUAAAAAAAAEAQEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACvKSsAAACWIi6WIi64LCqWIi6WIi5QFRyUIS2xKSuWIi5QFh2WIi6WIi6WIi6WIi6WIi6XIy+WIi+WIi6WIi6WIi6WIi6VIS2WIi6WIi6WIi6WIi6WIi6WIi6WIi6WIi6WIi6WIi6WIi6WIi6WIi6WIi6WIi6WIi6WIi6WIi6WIi6WIi6WIi6WIi6fJS2mJy2ZIy6xKizQMyrbOCnbOCraNynaNynGMSvWNSraNym7LSvaNynaNynaNinaNynbNynaNynaNynaNynaNynaNynaNynaNynaNynaNynaNynaNynTNCnaNynaNymKICu+LiuWIi7bNynaNymWIi7aNymWIi56HiXaNymWIi7aNymWIi6yKyyKICvaNynaNym5LSydJC6oKC3IMipkGSKSIi1WFx9RFh1RFh1RFh1RFh1+HihRFh1RFh1RFh12HCZaGB9RFh1TFx5rGiNRFh1RFh1RFh1RFh1RFh1RFh1RFh1SFx5RFh1RFh1RFh1RFh1RFh1QFh1RFh1QFh1QFRxQFh2WIi7eOCiWIS3aNynaNikAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAALAwQAAAAAAAACAAEUBAVooocAAAAA/3RSTlMACQcCAxYFctaRvb6lJQzhExmhDnXfMAu4IQpcHDOPpBXUQt0tfKhQncXqZLwvGyqYHnp/2L97BksSNwMbDQ5ABXUaRy19pv////356vH10dfIV8OLaOKukrKYod8qMV62vOYnUPz7/fr8/////fv+9/pJqXfg8lCA3LTAnpgPXDNAJ+vU+/0Yhhfbym1FLIJyb6rfaJD+/+PL+vzz7rp8evpKaLX5+9r++sZC842w5vr//2HSMlShlG4TJiIUCh4LlGaKKZthaYFvREyq5T1PX4TSR/Lz6+N4rpXLh0DC2rQ2yTr1U23tz/f4Svmw8PuSjLv+5/38/1gRBFYoCAHMDcReAAAMAklEQVR42uzQ45UkQBgAwH5vc1p7d+brsW3EcmY8h8zONv9WhVAJAAAA/gMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADAYeF6L/07Dkb9wcXZ8VH6R1w3IurNwcXV8V76F8w7kXOO+p1R4erpPyTytFjJ70R9uny4ffo8/R1OLqqRP4hKf9Xdbv4qkZdnnXL+LCrrVbc9O0l/jONuLX8lyuvOcHH9p4mctxuRvxHlamu8mB8k/sRmUslv/Cixd3jwMvE7z3vTyD8S5Vpj8iZxJ/Frh8ty/qFyzlFrFB+f3TxK/MJBoZp/LqLWLF6cHZ8nfmbnqhX5l6LefK1JJUX7cXVZRoFNhC++8PP0TG3LzyqorKoo2o81JY4C86AAd9zBl56RmZWVDQQ5BaXF5VjT4SiIdfPGEX4eaXk5WdkwkFVWuxeb/lFg2xMGCi3M3FuYn5WNDHJq6rAaMArsJ3t5uGPLvTnZKCC3BJvuUbB7+5yls4GBhpp7c9GSX05Bc0sxpuZRwLZty6ZNG2e1AtssKLkXkfxycssqq2snFPXtPUA9a5mGS0/Hae2ajRs3btq0bKkXSu6FJbvS7uKK+ob9VAw6lp9/Lj87yGM4PMYGV6/atBEMNq1Y2QrKu55e4Nybk5Pb3FI1dUpjUx2V+3Oyare/vPz+/dof+vmSRf/8a0mamGy3YD0k+CCJcKGXh+f0afm5ZaXVNSXlDZ00afj9+A4GX+gXgAIfz75/df/kX+qbvHXdBkjgwROh34yZxR31jfsP0G5A6/c3Ogcg04evIAtfPqO2n+wWL9+ECLwNc5fP27Gzt2kvNMcOnwB8/ByS5jn0qDmMYOe0bckGaNZds37V9vnbtjpB0/hwC8DjnyEB+OQuNdsuO7dsAAbdhvVb1q3dvHq3HSR1D88AfPYdAl4qUdPUXZt3bN+xc9HuXQD2zcI7kV8LwBet4m511/Xz+/O37u6KS9mFKUVSYOG8kps5O1Nm6vCMbzV0mglfbu7chFMtIP+7Aq+OCGXQBR9LFf/8zwt0m0kN7osK/idoukAwfZoocIZhPbQEvhGtvRz9U4WWwBYtgS2BzaOqKPYZHepXCFS79Y4SNAilRlM/RP2My+UtauE5rkZL0CQUiHG7zdyV6E9cbw4fGF8k0LSxt3kduk5l7nVssCoVL1ZBwZcrs1Hr3uUXj88BjGpFQVGCEC19jbrR667mM4H+vUf2dJNj436DYTCRWl23PO5MDQKKoS2dZN8NoAtJHBKeyEWb6VmBn78kbgjCGbqj2zuTXzpGRgEZ6KR97gCA5T6V48gD+bizXAGK47azRpdZOFP6866H16b+AQDl+UmEPHALQoY6bHnCc/Td4waK8rKL9hYDAaM3+XlB091Ru8YZhkZAJMhf7KifFFgqJ4iQ30dUklV8ABYDCAeShIdE5ooYND+Y+TL8ZYPOx6AOACqdhCIU6IjZiIibXhdQ2rCd6BOs/hFCUkrBgj6kV2iaIhCJW5VPCFR8TRMp2niBGCor6uUT8cTcYgzqmIyUAngqZ+SB7Gq19v+7OoF9n5LkMdc4IJcfhY4KjoAnCMlNA4/qnE5XDJookNz80MoKVO4lyQsEZmOxx54jUXxHPVnaTG8DzwC91PAHJAUWe/OkHqeGxnMGW+YSMKqXWULyVkD4+dqfaaTAbKT9LGNd+2H28yM92pUTqFq7IcjhdY/19PwiIi0wfx0njwlg5gpOYHNOBYjWTEeRUUkKVGYK/B0TzsB1jiD5PTXtDG9j0AHD215rd+qB0ZavXXwKjRTIWU1aKuez1UCQwSEZgVfsDRScBxYaHr+6jyQjkHY8eNdtTg1mCTIxhL56sWnTARI8prewg6TAMus/Yh4wKrX6oT3mf2uI6j3D4cSAMcnR8A4DYgzVmn5XQwUmD4BnO0GQTyVJgRYnc35rBIb+uk4gkh3fdSlUoHVdHjLp90A5QCX8OlOf4x3VkgI1IWzHJ5VAqe5sYffDtBnFFXHnYKO5I5hPAaFfzu5VGyrw9y/BiTqLwdy0pMD7JI7PbAEe5Z20wHyvCZDSJXuJLSQHm4WLPixRqJB4GCQFznM4yW1/HazhS10OrPqIMOTW2WSFiji4TbrAF6FpAqGNQ0WnUgIVAULxCyrViozA0Azw6NisXALi+Y1S7vms/0CvUlKggzUDekEV3455z4UDxpRxSQWrlwgSWf+bHbI9qiYKNPWzESslBNon0O5XeFZgYUVwyRShZAAxXggqGd0gjaABkBRoPxbVKcgmBl1QWBbt06fy4glhdNAT6IUsZtcmCqzesiDzSgicRDlx3/MCj6cBeFSbYoGwVvhbyfyg159VpAXu4pXtGgCVtqIv9nldi76U8GMnFQ44SYuk0zxh9JsA4PM38sBSqZkCYZeXJCGQyQ1ZnhfoNwkmpVcoEOtfyrkKvP1UxgZIC9zDli1zOzaSuhu/6Pef5OK/hQL5D0J7SwB9LLR5oSsFzK5NFbh+g4tmvV5gKUUoI6rnBbZrBAK7xQIx72HtHKM3cOplBC4RWY74xw6O6mQRoJys3Rkz7pgaLN/JA93K5goMH+KLG/UCFSyXdcA7BcJ0jlUymA5vyiAj0ExkmZgFYWmQX8MtITeJszPogoNILU+sQ3MFbkdwCfyqF+juIpTLdwssjbFkcEqX43VRTiBeh2QLXPLmKB3Pndj87YnQqhIQtnC73ME4fZrg7oTbVZvxSdVkgTssw2zXC1Q6CaXn3QLhCnfKHP2HWwY5gR3YSny1xuZ3y6MHV+Hg9KLus0lTtJSABx8d6asF3LWx3cmIb6v2PnagyQLbsqhstl6gaoRQelXvFqhIEQQralmBVmydVeEJ/hjwIj/bIN7TGDgZqY3kTt9kgaVNNufGeoGwwD+F3y2Q34KxjaysQLYe2k3wBOpPGM5ZdiShSdAVz2Gx3kyBuLGimNUSAj3YSoffL7A4Tnj6Z+QF6k4wI5dBHkwISI5WX8NZwhgvNllg6RbvzXlAQuBsDrP5eendAmGFI0j+FOQFKtmC+G4EMVWdYG26A4Rh1tIoyBGEm4QmC/Swudw3SQlk6ZnEowA8WvaOT18pECtoPGuSFwhlXOqFjAIElOw9458B4XfX/I4QT8yQhKa5ArUeNnVcDOoFCjKXoVwCpLh7QiirrxQIXzHW8axJViB/gJY8/+vZ+I85RxJF4MGsJ6xZNpj2Nrx/n9c74/W6VfSr7o8XWFZjfNnP0wRxFqUFOs4Ikl666qsoiva26yRBOl4rEDf+eNYkLxAGJgjSvzrg0vR57dEMPQa/q4AAzHo3UXGGbccoVYwl9v2Ji41iTAlQjFU+WmDW3726srs8nMoRRrtd7kjf7ieM9P5UZ+I4S3h6q68UiAep7KxJXqDKmiSMyEl7/2CcE98Pmd3Cglx8kj/MupgN7g0eBI3T38IA9x+5rIVlPqqgtF+BnEAYzRFpOhWvFIinADk7yApEFAu/iZj6zvAgkJsXH0EO6oBnd78IEM2PqfVTh75GCBSQn/KBvMBq1EYkaTe9UiA+YZdKzwkE93Ba/lNAnoFDfPIJSkM8ZEWW940AX7998422n3gaK9A2rKn/ORHhD9oEA+KIyB3jkvaJvuObUOBI3RaQshGpP2uqdBHKuTC8RkN5IoL71qMDEQ4nyX8RC90aApFA9ebq2IjzNLXQOIHZ+PgXVMVj7+mosSeUavE444SRHh+e7iEkn25PseHaMxSrXiDQ00HZATGWzvqzptIKXhsFIaa10BHhOeofK3vhMcsFm9Cp/o7MqcUCjRc7weP+mcuA9oMFckuX5kDXVKB7YTJogZfgCK7Mpaa+Bz7FwhaAX4GF3aBJCa9neWIdXkhx4Ef391DoOnUb29ZUoR7TvvhxNL8VFLR2E0aY3h8qmb+CJ6H5+I81q0qFQqmC11BSuJkztRLeSPGqAi9H5bZYHCWQI+gFIcZtYaC51pWg+aWAP17QbOgbUEj//9ES2BLYEtiiJbAlsCWwJbAlsPAPvJmWwELa1umDt9HiODS2dqCz/Ks9OCABAABAANT/0dGOQG3+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADTKZVFuU8oOQAAAAASUVORK5CYII=" alt="Planview" style="height:80px;margin-bottom:4px;display:block;margin-left:auto;">
+    <div class="header-date">
+      <strong>Monday, April 14, 2026</strong>
+      Generated 07:00 ET
+    </div>
+  </div>
+</div>
+
+<!-- anvi:section type="kpi_strip" confidence=0.97 -->
+<!-- anvi:data-source portfolios.initiatives(status=active), okr_module.objectives(quarter=Q2-2026), risk_register.severity(critical), flow_metrics.capacity -->
+<!-- anvi:computation kpi.active_initiatives=COUNT(initiatives WHERE status IN ['active','in_progress']), kpi.okr_on_track=RATIO(objectives WHERE health='green', objectives.total) -->
+<!-- KPI STRIP -->
+<div class="kpi-strip">
+  <div class="kpi-card kpi-blue">
+    <div class="kpi-label">Active Initiatives</div>
+    <div class="kpi-value">10</div>
+    <div class="kpi-detail">Across 2 strategic programs</div>
+  </div>
+
+  <div class="kpi-card kpi-green">
+    <div class="kpi-label">OKRs On Track</div>
+    <div class="kpi-value">50%</div>
+    <div class="kpi-detail">1 of 2 objectives green</div>
+  </div>
+
+  <a href="#risk-section" style="text-decoration:none;color:inherit;">
+    <div class="kpi-card kpi-danger kpi-alert">
+      <div class="kpi-label">⚠ Critical Risks</div>
+      <div class="kpi-value">2</div>
+      <div class="kpi-detail">Payment processing & security controls</div>
+      <div class="kpi-click-hint">↓ View details</div>
+    </div>
+  </a>
+
+  <a href="#capacity-section" style="text-decoration:none;color:inherit;">
+    <div class="kpi-card kpi-warning kpi-alert">
+      <div class="kpi-label">⚠ Capacity Overload</div>
+      <div class="kpi-value">142%</div>
+      <div class="kpi-detail">API Platform team over capacity</div>
+      <div class="kpi-click-hint">↓ View details</div>
+    </div>
+  </a>
+</div>
+
+<!-- anvi:section type="okr_connected_work" confidence=0.94 -->
+<!-- anvi:data-source okr_module.objectives(quarter=Q2-2026), portfolios.work_items(connected=true), agileplace.delivery_mode, flow_metrics.progress -->
+<!-- anvi:join okr.id → work_item.okr_alignment_id · agileplace.board_id → work_item.agile_board_ref -->
+<!-- HERO: OKR + Connected Work -->
+<div class="grid">
+  <div class="panel grid-full">
+    <div class="panel-header">
+      <span class="panel-title">Strategic OKRs + Connected Work</span>
+      <span class="panel-badge badge-blue">Q2 2026</span>
+    </div>
+
+    <!-- OKR 1: API Integration Platform — 54% from screenshot -->
+    <!-- anvi:okr id="OKR-2026-Q2-001" health="amber" progress=0.54 last_updated="2026-04-14T18:30:00Z" -->
+    <div class="okr-section">
+      <div class="okr-row">
+        <div class="okr-status os-amber"></div>
+        <span class="okr-tag okr-tag-amber">OKR</span>
+        <div class="okr-title">Better Banking: API Integration Platform</div>
+        <div class="okr-bar-wrap">
+          <div class="okr-bar-bg"><div class="okr-bar-fill of-amber" style="width:54%"></div></div>
+          <div class="okr-pct" style="color:var(--pv-warning)">54%</div>
+        </div>
+      </div>
+      <div class="connected-items">
+        <div class="work-item">
+          <span class="work-type-tag tag-initiative">Initiative</span>
+          <span class="work-delivery-mode dm-agile">Agile</span>
+          <span class="work-name">Digital Banking Platform Modernization</span>
+          <span class="work-org">Platform Engineering</span>
+          <div class="work-status ws-green"></div>
+          <div class="work-progress">
+            <div class="work-mini-bar"><div class="work-mini-fill wmf-green" style="width:62%"></div></div>
+            <div class="work-pct">62%</div>
+          </div>
+        </div>
+        <div class="work-item">
+          <span class="work-type-tag tag-epic">Epic</span>
+          <span class="work-delivery-mode dm-agile">Agile</span>
+          <span class="work-name">Multi-Factor Authentication for Online Banking</span>
+          <span class="work-org">Identity & Access Mgmt</span>
+          <div class="work-status ws-green"></div>
+          <div class="work-progress">
+            <div class="work-mini-bar"><div class="work-mini-fill wmf-green" style="width:70%"></div></div>
+            <div class="work-pct">70%</div>
+          </div>
+        </div>
+        <div class="work-item">
+          <span class="work-type-tag tag-program">Program</span>
+          <span class="work-delivery-mode dm-waterfall">Waterfall</span>
+          <span class="work-name">Mobile Wallet Integration</span>
+          <span class="work-org">Digital Payments</span>
+          <div class="work-status ws-amber"></div>
+          <div class="work-progress">
+            <div class="work-mini-bar"><div class="work-mini-fill wmf-amber" style="width:35%"></div></div>
+            <div class="work-pct">35%</div>
+          </div>
+        </div>
+        <div class="work-item">
+          <span class="work-type-tag tag-initiative">Initiative</span>
+          <span class="work-delivery-mode dm-waterfall">Waterfall</span>
+          <span class="work-name">Real-Time Payment Processing System</span>
+          <span class="work-org">Core Payments</span>
+          <div class="work-status ws-red"></div>
+          <div class="work-progress">
+            <div class="work-mini-bar"><div class="work-mini-fill wmf-red" style="width:22%"></div></div>
+            <div class="work-pct">22%</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- OKR 2: Digital Onboarding Platform — 67% from screenshot -->
+    <!-- anvi:okr id="OKR-2026-Q2-002" health="green" progress=0.67 last_updated="2026-04-14T18:30:00Z" -->
+    <div class="okr-section">
+      <div class="okr-row">
+        <div class="okr-status os-green"></div>
+        <span class="okr-tag okr-tag-green">OKR</span>
+        <div class="okr-title">Better Banking: Digital Onboarding Platform</div>
+        <div class="okr-bar-wrap">
+          <div class="okr-bar-bg"><div class="okr-bar-fill of-green" style="width:67%"></div></div>
+          <div class="okr-pct" style="color:var(--pv-success)">67%</div>
+        </div>
+      </div>
+      <div class="connected-items">
+        <div class="work-item">
+          <span class="work-type-tag tag-program">Program</span>
+          <span class="work-delivery-mode dm-waterfall">Waterfall</span>
+          <span class="work-name">Anti-Money Laundering Compliance System</span>
+          <span class="work-org">Risk & Compliance</span>
+          <div class="work-status ws-amber"></div>
+          <div class="work-progress">
+            <div class="work-mini-bar"><div class="work-mini-fill wmf-amber" style="width:58%"></div></div>
+            <div class="work-pct">58%</div>
+          </div>
+        </div>
+        <div class="work-item">
+          <span class="work-type-tag tag-epic">Epic</span>
+          <span class="work-delivery-mode dm-agile">Agile</span>
+          <span class="work-name">AI-Powered Fraud Detection Enhancement</span>
+          <span class="work-org">Data Science & AI</span>
+          <div class="work-status ws-green"></div>
+          <div class="work-progress">
+            <div class="work-mini-bar"><div class="work-mini-fill wmf-green" style="width:74%"></div></div>
+            <div class="work-pct">74%</div>
+          </div>
+        </div>
+        <div class="work-item">
+          <span class="work-type-tag tag-initiative">Initiative</span>
+          <span class="work-delivery-mode dm-waterfall">Waterfall</span>
+          <span class="work-name">Enhanced Security Controls for Customer Data</span>
+          <span class="work-org">InfoSec</span>
+          <div class="work-status ws-red"></div>
+          <div class="work-progress">
+            <div class="work-mini-bar"><div class="work-mini-fill wmf-red" style="width:38%"></div></div>
+            <div class="work-pct">38%</div>
+          </div>
+        </div>
+        <div class="work-item">
+          <span class="work-type-tag tag-epic">Epic</span>
+          <span class="work-delivery-mode dm-agile">Agile</span>
+          <span class="work-name">Mobile Banking App User Experience Upgrade</span>
+          <span class="work-org">Digital Products</span>
+          <div class="work-status ws-green"></div>
+          <div class="work-progress">
+            <div class="work-mini-bar"><div class="work-mini-fill wmf-green" style="width:76%"></div></div>
+            <div class="work-pct">76%</div>
+          </div>
+        </div>
+        <div class="work-item">
+          <span class="work-type-tag tag-program">Program</span>
+          <span class="work-delivery-mode dm-waterfall">Waterfall</span>
+          <span class="work-name">Next-Gen Cybersecurity Infrastructure</span>
+          <span class="work-org">Infrastructure Services</span>
+          <div class="work-status ws-green"></div>
+          <div class="work-progress">
+            <div class="work-mini-bar"><div class="work-mini-fill wmf-green" style="width:60%"></div></div>
+            <div class="work-pct">60%</div>
+          </div>
+        </div>
+        <div class="work-item">
+          <span class="work-type-tag tag-initiative">Initiative</span>
+          <span class="work-delivery-mode dm-waterfall">Waterfall</span>
+          <span class="work-name">Core Banking System Architecture Upgrade</span>
+          <span class="work-org">Enterprise Architecture</span>
+          <div class="work-status ws-green"></div>
+          <div class="work-progress">
+            <div class="work-mini-bar"><div class="work-mini-fill wmf-green" style="width:55%"></div></div>
+            <div class="work-pct">55%</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+<!-- anvi:section type="capacity_risk" confidence=0.96 -->
+<!-- ROW 2: Capacity + Risk -->
+<div class="grid">
+
+  <!-- Product Capacity -->
+  <!-- anvi:data-source flow_metrics.team_allocation, portfolios.product_areas -->
+  <!-- anvi:computation capacity=SUM(allocated_fte) / SUM(available_fte) per product_area -->
+  <!-- anvi:alert product="Digital Banking" utilization=1.68 threshold=1.0 severity="critical" -->
+  <div class="panel highlight-target" id="capacity-section">
+    <div class="panel-header">
+      <span class="panel-title">Product Capacity</span>
+      <span class="panel-badge badge-red">1 Overloaded</span>
+    </div>
+
+    <div style="position:relative;margin-bottom:8px;">
+      <div class="capacity-row">
+        <div class="capacity-product">API Platform</div>
+        <div class="capacity-bar-wrap">
+          <div class="threshold-label">100%</div>
+          <div class="capacity-bar-bg">
+            <div class="capacity-bar-fill cap-critical" style="width:100%">142%</div>
+            <div class="capacity-threshold"></div>
+          </div>
+        </div>
+        <div class="capacity-pct pct-crit">142%</div>
+      </div>
+    </div>
+
+    <div class="capacity-row">
+      <div class="capacity-product">Digital Onboarding</div>
+      <div class="capacity-bar-wrap">
+        <div class="capacity-bar-bg">
+          <div class="capacity-bar-fill cap-warm" style="width:67.7%">88%</div>
+          <div class="capacity-threshold"></div>
+        </div>
+      </div>
+      <div class="capacity-pct pct-warm">88%</div>
+    </div>
+
+    <div class="capacity-row">
+      <div class="capacity-product">InfoSec & Compliance</div>
+      <div class="capacity-bar-wrap">
+        <div class="capacity-bar-bg">
+          <div class="capacity-bar-fill cap-good" style="width:57.7%">75%</div>
+          <div class="capacity-threshold"></div>
+        </div>
+      </div>
+      <div class="capacity-pct pct-good">75%</div>
+    </div>
+
+    <div class="capacity-row">
+      <div class="capacity-product">Core Payments</div>
+      <div class="capacity-bar-wrap">
+        <div class="capacity-bar-bg">
+          <div class="capacity-bar-fill cap-cool" style="width:49.2%">64%</div>
+          <div class="capacity-threshold"></div>
+        </div>
+      </div>
+      <div class="capacity-pct pct-cool">64%</div>
+    </div>
+  </div>
+
+  <!-- Risk Register -->
+  <!-- anvi:data-source risk_register.items(status=open, severity IN ['critical','high']) -->
+  <!-- anvi:ranking algorithm="severity × recency × blast_radius" -->
+  <!-- anvi:risk id="RSK-0041" severity="critical" flagged="2026-04-06T02:47:00Z" auto_detected=true source="flow_metrics.anomaly_detection" -->
+  <div class="panel highlight-target" id="risk-section">
+    <div class="panel-header">
+      <span class="panel-title">Risk Register</span>
+      <span class="panel-badge badge-red">2 Critical</span>
+    </div>
+
+    <div class="risk-row risk-critical">
+      <div class="risk-rank rr-1">1</div>
+      <div class="risk-content">
+        <div class="risk-title">Real-Time Payment Processing — FedNow Certification Blocked</div>
+        <div class="risk-desc">FedNow integration testing stalled due to unresolved message validation failures on ISO 20022 payment initiation messages. Only 15% complete against Apr 19 start date. Dependency on Core Banking ledger migration creates cascading delay risk.</div>
+      </div>
+      <div class="risk-meta">
+        <div class="risk-time">Flagged 6:12 AM</div>
+        <div class="risk-severity sev-crit">● CRITICAL</div>
+      </div>
+    </div>
+
+    <div class="risk-row risk-critical">
+      <div class="risk-rank rr-1">2</div>
+      <div class="risk-content">
+        <div class="risk-title">Enhanced Security Controls — AES-256 Encryption Migration Stalled</div>
+        <div class="risk-desc">Data-at-rest encryption migration at 25% with Jun 24 deadline. Key management service integration failing in staging environment. OCC audit exposure if customer PII remains on legacy encryption.</div>
+      </div>
+      <div class="risk-meta">
+        <div class="risk-time">Updated 1d ago</div>
+        <div class="risk-severity sev-crit">● CRITICAL</div>
+      </div>
+    </div>
+
+    <div class="risk-row risk-high">
+      <div class="risk-rank rr-3">3</div>
+      <div class="risk-content">
+        <div class="risk-title">API Platform — Team Capacity at 142% Utilization</div>
+        <div class="risk-desc">API Platform team overcommitted across 4 initiatives. Kong migration, SOAP-to-REST conversion, and wallet integration competing for same 3 senior engineers. Burnout indicators trending up in Flow Metrics.</div>
+      </div>
+      <div class="risk-meta">
+        <div class="risk-time">Updated 2d ago</div>
+        <div class="risk-severity sev-high">● HIGH</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- anvi:section type="mna_pipeline" confidence=0.89 -->
+<!-- anvi:data-source portfolios.mna_tracker, okr_module.alignment_gaps -->
+<!-- anvi:note confidence_reduced_reason="M&A initiative structure not yet created in Planview — awaiting executive sponsor assignment" -->
+<!-- ROW 3: M&A -->
+<div class="grid">
+  <div class="panel grid-full">
+    <div class="panel-header">
+      <span class="panel-title">M&A Pipeline</span>
+      <span class="panel-badge badge-amber">Action Required</span>
+    </div>
+
+    <div class="mna-card">
+      <div class="mna-icon">⬡</div>
+      <div class="mna-details">
+        <div class="mna-company">NovaPay Solutions</div>
+        <div class="mna-type">Open Banking API Infrastructure & Embedded Payments — Series C · 320 employees · PCI-DSS Level 1 certified</div>
+      </div>
+      <div class="mna-status">Awaiting Roadmap</div>
+    </div>
+
+    <div class="mna-context">
+      Board approved preliminary acquisition terms April 2. Integration planning not initiated — no initiative structure, OKR alignment, or delivery roadmap exists in Planview. NovaPay's open banking APIs could accelerate both API Integration Platform and Real-Time Payment Processing timelines by 4–6 months. Executive sponsor assignment pending CTO review.
+    </div>
+  </div>
+</div>
+
+<!-- anvi:section type="footer" -->
+<!-- anvi:generation-summary total_data_points=847 query_time_ms=1240 cache_hit_ratio=0.72 next_scheduled="2026-04-13T07:00:00-04:00" -->
+<!-- FOOTER -->
+<div class="footer">
+  <span class="footer-brand">Planview Anvi</span> — Automated Executive Briefing · Next scheduled: Monday, April 20, 2026 at 07:00 ET
+</div>
+
+</body>
+</html>
