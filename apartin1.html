@@ -1,0 +1,999 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap');
+
+  :root {
+    --pv-primary: #1656B1;
+    --pv-primary-dark: #0f3f86;
+    --pv-success: #008622;
+    --pv-warning: #d97706;
+    --pv-danger: #D41616;
+    --pv-text-900: #222222;
+    --pv-text-700: #555555;
+    --pv-text-500: #949494;
+    --pv-surface-0: #ffffff;
+    --pv-surface-1: #F5F5F5;
+    --pv-border: #e4e7ee;
+    --pv-radius: 10px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Segoe UI', 'Inter', -apple-system, sans-serif;
+    background: var(--pv-surface-1);
+    color: var(--pv-text-900);
+    padding: 40px;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+  }
+
+  /* Header */
+  .header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 28px;
+    padding: 24px 28px;
+    border-bottom: 3px solid var(--pv-primary);
+    background: #fff;
+    border-radius: var(--pv-radius) var(--pv-radius) 0 0;
+  }
+
+  .header h1 {
+    font-size: 30px;
+    font-weight: 900;
+    color: var(--pv-text-900);
+    letter-spacing: -0.5px;
+    line-height: 1.1;
+  }
+
+  .header-sub {
+    font-size: 14px;
+    color: var(--pv-text-500);
+    margin-top: 6px;
+    font-weight: 500;
+  }
+
+  .anvi-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: linear-gradient(135deg, #00b894, #009975);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    border-radius: 6px;
+    margin-bottom: 8px;
+  }
+
+  .anvi-pulse {
+    width: 6px;
+    height: 6px;
+    background: #fff;
+    border-radius: 50%;
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  .header-right { text-align: right; }
+
+  .header-date {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--pv-text-500);
+  }
+
+  .header-date strong {
+    display: block;
+    color: var(--pv-text-700);
+    font-size: 15px;
+    margin-bottom: 2px;
+  }
+
+  /* ---- KPI STRIP ---- */
+  .kpi-strip {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .kpi-card {
+    background: var(--pv-surface-0);
+    border-radius: var(--pv-radius);
+    padding: 20px 24px;
+    border: 1px solid var(--pv-border);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .kpi-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+  }
+
+  .kpi-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--pv-text-500);
+    margin-bottom: 8px;
+  }
+
+  .kpi-value {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 32px;
+    font-weight: 800;
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+
+  .kpi-detail {
+    font-size: 13px;
+    color: var(--pv-text-500);
+    font-weight: 500;
+  }
+
+  /* Standard KPI cards */
+  .kpi-blue::before { background: var(--pv-primary); }
+  .kpi-blue .kpi-value { color: var(--pv-primary); }
+
+  .kpi-green::before { background: var(--pv-success); }
+  .kpi-green .kpi-value { color: var(--pv-success); }
+
+  /* Clickable alert cards */
+  .kpi-alert {
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+
+  .kpi-alert:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+  }
+
+  .kpi-danger::before { background: var(--pv-danger); }
+  .kpi-danger {
+    border-color: #fecaca;
+    background: #fffbfb;
+  }
+  .kpi-danger .kpi-value { color: var(--pv-danger); }
+  .kpi-danger .kpi-label { color: var(--pv-danger); }
+
+  .kpi-warning::before { background: var(--pv-warning); }
+  .kpi-warning {
+    border-color: #fde68a;
+    background: #fffdf5;
+  }
+  .kpi-warning .kpi-value { color: var(--pv-warning); }
+  .kpi-warning .kpi-label { color: var(--pv-warning); }
+
+  .kpi-click-hint {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 8px;
+    opacity: 0.6;
+  }
+
+  .kpi-danger .kpi-click-hint { color: var(--pv-danger); }
+  .kpi-warning .kpi-click-hint { color: var(--pv-warning); }
+
+  /* Grid */
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 20px;
+  }
+
+  .grid-full { grid-column: 1 / -1; }
+
+  /* Panel */
+  .panel {
+    background: var(--pv-surface-0);
+    border-radius: var(--pv-radius);
+    padding: 28px;
+    border: 1px solid var(--pv-border);
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  }
+
+  .panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+  }
+
+  .panel-title {
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--pv-text-500);
+  }
+
+  .panel-badge {
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 6px;
+    letter-spacing: 0.3px;
+  }
+
+  .badge-red { background: #fef2f2; color: var(--pv-danger); border: 1px solid #fecaca; }
+  .badge-amber { background: #fffbeb; color: var(--pv-warning); border: 1px solid #fde68a; }
+  .badge-green { background: #f0fdf4; color: var(--pv-success); border: 1px solid #bbf7d0; }
+  .badge-blue { background: #eff6ff; color: var(--pv-primary); border: 1px solid #bfdbfe; }
+
+  /* ---- OKR + Connected Work ---- */
+  .okr-section {
+    margin-bottom: 28px;
+    padding-bottom: 28px;
+    border-bottom: 1px solid #f1f5f9;
+  }
+
+  .okr-section:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+
+  .okr-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+
+  .okr-status {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .os-green { background: var(--pv-success); box-shadow: 0 0 6px rgba(0,134,34,0.35); }
+  .os-amber { background: var(--pv-warning); box-shadow: 0 0 6px rgba(217,119,6,0.35); }
+  .os-red { background: var(--pv-danger); box-shadow: 0 0 6px rgba(212,22,22,0.35); }
+
+  .okr-tag {
+    font-size: 10px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 3px 8px;
+    border-radius: 4px;
+    flex-shrink: 0;
+  }
+
+  .okr-tag-green { background: #f0fdf4; color: var(--pv-success); border: 1px solid #bbf7d0; }
+  .okr-tag-amber { background: #fffbeb; color: var(--pv-warning); border: 1px solid #fde68a; }
+  .okr-tag-red { background: #fef2f2; color: var(--pv-danger); border: 1px solid #fecaca; }
+
+  .okr-title {
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--pv-text-900);
+    flex: 1;
+    letter-spacing: -0.2px;
+  }
+
+  .okr-bar-wrap {
+    width: 200px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .okr-bar-bg {
+    flex: 1;
+    background: #e2e8f0;
+    height: 10px;
+    border-radius: 5px;
+    overflow: hidden;
+  }
+
+  .okr-bar-fill { height: 100%; border-radius: 5px; }
+  .of-green { background: linear-gradient(90deg, #22c55e, #4ade80); }
+  .of-amber { background: linear-gradient(90deg, #f59e0b, #fbbf24); }
+  .of-red { background: linear-gradient(90deg, #ef4444, #f87171); }
+
+  .okr-pct {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 15px;
+    font-weight: 700;
+    width: 42px;
+    text-align: right;
+  }
+
+  /* Connected work items */
+  .connected-items {
+    margin-left: 26px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .work-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 16px;
+    border-radius: var(--pv-radius);
+    background: var(--pv-surface-1);
+    gap: 14px;
+    transition: background 0.15s;
+  }
+
+  .work-item:hover { background: #eef0f4; }
+
+  .work-type-tag {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    padding: 3px 8px;
+    border-radius: 4px;
+    flex-shrink: 0;
+    width: 72px;
+    text-align: center;
+  }
+
+  .tag-initiative { background: #dbeafe; color: #1d4ed8; }
+  .tag-program { background: #e0e7ff; color: #4338ca; }
+  .tag-project { background: #f3e8ff; color: #7c3aed; }
+
+  .work-delivery-mode {
+    font-size: 10px;
+    font-weight: 600;
+    padding: 3px 8px;
+    border-radius: 4px;
+    flex-shrink: 0;
+  }
+
+  .dm-agile { background: #ecfdf5; color: #059669; border: 1px solid #a7f3d0; }
+  .dm-waterfall { background: #eff6ff; color: #2563eb; border: 1px solid #bfdbfe; }
+
+  .work-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--pv-text-900);
+    flex: 1;
+  }
+
+  .work-org {
+    font-size: 12px;
+    color: var(--pv-text-500);
+    font-weight: 500;
+    width: 160px;
+    text-align: right;
+  }
+
+  .work-status {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .ws-green { background: var(--pv-success); }
+  .ws-amber { background: var(--pv-warning); }
+  .ws-red { background: var(--pv-danger); }
+
+  .work-progress { width: 80px; text-align: right; }
+
+  .work-mini-bar {
+    background: #e2e8f0;
+    height: 4px;
+    border-radius: 2px;
+    overflow: hidden;
+    margin-bottom: 4px;
+  }
+
+  .work-mini-fill { height: 100%; border-radius: 2px; }
+  .wmf-green { background: var(--pv-success); }
+  .wmf-amber { background: var(--pv-warning); }
+  .wmf-red { background: var(--pv-danger); }
+
+  .work-pct {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--pv-text-500);
+  }
+
+  /* ---- Capacity ---- */
+  .capacity-row {
+    display: flex;
+    align-items: center;
+    padding: 12px 0;
+  }
+
+  .capacity-product {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--pv-text-900);
+    width: 180px;
+  }
+
+  .capacity-bar-wrap {
+    flex: 1;
+    margin: 0 20px;
+    position: relative;
+  }
+
+  .capacity-bar-bg {
+    background: #e2e8f0;
+    height: 32px;
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .capacity-bar-fill {
+    height: 100%;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    padding-left: 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    font-weight: 700;
+    color: #fff;
+  }
+
+  .cap-critical {
+    background: linear-gradient(90deg, #ef4444, #dc2626);
+    animation: cap-pulse 3s ease-in-out infinite;
+  }
+
+  @keyframes cap-pulse {
+    0%, 100% { box-shadow: inset 0 0 20px rgba(0,0,0,0); }
+    50% { box-shadow: inset 0 0 20px rgba(255,255,255,0.15); }
+  }
+
+  .cap-warm { background: linear-gradient(90deg, #f59e0b, #d97706); }
+  .cap-good { background: linear-gradient(90deg, #22c55e, #16a34a); }
+  .cap-cool { background: linear-gradient(90deg, #3b82f6, #2563eb); }
+
+  .capacity-threshold {
+    position: absolute;
+    top: -4px;
+    bottom: -4px;
+    width: 2px;
+    background: var(--pv-danger);
+    left: 76.9%;
+    opacity: 0.5;
+  }
+
+  .threshold-label {
+    position: absolute;
+    top: -18px;
+    left: 76.9%;
+    transform: translateX(-50%);
+    font-size: 9px;
+    font-weight: 700;
+    color: var(--pv-danger);
+    opacity: 0.6;
+    letter-spacing: 0.5px;
+  }
+
+  .capacity-pct {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 18px;
+    font-weight: 700;
+    width: 64px;
+    text-align: right;
+  }
+
+  .pct-crit { color: var(--pv-danger); }
+  .pct-warm { color: var(--pv-warning); }
+  .pct-good { color: var(--pv-success); }
+  .pct-cool { color: var(--pv-primary); }
+
+  /* ---- Risk Register ---- */
+  .risk-row {
+    display: flex;
+    align-items: flex-start;
+    padding: 16px;
+    margin-bottom: 8px;
+    border-radius: var(--pv-radius);
+    gap: 16px;
+  }
+
+  .risk-critical { background: #fef2f2; border: 1px solid #fecaca; }
+  .risk-high { background: var(--pv-surface-1); border: 1px solid var(--pv-border); }
+
+  .risk-rank {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    font-weight: 700;
+    color: #fff;
+    flex-shrink: 0;
+  }
+
+  .rr-1 { background: var(--pv-danger); box-shadow: 0 2px 8px rgba(212,22,22,0.3); }
+  .rr-2 { background: var(--pv-warning); }
+  .rr-3 { background: var(--pv-warning); }
+
+  .risk-content { flex: 1; }
+
+  .risk-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--pv-text-900);
+    margin-bottom: 4px;
+  }
+
+  .risk-desc {
+    font-size: 13px;
+    color: var(--pv-text-700);
+    line-height: 1.5;
+  }
+
+  .risk-meta { text-align: right; white-space: nowrap; }
+
+  .risk-time {
+    font-size: 11px;
+    color: var(--pv-text-500);
+    font-weight: 500;
+  }
+
+  .risk-severity {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    margin-top: 4px;
+    letter-spacing: 1px;
+  }
+
+  .sev-crit { color: var(--pv-danger); }
+  .sev-high { color: var(--pv-warning); }
+
+  /* ---- M&A Pipeline ---- */
+  .mna-card {
+    background: linear-gradient(135deg, #eff6ff, #f0fdf4);
+    border: 1px solid #bfdbfe;
+    border-radius: var(--pv-radius);
+    padding: 24px;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+  }
+
+  .mna-icon {
+    width: 56px;
+    height: 56px;
+    background: linear-gradient(135deg, var(--pv-primary), var(--pv-primary-dark));
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    flex-shrink: 0;
+    box-shadow: 0 4px 16px rgba(22,86,177,0.25);
+  }
+
+  .mna-details { flex: 1; }
+
+  .mna-company {
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--pv-text-900);
+    margin-bottom: 4px;
+    letter-spacing: -0.3px;
+  }
+
+  .mna-type {
+    font-size: 13px;
+    color: var(--pv-text-700);
+    line-height: 1.4;
+  }
+
+  .mna-status {
+    background: #fffbeb;
+    color: var(--pv-warning);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 8px 16px;
+    border-radius: 8px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border: 1px solid #fde68a;
+    white-space: nowrap;
+  }
+
+  .mna-context {
+    margin-top: 16px;
+    padding: 16px;
+    background: var(--pv-surface-1);
+    border-radius: 8px;
+    font-size: 13px;
+    color: var(--pv-text-700);
+    line-height: 1.6;
+    border-left: 3px solid var(--pv-warning);
+  }
+
+  /* Section highlight for anchor scrolling */
+  .highlight-target {
+    scroll-margin-top: 20px;
+  }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    margin-top: 32px;
+    padding-top: 24px;
+    border-top: 1px solid var(--pv-border);
+    font-size: 12px;
+    color: var(--pv-text-500);
+  }
+
+  .footer-brand {
+    font-weight: 800;
+    color: #009975;
+    letter-spacing: 0.5px;
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div>
+    <div class="anvi-tag"><div class="anvi-pulse"></div> Anvi Generated</div>
+    <h1>Connected Work SteerCo</h1>
+    <div class="header-sub">Executive Portfolio Briefing</div>
+  </div>
+  <div class="header-right">
+    <img src="data:image/jpeg;base64,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" alt="Planview" style="height:32px;margin-bottom:8px;display:block;margin-left:auto;">
+    <div class="header-date">
+      <strong>Monday, March 24, 2026</strong>
+      Generated 07:00 ET
+    </div>
+  </div>
+</div>
+
+<!-- KPI STRIP -->
+<div class="kpi-strip">
+  <div class="kpi-card kpi-blue">
+    <div class="kpi-label">Active Initiatives</div>
+    <div class="kpi-value">12</div>
+    <div class="kpi-detail">Across 3 business units</div>
+  </div>
+
+  <div class="kpi-card kpi-green">
+    <div class="kpi-label">OKRs On Track</div>
+    <div class="kpi-value">67%</div>
+    <div class="kpi-detail">2 of 3 objectives green</div>
+  </div>
+
+  <a href="#risk-section" style="text-decoration:none;color:inherit;">
+    <div class="kpi-card kpi-danger kpi-alert">
+      <div class="kpi-label">⚠ Critical Risk</div>
+      <div class="kpi-value">1</div>
+      <div class="kpi-detail">Member Data API vulnerability</div>
+      <div class="kpi-click-hint">↓ View details</div>
+    </div>
+  </a>
+
+  <a href="#capacity-section" style="text-decoration:none;color:inherit;">
+    <div class="kpi-card kpi-warning kpi-alert">
+      <div class="kpi-label">⚠ Capacity Overload</div>
+      <div class="kpi-value">175%</div>
+      <div class="kpi-detail">Member Portal over capacity</div>
+      <div class="kpi-click-hint">↓ View details</div>
+    </div>
+  </a>
+</div>
+
+<!-- HERO: OKR + Connected Work -->
+<div class="grid">
+  <div class="panel grid-full">
+    <div class="panel-header">
+      <span class="panel-title">Strategic OKRs + Connected Work</span>
+      <span class="panel-badge badge-blue">Q1 2026</span>
+    </div>
+
+    <!-- OKR 1 -->
+    <div class="okr-section">
+      <div class="okr-row">
+        <div class="okr-status os-green"></div>
+        <span class="okr-tag okr-tag-green">OKR</span>
+        <div class="okr-title">Improve Member Experience NPS by 15%</div>
+        <div class="okr-bar-wrap">
+          <div class="okr-bar-bg"><div class="okr-bar-fill of-green" style="width:68%"></div></div>
+          <div class="okr-pct" style="color:var(--pv-success)">68%</div>
+        </div>
+      </div>
+      <div class="connected-items">
+        <div class="work-item">
+          <span class="work-type-tag tag-initiative">Initiative</span>
+          <span class="work-delivery-mode dm-agile">Agile</span>
+          <span class="work-name">Member Portal Redesign</span>
+          <span class="work-org">enGen Technology</span>
+          <div class="work-status ws-amber"></div>
+          <div class="work-progress">
+            <div class="work-mini-bar"><div class="work-mini-fill wmf-amber" style="width:38%"></div></div>
+            <div class="work-pct">38%</div>
+          </div>
+        </div>
+        <div class="work-item">
+          <span class="work-type-tag tag-program">Program</span>
+          <span class="work-delivery-mode dm-waterfall">Waterfall</span>
+          <span class="work-name">CX Benchmarking & Survey Program</span>
+          <span class="work-org">Highmark Health Plans</span>
+          <div class="work-status ws-green"></div>
+          <div class="work-progress">
+            <div class="work-mini-bar"><div class="work-mini-fill wmf-green" style="width:72%"></div></div>
+            <div class="work-pct">72%</div>
+          </div>
+        </div>
+        <div class="work-item">
+          <span class="work-type-tag tag-project">Project</span>
+          <span class="work-delivery-mode dm-agile">Agile</span>
+          <span class="work-name">Mobile App Enhancements</span>
+          <span class="work-org">enGen Technology</span>
+          <div class="work-status ws-green"></div>
+          <div class="work-progress">
+            <div class="work-mini-bar"><div class="work-mini-fill wmf-green" style="width:81%"></div></div>
+            <div class="work-pct">81%</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- OKR 2 -->
+    <div class="okr-section">
+      <div class="okr-row">
+        <div class="okr-status os-amber"></div>
+        <span class="okr-tag okr-tag-amber">OKR</span>
+        <div class="okr-title">Reduce Claims Processing Time by 40%</div>
+        <div class="okr-bar-wrap">
+          <div class="okr-bar-bg"><div class="okr-bar-fill of-amber" style="width:42%"></div></div>
+          <div class="okr-pct" style="color:var(--pv-warning)">42%</div>
+        </div>
+      </div>
+      <div class="connected-items">
+        <div class="work-item">
+          <span class="work-type-tag tag-initiative">Initiative</span>
+          <span class="work-delivery-mode dm-agile">Agile</span>
+          <span class="work-name">Claims Modernization Platform</span>
+          <span class="work-org">Highmark Health Plans</span>
+          <div class="work-status ws-green"></div>
+          <div class="work-progress">
+            <div class="work-mini-bar"><div class="work-mini-fill wmf-green" style="width:72%"></div></div>
+            <div class="work-pct">72%</div>
+          </div>
+        </div>
+        <div class="work-item">
+          <span class="work-type-tag tag-program">Program</span>
+          <span class="work-delivery-mode dm-waterfall">Waterfall</span>
+          <span class="work-name">Legacy System Decommission</span>
+          <span class="work-org">enGen Technology</span>
+          <div class="work-status ws-amber"></div>
+          <div class="work-progress">
+            <div class="work-mini-bar"><div class="work-mini-fill wmf-amber" style="width:35%"></div></div>
+            <div class="work-pct">35%</div>
+          </div>
+        </div>
+        <div class="work-item">
+          <span class="work-type-tag tag-project">Project</span>
+          <span class="work-delivery-mode dm-waterfall">Waterfall</span>
+          <span class="work-name">Vendor Migration & Compliance</span>
+          <span class="work-org">Highmark Health Plans</span>
+          <div class="work-status ws-amber"></div>
+          <div class="work-progress">
+            <div class="work-mini-bar"><div class="work-mini-fill wmf-amber" style="width:28%"></div></div>
+            <div class="work-pct">28%</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- OKR 3 -->
+    <div class="okr-section">
+      <div class="okr-row">
+        <div class="okr-status os-green"></div>
+        <span class="okr-tag okr-tag-green">OKR</span>
+        <div class="okr-title">Achieve 99.9% Platform Uptime</div>
+        <div class="okr-bar-wrap">
+          <div class="okr-bar-bg"><div class="okr-bar-fill of-green" style="width:94%"></div></div>
+          <div class="okr-pct" style="color:var(--pv-success)">94%</div>
+        </div>
+      </div>
+      <div class="connected-items">
+        <div class="work-item">
+          <span class="work-type-tag tag-initiative">Initiative</span>
+          <span class="work-delivery-mode dm-agile">Agile</span>
+          <span class="work-name">Provider Network API Gateway</span>
+          <span class="work-org">enGen Technology</span>
+          <div class="work-status ws-red"></div>
+          <div class="work-progress">
+            <div class="work-mini-bar"><div class="work-mini-fill wmf-red" style="width:21%"></div></div>
+            <div class="work-pct">21%</div>
+          </div>
+        </div>
+        <div class="work-item">
+          <span class="work-type-tag tag-program">Program</span>
+          <span class="work-delivery-mode dm-waterfall">Waterfall</span>
+          <span class="work-name">DR Failover Certification</span>
+          <span class="work-org">Allegheny Health Network</span>
+          <div class="work-status ws-green"></div>
+          <div class="work-progress">
+            <div class="work-mini-bar"><div class="work-mini-fill wmf-green" style="width:88%"></div></div>
+            <div class="work-pct">88%</div>
+          </div>
+        </div>
+        <div class="work-item">
+          <span class="work-type-tag tag-project">Project</span>
+          <span class="work-delivery-mode dm-agile">Agile</span>
+          <span class="work-name">Observability & Monitoring Platform</span>
+          <span class="work-org">enGen Technology</span>
+          <div class="work-status ws-green"></div>
+          <div class="work-progress">
+            <div class="work-mini-bar"><div class="work-mini-fill wmf-green" style="width:67%"></div></div>
+            <div class="work-pct">67%</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ROW 2: Capacity + Risk -->
+<div class="grid">
+
+  <!-- Product Capacity -->
+  <div class="panel highlight-target" id="capacity-section">
+    <div class="panel-header">
+      <span class="panel-title">Product Capacity</span>
+      <span class="panel-badge badge-red">1 Overloaded</span>
+    </div>
+
+    <div style="position:relative;margin-bottom:8px;">
+      <div class="capacity-row">
+        <div class="capacity-product">Member Portal</div>
+        <div class="capacity-bar-wrap">
+          <div class="threshold-label">100%</div>
+          <div class="capacity-bar-bg">
+            <div class="capacity-bar-fill cap-critical" style="width:100%">175%</div>
+            <div class="capacity-threshold"></div>
+          </div>
+        </div>
+        <div class="capacity-pct pct-crit">175%</div>
+      </div>
+    </div>
+
+    <div class="capacity-row">
+      <div class="capacity-product">Provider Network</div>
+      <div class="capacity-bar-wrap">
+        <div class="capacity-bar-bg">
+          <div class="capacity-bar-fill cap-warm" style="width:69.2%">90%</div>
+          <div class="capacity-threshold"></div>
+        </div>
+      </div>
+      <div class="capacity-pct pct-warm">90%</div>
+    </div>
+
+    <div class="capacity-row">
+      <div class="capacity-product">Clinical Data</div>
+      <div class="capacity-bar-wrap">
+        <div class="capacity-bar-bg">
+          <div class="capacity-bar-fill cap-good" style="width:57.7%">75%</div>
+          <div class="capacity-threshold"></div>
+        </div>
+      </div>
+      <div class="capacity-pct pct-good">75%</div>
+    </div>
+
+    <div class="capacity-row">
+      <div class="capacity-product">Claims Modernization</div>
+      <div class="capacity-bar-wrap">
+        <div class="capacity-bar-bg">
+          <div class="capacity-bar-fill cap-cool" style="width:42.3%">55%</div>
+          <div class="capacity-threshold"></div>
+        </div>
+      </div>
+      <div class="capacity-pct pct-cool">55%</div>
+    </div>
+  </div>
+
+  <!-- Risk Register -->
+  <div class="panel highlight-target" id="risk-section">
+    <div class="panel-header">
+      <span class="panel-title">Risk Register</span>
+      <span class="panel-badge badge-red">1 Critical</span>
+    </div>
+
+    <div class="risk-row risk-critical">
+      <div class="risk-rank rr-1">1</div>
+      <div class="risk-content">
+        <div class="risk-title">Member Data API — Security Vulnerability</div>
+        <div class="risk-desc">Critical CVE in member-facing API gateway. Potential PII exposure affecting 2.3M member records. Immediate remediation required.</div>
+      </div>
+      <div class="risk-meta">
+        <div class="risk-time">Flagged 2:14 AM</div>
+        <div class="risk-severity sev-crit">● CRITICAL</div>
+      </div>
+    </div>
+
+    <div class="risk-row risk-high">
+      <div class="risk-rank rr-2">2</div>
+      <div class="risk-content">
+        <div class="risk-title">Claims Processing — Vendor Dependency</div>
+        <div class="risk-desc">Primary claims vendor contract renewal at risk. Fallback vendor onboarding 6 weeks behind.</div>
+      </div>
+      <div class="risk-meta">
+        <div class="risk-time">Updated 3d ago</div>
+        <div class="risk-severity sev-high">● HIGH</div>
+      </div>
+    </div>
+
+    <div class="risk-row risk-high">
+      <div class="risk-rank rr-3">3</div>
+      <div class="risk-content">
+        <div class="risk-title">Provider Network — FHIR Compliance Gap</div>
+        <div class="risk-desc">CMS interoperability mandate Q2 deadline. FHIR implementation at 62% coverage.</div>
+      </div>
+      <div class="risk-meta">
+        <div class="risk-time">Updated 1w ago</div>
+        <div class="risk-severity sev-high">● HIGH</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ROW 3: M&A -->
+<div class="grid">
+  <div class="panel grid-full">
+    <div class="panel-header">
+      <span class="panel-title">M&A Pipeline</span>
+      <span class="panel-badge badge-amber">Action Required</span>
+    </div>
+
+    <div class="mna-card">
+      <div class="mna-icon">⬡</div>
+      <div class="mna-details">
+        <div class="mna-company">MediBridge Health</div>
+        <div class="mna-type">Virtual Care & Remote Patient Monitoring — Series C · 340 employees · HIPAA-certified platform</div>
+      </div>
+      <div class="mna-status">Awaiting Roadmap</div>
+    </div>
+
+    <div class="mna-context">
+      Board approved preliminary acquisition terms March 19. Integration planning not initiated — no initiative structure, OKR alignment, or delivery roadmap exists. Executive sponsor assignment pending.
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <span class="footer-brand">Planview Anvi</span> — Automated Executive Briefing · Next scheduled: Tuesday, March 25, 2026 at 07:00 ET
+</div>
+
+</body>
+</html>
