@@ -1,189 +1,125 @@
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Portfolio Analysis Report</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Portfolio Analysis Report</title>
+  <style>
+    :root {
+      --red: #BE0031;
+      --navy: #1a1a2e;
+      --white: #FFFFFF;
+      --light-bg: #f4f4f8;
+      --border: #c8c8e0;
+      --body-text: #333333;
+      --row-alt: #f9f9ff;
+      --green: #28a745;
+      --yellow: #ffc107;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: Arial, Helvetica, sans-serif; background: var(--light-bg); color: var(--body-text); font-size: 14px; line-height: 1.5; }
+    .hero-bar { background: var(--navy); padding: 18px 24px; display: flex; justify-content: space-between; align-items: center; }
+    .hero-brand { font-size: 20px; font-weight: bold; color: var(--white); letter-spacing: 1px; }
+    .hero-anvi { font-size: 14px; font-weight: bold; color: var(--red); letter-spacing: 2px; }
+    .title-bar { background: var(--red); padding: 14px 24px; display: flex; justify-content: space-between; align-items: center; }
+    .title-bar-main { font-size: 20px; font-weight: bold; color: var(--white); }
+    .title-bar-sub { font-size: 12px; color: rgba(255,255,255,0.75); }
+    .page { padding: 0 24px; }
+    .exec-wrap { padding: 18px 0 8px; }
+    .exec-box { padding: 16px; border: 1px solid #d0d0e8; border-left: 5px solid var(--red); background: var(--white); font-size: 13px; color: var(--body-text); line-height: 1.6; }
+    .exec-box strong { font-size: 14px; color: var(--navy); display: block; margin-bottom: 6px; }
+    .section-title-wrap { padding: 8px 0 4px; }
+    .section-title { font-size: 15px; font-weight: bold; color: var(--white); background: var(--navy); padding: 8px 12px; border-left: 4px solid var(--red); display: block; }
+    .table-wrap { padding: 4px 0 12px; }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; background: var(--white); }
+    th { padding: 10px 8px; background: var(--navy); color: var(--white); font-weight: bold; border: 1px solid var(--border); text-align: left; }
+    td { padding: 10px 8px; border: 1px solid var(--border); }
+    tr.alt { background: var(--row-alt); }
+    tr.norm { background: var(--white); }
+    .val-red { color: var(--red); font-weight: bold; }
+    .val-green { color: var(--green); font-weight: bold; }
+    .val-yellow { color: var(--yellow); font-weight: bold; }
+    .footer { background: var(--navy); border-top: 4px solid var(--red); padding: 12px 24px; display: flex; justify-content: space-between; margin-top: 16px; }
+    .footer span { font-size: 11px; color: #aaaacc; }
+  </style>
 </head>
-<body style="margin:0;padding:0;font-family:Arial,Helvetica,sans-serif;">
+<body>
 
-<table width="100%" cellpadding="0" cellspacing="0" style="font-family:Arial,Helvetica,sans-serif;background:#f4f4f8;">
-  <tr>
-    <td style="padding:18px 24px 10px 24px;background:#1a1a2e;">
-      <table width="100%" cellpadding="0" cellspacing="0">
-        <tr>
-          <td align="left" style="font-size:20px;font-weight:bold;color:#ffffff;letter-spacing:1px;">PLANVIEW</td>
-          <td align="right" style="font-size:14px;font-weight:bold;color:#BE0031;letter-spacing:2px;">ANVI</td>
-        </tr>
+  <div class="hero-bar">
+    <span class="hero-brand">PLANVIEW</span>
+    <span class="hero-anvi">ANVI</span>
+  </div>
+
+  <div class="title-bar">
+    <span class="title-bar-main">01. AI Portfolio – Project Prioritization Review</span>
+    <span class="title-bar-sub">AI Portfolio Analysis</span>
+  </div>
+
+  <div class="page">
+
+    <div class="exec-wrap">
+      <div class="exec-box">
+        <strong>Executive Summary</strong>
+        Portfolio "01. AI Portfolio" (ID: 5964) contains 21 projects with a total budget of $31.0M. After multi-dimensional scoring across Strategic Alignment, Revenue Impact, Resource Feasibility, and Market Demand, 4 projects scored above the cut line (≥12/20). All 4 projects passed resource and budget constraint checks with total demand of $5.5M (55% of $10M capacity) and 0 FTE. Scenario analysis confirms all 4 projects remain funded across Best, Base, and Worst case scenarios. Two projects scored below the cut line and are recommended for cancellation, yielding $4.8M in savings. Fifteen projects require Market Demand assessment to complete scoring. Portfolio demonstrates strong resilience with $4.5M remaining capacity available for additional investments.
+      </div>
+    </div>
+
+    <div class="section-title-wrap">
+      <span class="section-title">Portfolio Overview</span>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th style="width:50%;">Metric</th><th>Value</th></tr>
+        </thead>
+        <tbody>
+          <tr class="alt"><td>Portfolio ID</td><td class="val-red">5964</td></tr>
+          <tr class="norm"><td>Active Projects</td><td class="val-red">12</td></tr>
+          <tr class="alt"><td>Proposed Projects</td><td class="val-red">9</td></tr>
+        </tbody>
       </table>
-    </td>
-  </tr>
-  <tr>
-    <td style="background:#BE0031;padding:14px 24px;">
-      <table width="100%" cellpadding="0" cellspacing="0">
-        <tr>
-          <td style="font-size:20px;font-weight:bold;color:#ffffff;">01. AI Portfolio – Project Prioritization Review</td>
-          <td align="right" style="font-size:12px;color:#ffcccc;">AI Portfolio Analysis</td>
-        </tr>
+    </div>
+
+    <div class="section-title-wrap">
+      <span class="section-title">Constraint Review</span>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Project</th><th>Total Score</th><th>Resource Count</th><th>Budget</th><th>Constraint Status</th></tr>
+        </thead>
+        <tbody>
+          <tr class="alt"><td>Analytics Platform Modernization</td><td>16/20</td><td>0</td><td>$1,882,306</td><td class="val-green">OK</td></tr>
+          <tr class="norm"><td>Stage Gate Project</td><td>15/20</td><td>0</td><td>$381,305</td><td class="val-green">OK</td></tr>
+          <tr class="alt"><td>AI Service Integration Platform</td><td>13/20</td><td>0</td><td>$2,161,208</td><td class="val-green">OK</td></tr>
+          <tr class="norm"><td>GPU Cluster Expansion</td><td>12/20</td><td>0</td><td>$1,081,237</td><td class="val-green">OK</td></tr>
+        </tbody>
       </table>
-    </td>
-  </tr>
-  <tr>
-    <td style="padding:18px 24px 8px 24px;">
-      <table width="100%" cellpadding="0" cellspacing="0">
-        <tr>
-          <td style="padding:16px;border:1px solid #d0d0e8;border-left:5px solid #BE0031;background:#ffffff;font-size:13px;color:#333333;line-height:1.6;">
-            <strong style="font-size:14px;color:#1a1a2e;">Executive Summary</strong><br/>
-            Portfolio "01. AI Portfolio" (ID: 5964) contains 21 projects with a total budget of $31.0M. After multi-dimensional scoring across Strategic Alignment, Revenue Impact, Resource Feasibility, and Market Demand, 4 projects scored above the cut line (≥12/20). All 4 projects passed resource and budget constraint checks with total demand of $5.5M (55% of $10M capacity) and 0 FTE. Scenario analysis confirms all 4 projects remain funded across Best, Base, and Worst case scenarios. Two projects scored below the cut line and are recommended for cancellation, yielding $4.8M in savings. Fifteen projects require Market Demand assessment to complete scoring. Portfolio demonstrates strong resilience with $4.5M remaining capacity available for additional investments.
-          </td>
-        </tr>
+    </div>
+
+    <div class="section-title-wrap">
+      <span class="section-title">Scenario Analysis (Top 5 Projects)</span>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Project</th><th>Best Case</th><th>Base Case</th><th>Worst Case</th><th>Risk</th></tr>
+        </thead>
+        <tbody>
+          <tr class="alt"><td>Analytics Platform Modernization</td><td class="val-green">Y</td><td class="val-green">Y</td><td class="val-green">Y</td><td class="val-green">LOW</td></tr>
+          <tr class="norm"><td>Stage Gate Project</td><td class="val-green">Y</td><td class="val-green">Y</td><td class="val-green">Y</td><td class="val-green">LOW</td></tr>
+          <tr class="alt"><td>AI Service Integration Platform</td><td class="val-green">Y</td><td class="val-green">Y</td><td class="val-green">Y</td><td class="val-green">LOW</td></tr>
+          <tr class="norm"><td>GPU Cluster Expansion</td><td class="val-green">Y</td><td class="val-green">Y</td><td class="val-yellow">Y</td><td class="val-yellow">LOW-MEDIUM</td></tr>
+        </tbody>
       </table>
-    </td>
-  </tr>
-  <tr>
-    <td style="padding:8px 24px 4px 24px;">
-      <table width="100%" cellpadding="0" cellspacing="0">
-        <tr>
-          <td style="font-size:15px;font-weight:bold;color:#ffffff;background:#1a1a2e;padding:8px 12px;border-left:4px solid #BE0031;">Portfolio Overview</td>
-        </tr>
-      </table>
-    </td>
-  </tr>
-  <tr>
-    <td style="padding:4px 24px 12px 24px;">
-      <table width="100%" cellpadding="8" cellspacing="0" style="border-collapse:collapse;font-size:13px;">
-        <tr>
-          <td style="border:1px solid #c8c8e0;background:#1a1a2e;color:#ffffff;font-weight:bold;width:50%;">Metric</td>
-          <td style="border:1px solid #c8c8e0;background:#1a1a2e;color:#ffffff;font-weight:bold;">Value</td>
-        </tr>
-        <tr>
-          <td style="border:1px solid #c8c8e0;background:#f9f9ff;color:#333;">Portfolio ID</td>
-          <td style="border:1px solid #c8c8e0;background:#f9f9ff;color:#BE0031;font-weight:bold;">5964</td>
-        </tr>
-        <tr>
-          <td style="border:1px solid #c8c8e0;background:#ffffff;color:#333;">Active Projects</td>
-          <td style="border:1px solid #c8c8e0;background:#ffffff;color:#BE0031;font-weight:bold;">12</td>
-        </tr>
-        <tr>
-          <td style="border:1px solid #c8c8e0;background:#f9f9ff;color:#333;">Proposed Projects</td>
-          <td style="border:1px solid #c8c8e0;background:#f9f9ff;color:#BE0031;font-weight:bold;">9</td>
-        </tr>
-      </table>
-    </td>
-  </tr>
-  <tr>
-    <td style="padding:8px 24px 4px 24px;">
-      <table width="100%" cellpadding="0" cellspacing="0">
-        <tr>
-          <td style="font-size:15px;font-weight:bold;color:#ffffff;background:#1a1a2e;padding:8px 12px;border-left:4px solid #BE0031;">Constraint Review</td>
-        </tr>
-      </table>
-    </td>
-  </tr>
-  <tr>
-    <td style="padding:4px 24px 12px 24px;">
-      <table width="100%" cellpadding="8" cellspacing="0" style="border-collapse:collapse;font-size:12px;">
-        <tr>
-          <td style="border:1px solid #c8c8e0;background:#1a1a2e;color:#ffffff;font-weight:bold;">Project</td>
-          <td style="border:1px solid #c8c8e0;background:#1a1a2e;color:#ffffff;font-weight:bold;">Total Score</td>
-          <td style="border:1px solid #c8c8e0;background:#1a1a2e;color:#ffffff;font-weight:bold;">Resource Count</td>
-          <td style="border:1px solid #c8c8e0;background:#1a1a2e;color:#ffffff;font-weight:bold;">Budget</td>
-          <td style="border:1px solid #c8c8e0;background:#1a1a2e;color:#ffffff;font-weight:bold;">Constraint Status</td>
-        </tr>
-        <tr>
-          <td style="border:1px solid #c8c8e0;background:#f9f9ff;color:#333;">Analytics Platform Modernization</td>
-          <td style="border:1px solid #c8c8e0;background:#f9f9ff;color:#333;">16/20</td>
-          <td style="border:1px solid #c8c8e0;background:#f9f9ff;color:#333;">0</td>
-          <td style="border:1px solid #c8c8e0;background:#f9f9ff;color:#333;">$1,882,306</td>
-          <td style="border:1px solid #c8c8e0;background:#f9f9ff;color:#28a745;font-weight:bold;">OK</td>
-        </tr>
-        <tr>
-          <td style="border:1px solid #c8c8e0;background:#ffffff;color:#333;">Stage Gate Project</td>
-          <td style="border:1px solid #c8c8e0;background:#ffffff;color:#333;">15/20</td>
-          <td style="border:1px solid #c8c8e0;background:#ffffff;color:#333;">0</td>
-          <td style="border:1px solid #c8c8e0;background:#ffffff;color:#333;">$381,305</td>
-          <td style="border:1px solid #c8c8e0;background:#ffffff;color:#28a745;font-weight:bold;">OK</td>
-        </tr>
-        <tr>
-          <td style="border:1px solid #c8c8e0;background:#f9f9ff;color:#333;">AI Service Integration Platform</td>
-          <td style="border:1px solid #c8c8e0;background:#f9f9ff;color:#333;">13/20</td>
-          <td style="border:1px solid #c8c8e0;background:#f9f9ff;color:#333;">0</td>
-          <td style="border:1px solid #c8c8e0;background:#f9f9ff;color:#333;">$2,161,208</td>
-          <td style="border:1px solid #c8c8e0;background:#f9f9ff;color:#28a745;font-weight:bold;">OK</td>
-        </tr>
-        <tr>
-          <td style="border:1px solid #c8c8e0;background:#ffffff;color:#333;">GPU Cluster Expansion</td>
-          <td style="border:1px solid #c8c8e0;background:#ffffff;color:#333;">12/20</td>
-          <td style="border:1px solid #c8c8e0;background:#ffffff;color:#333;">0</td>
-          <td style="border:1px solid #c8c8e0;background:#ffffff;color:#333;">$1,081,237</td>
-          <td style="border:1px solid #c8c8e0;background:#ffffff;color:#28a745;font-weight:bold;">OK</td>
-        </tr>
-      </table>
-    </td>
-  </tr>
-  <tr>
-    <td style="padding:8px 24px 4px 24px;">
-      <table width="100%" cellpadding="0" cellspacing="0">
-        <tr>
-          <td style="font-size:15px;font-weight:bold;color:#ffffff;background:#1a1a2e;padding:8px 12px;border-left:4px solid #BE0031;">Scenario Analysis (Top 5 Projects)</td>
-        </tr>
-      </table>
-    </td>
-  </tr>
-  <tr>
-    <td style="padding:4px 24px 12px 24px;">
-      <table width="100%" cellpadding="8" cellspacing="0" style="border-collapse:collapse;font-size:12px;">
-        <tr>
-          <td style="border:1px solid #c8c8e0;background:#1a1a2e;color:#ffffff;font-weight:bold;">Project</td>
-          <td style="border:1px solid #c8c8e0;background:#1a1a2e;color:#ffffff;font-weight:bold;">Best Case</td>
-          <td style="border:1px solid #c8c8e0;background:#1a1a2e;color:#ffffff;font-weight:bold;">Base Case</td>
-          <td style="border:1px solid #c8c8e0;background:#1a1a2e;color:#ffffff;font-weight:bold;">Worst Case</td>
-          <td style="border:1px solid #c8c8e0;background:#1a1a2e;color:#ffffff;font-weight:bold;">Risk</td>
-        </tr>
-        <tr>
-          <td style="border:1px solid #c8c8e0;background:#f9f9ff;color:#333;">Analytics Platform Modernization</td>
-          <td style="border:1px solid #c8c8e0;background:#f9f9ff;color:#28a745;font-weight:bold;">Y</td>
-          <td style="border:1px solid #c8c8e0;background:#f9f9ff;color:#28a745;font-weight:bold;">Y</td>
-          <td style="border:1px solid #c8c8e0;background:#f9f9ff;color:#28a745;font-weight:bold;">Y</td>
-          <td style="border:1px solid #c8c8e0;background:#f9f9ff;color:#28a745;font-weight:bold;">LOW</td>
-        </tr>
-        <tr>
-          <td style="border:1px solid #c8c8e0;background:#ffffff;color:#333;">Stage Gate Project</td>
-          <td style="border:1px solid #c8c8e0;background:#ffffff;color:#28a745;font-weight:bold;">Y</td>
-          <td style="border:1px solid #c8c8e0;background:#ffffff;color:#28a745;font-weight:bold;">Y</td>
-          <td style="border:1px solid #c8c8e0;background:#ffffff;color:#28a745;font-weight:bold;">Y</td>
-          <td style="border:1px solid #c8c8e0;background:#ffffff;color:#28a745;font-weight:bold;">LOW</td>
-        </tr>
-        <tr>
-          <td style="border:1px solid #c8c8e0;background:#f9f9ff;color:#333;">AI Service Integration Platform</td>
-          <td style="border:1px solid #c8c8e0;background:#f9f9ff;color:#28a745;font-weight:bold;">Y</td>
-          <td style="border:1px solid #c8c8e0;background:#f9f9ff;color:#28a745;font-weight:bold;">Y</td>
-          <td style="border:1px solid #c8c8e0;background:#f9f9ff;color:#28a745;font-weight:bold;">Y</td>
-          <td style="border:1px solid #c8c8e0;background:#f9f9ff;color:#28a745;font-weight:bold;">LOW</td>
-        </tr>
-        <tr>
-          <td style="border:1px solid #c8c8e0;background:#ffffff;color:#333;">GPU Cluster Expansion</td>
-          <td style="border:1px solid #c8c8e0;background:#ffffff;color:#28a745;font-weight:bold;">Y</td>
-          <td style="border:1px solid #c8c8e0;background:#ffffff;color:#28a745;font-weight:bold;">Y</td>
-          <td style="border:1px solid #c8c8e0;background:#ffffff;color:#ffc107;font-weight:bold;">Y</td>
-          <td style="border:1px solid #c8c8e0;background:#ffffff;color:#ffc107;font-weight:bold;">LOW-MEDIUM</td>
-        </tr>
-      </table>
-    </td>
-  </tr>
-  <tr>
-    <td style="background:#1a1a2e;padding:12px 24px;border-top:4px solid #BE0031;">
-      <table width="100%" cellpadding="0" cellspacing="0">
-        <tr>
-          <td style="font-size:11px;color:#aaaacc;">End of Report</td>
-          <td align="right" style="font-size:11px;color:#aaaacc;">Powered by Planview Anvi</td>
-        </tr>
-      </table>
-    </td>
-  </tr>
-</table>
+    </div>
+
+  </div>
+
+  <div class="footer">
+    <span>End of Report</span>
+    <span>Powered by Planview Anvi</span>
+  </div>
 
 </body>
 </html>
-```
