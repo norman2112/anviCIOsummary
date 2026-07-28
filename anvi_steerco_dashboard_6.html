@@ -1,1034 +1,308 @@
 <!--
-  ╔══════════════════════════════════════════════════════════════════╗
-  ║  PLANVIEW ANVI — Automated Executive Briefing                   ║
-  ║  Generated: 2026-04-06T07:00:00-04:00                          ║
-  ║  Model: anvi-enterprise-v3.2 · Context: portfolio-steerco       ║
-  ║  Data Sources: Planview Portfolios, Planview AgilePlace,        ║
-  ║    OKR Module, Flow Metrics, Risk Register                      ║
-  ║  Confidence: 0.94 (high) · Refresh Cadence: Weekly              ║
-  ║  Org Scope: Better Banking Division (all product areas)          ║
-  ╚══════════════════════════════════════════════════════════════════╝
+  ============================================================
+  ANVI GENERATIVE UI RESPONSE
+  session:      a7f3-2c91-hnb-pom
+  prompt_id:    pv-anvi-4471
+  surface:      Portfolios / Product Operating Model
+  tools_called: portfolios.getPortfolioInvestment,
+                portfolios.getCostCenterRollup,
+                agileplace.listCards(boardIds=[...]),
+                okr.listObjectives
+  basis:        HBAN FY2025 Form 10-K (filed 2026-02-13), Table 6 Noninterest Expense
+                Outside data processing & other services $772M + Equipment $268M = $1,040M
+  note:         Segment and business-line structure per Item 1 Business.
+                Node-level allocation is ILLUSTRATIVE, not disclosed.
+  confidence:   high (envelope, structure) | illustrative (node split, delivery, OKRs)
+  ============================================================
 -->
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<!-- anvi:asset-pipeline fonts=Inter,JetBrains+Mono cdn=google-fonts -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Planview Generated: Operating Model Overview</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap');
-
-  :root {
-    --pv-primary: #1656B1;
-    --pv-primary-dark: #0f3f86;
-    --pv-success: #008622;
-    --pv-warning: #d97706;
-    --pv-danger: #D41616;
-    --pv-text-900: #222222;
-    --pv-text-700: #555555;
-    --pv-text-500: #949494;
-    --pv-surface-0: #ffffff;
-    --pv-surface-1: #f8f9fb;
-    --pv-border: #e4e7ee;
-    --pv-radius: 10px;
-  }
-
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-
-  body {
-    font-family: 'Segoe UI', 'Inter', -apple-system, sans-serif;
-    background: #ffffff;
-    color: var(--pv-text-900);
-    padding: 24px 32px;
-    -webkit-font-smoothing: antialiased;
-    min-height: 100vh;
-  }
-
-  /* Header */
-  .header {
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-    margin-bottom: 20px;
-    padding: 20px 28px;
-    border-bottom: 3px solid var(--pv-primary);
-    background: var(--pv-surface-1);
-    border-radius: var(--pv-radius);
-  }
-
-  .header h1 {
-    font-size: 30px;
-    font-weight: 900;
-    color: var(--pv-text-900);
-    letter-spacing: -0.5px;
-    line-height: 1.1;
-  }
-
-  .header-sub {
-    font-size: 14px;
-    color: var(--pv-text-500);
-    margin-top: 6px;
-    font-weight: 500;
-  }
-
-  .anvi-tag {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    background: linear-gradient(135deg, #00b894, #009975);
-    color: #fff;
-    font-size: 11px;
-    font-weight: 800;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    padding: 6px 14px;
-    border-radius: 6px;
-    margin-bottom: 8px;
-  }
-
-  .anvi-pulse {
-    width: 6px;
-    height: 6px;
-    background: #fff;
-    border-radius: 50%;
-    animation: pulse 2s ease-in-out infinite;
-  }
-
-  @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.3; }
-  }
-
-  .header-right { text-align: right; }
-
-  .header-date {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 13px;
-    color: var(--pv-text-500);
-  }
-
-  .header-date strong {
-    display: block;
-    color: var(--pv-text-700);
-    font-size: 15px;
-    margin-bottom: 2px;
-  }
-
-  /* ---- KPI STRIP ---- */
-  .kpi-strip {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 16px;
-    margin-bottom: 24px;
-  }
-
-  .kpi-card {
-    background: var(--pv-surface-1);
-    border-radius: var(--pv-radius);
-    padding: 20px 24px;
-    border: 1px solid var(--pv-border);
-    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
-    position: relative;
-    overflow: hidden;
-  }
-
-  .kpi-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-  }
-
-  .kpi-label {
-    font-size: 11px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    color: var(--pv-text-500);
-    margin-bottom: 8px;
-  }
-
-  .kpi-value {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 32px;
-    font-weight: 800;
-    line-height: 1;
-    margin-bottom: 6px;
-  }
-
-  .kpi-detail {
-    font-size: 13px;
-    color: var(--pv-text-500);
-    font-weight: 500;
-  }
-
-  /* Standard KPI cards */
-  .kpi-blue::before { background: var(--pv-primary); }
-  .kpi-blue .kpi-value { color: var(--pv-primary); }
-
-  .kpi-green::before { background: var(--pv-success); }
-  .kpi-green .kpi-value { color: var(--pv-success); }
-
-  /* Clickable alert cards */
-  .kpi-alert {
-    cursor: pointer;
-    transition: transform 0.15s, box-shadow 0.15s;
-  }
-
-  .kpi-alert:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 16px rgba(0,0,0,0.1);
-  }
-
-  .kpi-danger::before { background: var(--pv-danger); }
-  .kpi-danger {
-    border-color: #fecaca;
-    background: #fffbfb;
-  }
-  .kpi-danger .kpi-value { color: var(--pv-danger); }
-  .kpi-danger .kpi-label { color: var(--pv-danger); }
-
-  .kpi-warning::before { background: var(--pv-warning); }
-  .kpi-warning {
-    border-color: #fde68a;
-    background: #fffdf5;
-  }
-  .kpi-warning .kpi-value { color: var(--pv-warning); }
-  .kpi-warning .kpi-label { color: var(--pv-warning); }
-
-  .kpi-click-hint {
-    font-size: 10px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-top: 8px;
-    opacity: 0.6;
-  }
-
-  .kpi-danger .kpi-click-hint { color: var(--pv-danger); }
-  .kpi-warning .kpi-click-hint { color: var(--pv-warning); }
-
-  /* Grid */
-  .grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-    margin-bottom: 16px;
-  }
-
-  .grid-full { grid-column: 1 / -1; }
-
-  /* Panel */
-  .panel {
-    background: var(--pv-surface-1);
-    border-radius: var(--pv-radius);
-    padding: 28px;
-    border: 1px solid var(--pv-border);
-    position: relative;
-    overflow: hidden;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
-  }
-
-  .panel-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 24px;
-    padding-bottom: 16px;
-    border-bottom: 1px solid var(--pv-border);
-  }
-
-  .panel-title {
-    font-size: 11px;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    color: var(--pv-text-500);
-  }
-
-  .panel-badge {
-    font-size: 11px;
-    font-weight: 700;
-    padding: 4px 12px;
-    border-radius: 6px;
-    letter-spacing: 0.3px;
-  }
-
-  .badge-red { background: #fef2f2; color: var(--pv-danger); border: 1px solid #fecaca; }
-  .badge-amber { background: #fffbeb; color: var(--pv-warning); border: 1px solid #fde68a; }
-  .badge-green { background: #f0fdf4; color: var(--pv-success); border: 1px solid #bbf7d0; }
-  .badge-blue { background: #eff6ff; color: var(--pv-primary); border: 1px solid #bfdbfe; }
-
-  /* ---- OKR + Connected Work ---- */
-  .okr-section {
-    margin-bottom: 28px;
-    padding-bottom: 28px;
-    border-bottom: 1px solid #f1f5f9;
-  }
-
-  .okr-section:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
-
-  .okr-row {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    margin-bottom: 16px;
-  }
-
-  .okr-status {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    flex-shrink: 0;
-  }
-
-  .os-green { background: var(--pv-success); box-shadow: 0 0 6px rgba(0,134,34,0.35); }
-  .os-amber { background: var(--pv-warning); box-shadow: 0 0 6px rgba(217,119,6,0.35); }
-  .os-red { background: var(--pv-danger); box-shadow: 0 0 6px rgba(212,22,22,0.35); }
-
-  .okr-tag {
-    font-size: 10px;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    padding: 3px 8px;
-    border-radius: 4px;
-    flex-shrink: 0;
-  }
-
-  .okr-tag-green { background: #f0fdf4; color: var(--pv-success); border: 1px solid #bbf7d0; }
-  .okr-tag-amber { background: #fffbeb; color: var(--pv-warning); border: 1px solid #fde68a; }
-  .okr-tag-red { background: #fef2f2; color: var(--pv-danger); border: 1px solid #fecaca; }
-
-  .okr-title {
-    font-size: 16px;
-    font-weight: 800;
-    color: var(--pv-text-900);
-    flex: 1;
-    letter-spacing: -0.2px;
-  }
-
-  .okr-bar-wrap {
-    width: 200px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-
-  .okr-bar-bg {
-    flex: 1;
-    background: #e2e8f0;
-    height: 10px;
-    border-radius: 5px;
-    overflow: hidden;
-  }
-
-  .okr-bar-fill { height: 100%; border-radius: 5px; }
-  .of-green { background: linear-gradient(90deg, #22c55e, #4ade80); }
-  .of-amber { background: linear-gradient(90deg, #f59e0b, #fbbf24); }
-  .of-red { background: linear-gradient(90deg, #ef4444, #f87171); }
-
-  .okr-pct {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 15px;
-    font-weight: 700;
-    width: 42px;
-    text-align: right;
-  }
-
-  /* Connected work items */
-  .connected-items {
-    margin-left: 26px;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-
-  .work-item {
-    display: flex;
-    align-items: center;
-    padding: 12px 16px;
-    border-radius: var(--pv-radius);
-    background: #ffffff;
-    gap: 14px;
-    transition: background 0.15s;
-    border: 1px solid var(--pv-border);
-  }
-
-  .work-item:hover { background: #f4f6fa; }
-
-  .work-type-tag {
-    font-size: 10px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.8px;
-    padding: 3px 8px;
-    border-radius: 4px;
-    flex-shrink: 0;
-    width: 72px;
-    text-align: center;
-  }
-
-  .tag-initiative { background: #dbeafe; color: #1d4ed8; }
-  .tag-program { background: #e0e7ff; color: #4338ca; }
-  .tag-project { background: #f3e8ff; color: #7c3aed; }
-  .tag-epic { background: #fef3c7; color: #92400e; }
-
-  .work-delivery-mode {
-    font-size: 10px;
-    font-weight: 600;
-    padding: 3px 8px;
-    border-radius: 4px;
-    flex-shrink: 0;
-  }
-
-  .dm-agile { background: #ecfdf5; color: #059669; border: 1px solid #a7f3d0; }
-  .dm-waterfall { background: #eff6ff; color: #2563eb; border: 1px solid #bfdbfe; }
-
-  .work-name {
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--pv-text-900);
-    flex: 1;
-  }
-
-  .work-org {
-    font-size: 12px;
-    color: var(--pv-text-500);
-    font-weight: 500;
-    width: 160px;
-    text-align: right;
-  }
-
-  .work-status {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    flex-shrink: 0;
-  }
-
-  .ws-green { background: var(--pv-success); }
-  .ws-amber { background: var(--pv-warning); }
-  .ws-red { background: var(--pv-danger); }
-
-  .work-progress { width: 80px; text-align: right; }
-
-  .work-mini-bar {
-    background: #e2e8f0;
-    height: 4px;
-    border-radius: 2px;
-    overflow: hidden;
-    margin-bottom: 4px;
-  }
-
-  .work-mini-fill { height: 100%; border-radius: 2px; }
-  .wmf-green { background: var(--pv-success); }
-  .wmf-amber { background: var(--pv-warning); }
-  .wmf-red { background: var(--pv-danger); }
-
-  .work-pct {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    font-weight: 700;
-    color: var(--pv-text-500);
-  }
-
-  /* ---- Capacity ---- */
-  .capacity-row {
-    display: flex;
-    align-items: center;
-    padding: 12px 0;
-  }
-
-  .capacity-product {
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--pv-text-900);
-    width: 180px;
-  }
-
-  .capacity-bar-wrap {
-    flex: 1;
-    margin: 0 20px;
-    position: relative;
-  }
-
-  .capacity-bar-bg {
-    background: #e2e8f0;
-    height: 32px;
-    border-radius: 8px;
-    overflow: hidden;
-    position: relative;
-  }
-
-  .capacity-bar-fill {
-    height: 100%;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    padding-left: 12px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 12px;
-    font-weight: 700;
-    color: #fff;
-  }
-
-  .cap-critical {
-    background: linear-gradient(90deg, #ef4444, #dc2626);
-    animation: cap-pulse 3s ease-in-out infinite;
-  }
-
-  @keyframes cap-pulse {
-    0%, 100% { box-shadow: inset 0 0 20px rgba(0,0,0,0); }
-    50% { box-shadow: inset 0 0 20px rgba(255,255,255,0.15); }
-  }
-
-  .cap-warm { background: linear-gradient(90deg, #f59e0b, #d97706); }
-  .cap-good { background: linear-gradient(90deg, #22c55e, #16a34a); }
-  .cap-cool { background: linear-gradient(90deg, #3b82f6, #2563eb); }
-
-  .capacity-threshold {
-    position: absolute;
-    top: -4px;
-    bottom: -4px;
-    width: 2px;
-    background: var(--pv-danger);
-    left: 76.9%;
-    opacity: 0.5;
-  }
-
-  .threshold-label {
-    position: absolute;
-    top: -18px;
-    left: 76.9%;
-    transform: translateX(-50%);
-    font-size: 9px;
-    font-weight: 700;
-    color: var(--pv-danger);
-    opacity: 0.6;
-    letter-spacing: 0.5px;
-  }
-
-  .capacity-pct {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 18px;
-    font-weight: 700;
-    width: 64px;
-    text-align: right;
-  }
-
-  .pct-crit { color: var(--pv-danger); }
-  .pct-warm { color: var(--pv-warning); }
-  .pct-good { color: var(--pv-success); }
-  .pct-cool { color: var(--pv-primary); }
-
-  /* ---- Risk Register ---- */
-  .risk-row {
-    display: flex;
-    align-items: flex-start;
-    padding: 16px;
-    margin-bottom: 8px;
-    border-radius: var(--pv-radius);
-    gap: 16px;
-  }
-
-  .risk-critical { background: #fef2f2; border: 1px solid #fecaca; }
-  .risk-high { background: var(--pv-surface-1); border: 1px solid var(--pv-border); }
-
-  .risk-rank {
-    width: 32px;
-    height: 32px;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 14px;
-    font-weight: 700;
-    color: #fff;
-    flex-shrink: 0;
-  }
-
-  .rr-1 { background: var(--pv-danger); box-shadow: 0 2px 8px rgba(212,22,22,0.3); }
-  .rr-2 { background: var(--pv-warning); }
-  .rr-3 { background: var(--pv-warning); }
-
-  .risk-content { flex: 1; }
-
-  .risk-title {
-    font-size: 14px;
-    font-weight: 700;
-    color: var(--pv-text-900);
-    margin-bottom: 4px;
-  }
-
-  .risk-desc {
-    font-size: 13px;
-    color: var(--pv-text-700);
-    line-height: 1.5;
-  }
-
-  .risk-meta { text-align: right; white-space: nowrap; }
-
-  .risk-time {
-    font-size: 11px;
-    color: var(--pv-text-500);
-    font-weight: 500;
-  }
-
-  .risk-severity {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    font-weight: 700;
-    margin-top: 4px;
-    letter-spacing: 1px;
-  }
-
-  .sev-crit { color: var(--pv-danger); }
-  .sev-high { color: var(--pv-warning); }
-
-  /* ---- M&A Pipeline ---- */
-  .mna-card {
-    background: linear-gradient(135deg, #eff6ff, #f0fdf4);
-    border: 1px solid #bfdbfe;
-    border-radius: var(--pv-radius);
-    padding: 24px;
-    display: flex;
-    align-items: center;
-    gap: 24px;
-  }
-
-  .mna-icon {
-    width: 56px;
-    height: 56px;
-    background: linear-gradient(135deg, var(--pv-primary), var(--pv-primary-dark));
-    border-radius: 14px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 24px;
-    flex-shrink: 0;
-    box-shadow: 0 4px 16px rgba(22,86,177,0.25);
-  }
-
-  .mna-details { flex: 1; }
-
-  .mna-company {
-    font-size: 20px;
-    font-weight: 800;
-    color: var(--pv-text-900);
-    margin-bottom: 4px;
-    letter-spacing: -0.3px;
-  }
-
-  .mna-type {
-    font-size: 13px;
-    color: var(--pv-text-700);
-    line-height: 1.4;
-  }
-
-  .mna-status {
-    background: #fffbeb;
-    color: var(--pv-warning);
-    font-size: 11px;
-    font-weight: 700;
-    padding: 8px 16px;
-    border-radius: 8px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    border: 1px solid #fde68a;
-    white-space: nowrap;
-  }
-
-  .mna-context {
-    margin-top: 16px;
-    padding: 16px;
-    background: var(--pv-surface-1);
-    border-radius: 8px;
-    font-size: 13px;
-    color: var(--pv-text-700);
-    line-height: 1.6;
-    border-left: 3px solid var(--pv-warning);
-  }
-
-  /* Section highlight for anchor scrolling */
-  .highlight-target {
-    scroll-margin-top: 20px;
-  }
-
-  /* Footer */
-  .footer {
-    text-align: center;
-    margin-top: 32px;
-    padding-top: 24px;
-    border-top: 1px solid var(--pv-border);
-    font-size: 12px;
-    color: var(--pv-text-500);
-  }
-
-  .footer-brand {
-    font-weight: 800;
-    color: #009975;
-    letter-spacing: 0.5px;
-  }
+  :root{
+    --pv-red:#E01931;
+    --ink:#101418;--ink-2:#3D454E;--ink-3:#6B7580;
+    --rule:#E3E7EB;--surface:#FFFFFF;--canvas:#F4F6F8;
+    --hnb-1:#0B4A2F;--hnb-2:#136B43;--hnb-3:#2F8C5E;--hnb-4:#66AE85;--hnb-5:#9FCEB2;--hnb-6:#CBE5D5;
+    --plat-1:#3E4A57;--plat-2:#5A6672;--plat-3:#78838E;--plat-4:#98A2AC;--plat-5:#B8C0C8;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--canvas);color:var(--ink);
+    font-family:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    font-feature-settings:"tnum" 1;-webkit-font-smoothing:antialiased}
+  .shell{max-width:1240px;margin:0 auto;padding:28px 20px 56px}
+  .anvi{background:var(--surface);border:1px solid var(--rule);border-radius:6px;
+    box-shadow:0 1px 2px rgba(16,20,24,.05),0 8px 24px rgba(16,20,24,.04);overflow:hidden}
+  .anvi:before{content:"";display:block;height:3px;background:var(--pv-red)}
+
+  .hdr{display:flex;align-items:flex-start;gap:12px;padding:22px 24px 20px}
+  .mark{width:26px;height:26px;border-radius:50%;flex:0 0 26px;
+    background:conic-gradient(from 210deg,var(--pv-red),#7A0E1B 65%,var(--pv-red));
+    display:grid;place-items:center;color:#fff;font-size:11px;font-weight:700}
+  .who{font-size:12px;font-weight:650;letter-spacing:.01em}
+  .who span{font-weight:400;color:var(--ink-3);margin-left:8px}
+
+  .method{padding:16px 24px 18px;border-top:1px solid var(--rule)}
+  .method .mlbl{font-size:10px;letter-spacing:.11em;text-transform:uppercase;color:var(--ink-3);
+    font-weight:600;margin-bottom:9px}
+  .method ol{margin:0;padding:0;list-style:none;display:grid;grid-template-columns:1fr 1fr;
+    gap:9px 26px;counter-reset:m}
+  @media(max-width:760px){.method ol{grid-template-columns:1fr}}
+  .method li{counter-increment:m;font-size:12.5px;line-height:1.5;color:var(--ink-3);
+    padding-left:22px;position:relative}
+  .method li:before{content:counter(m);position:absolute;left:0;top:0;font-size:10px;font-weight:700;
+    color:var(--ink-3);border:1px solid var(--rule);border-radius:50%;width:15px;height:15px;
+    display:grid;place-items:center;line-height:1}
+  .method li b{color:var(--ink);font-weight:640}
+  .method li em{font-style:normal;color:var(--pv-red);font-weight:640}
+  .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--rule);
+    border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);margin-top:18px}
+  .kpi{background:var(--surface);padding:14px 24px}
+  .kpi .k{font-size:10px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3);font-weight:600}
+  .kpi .v{font-size:23px;font-weight:660;letter-spacing:-.02em;margin-top:3px}
+  .kpi .s{font-size:11.5px;color:var(--ink-3);margin-top:1px}
+  .kpi.alert .v{color:var(--pv-red)}
+
+
+  .vizwrap{display:grid;grid-template-columns:1fr 292px}
+  @media(max-width:900px){.vizwrap{grid-template-columns:1fr}}
+  .viz{padding:18px 8px 18px 18px}
+  svg{display:block;width:100%;height:auto}
+
+  .cell{cursor:pointer}
+  .cell rect{stroke:#fff;stroke-width:1.25;transition:opacity .13s ease}
+  .cell:hover rect.fill{opacity:.82}
+  .cell.sel rect.fill{stroke:var(--ink);stroke-width:2.5}
+  .glabel{font-size:11px;font-weight:700;letter-spacing:.055em;text-transform:uppercase;fill:#fff}
+  .gsub{font-size:10px;font-weight:500;fill:rgba(255,255,255,.72)}
+  .nlabel{font-size:11px;font-weight:600;fill:#fff;pointer-events:none}
+  .nval{font-size:10.5px;font-weight:500;fill:rgba(255,255,255,.78);pointer-events:none}
+  .nlabel.dark{fill:#16211A}.nval.dark{fill:rgba(22,33,26,.68)}
+
+  .rail{border-left:1px solid var(--rule);padding:20px 20px 20px 18px;background:#FBFCFD;min-height:560px}
+  .rail .eyebrow{font-size:10px;letter-spacing:.11em;text-transform:uppercase;color:var(--ink-3);font-weight:600}
+  .rail h3{margin:5px 0 2px;font-size:17px;font-weight:650;letter-spacing:-.015em;line-height:1.25}
+  .rail .path{font-size:11.5px;color:var(--ink-3);margin-bottom:16px}
+  .metric{display:flex;justify-content:space-between;align-items:baseline;
+    padding:8px 0;border-bottom:1px solid var(--rule);font-size:12.5px}
+  .metric span:first-child{color:var(--ink-3)}
+  .metric span:last-child{font-weight:640;font-size:13.5px}
+  .sect{margin-top:18px}
+  .sect h4{margin:0 0 8px;font-size:10px;letter-spacing:.11em;text-transform:uppercase;color:var(--ink-3);font-weight:600}
+  .team{font-size:12.5px;padding:5px 0;color:var(--ink-2);display:flex;justify-content:space-between;gap:10px}
+  .team em{font-style:normal;color:var(--ink-3);font-size:11.5px;white-space:nowrap}
+  .okr{font-size:12.5px;line-height:1.45;padding:7px 0 7px 11px;border-left:2px solid var(--hnb-3);
+    color:var(--ink-2);margin-bottom:7px}
+  .okr b{display:block;font-weight:640;color:var(--ink);font-size:10.5px;letter-spacing:.05em;
+    text-transform:uppercase;margin-bottom:2px}
+  .none{font-size:12.5px;color:var(--pv-red);border-left:2px solid var(--pv-red);padding:7px 0 7px 11px;line-height:1.45}
+  .empty{font-size:13px;color:var(--ink-3);line-height:1.6;padding-top:70px;text-align:center}
+
+  .legend{display:flex;flex-wrap:wrap;gap:18px;padding:0 24px 18px;font-size:11.5px;color:var(--ink-3)}
+  .legend i{display:inline-block;width:11px;height:11px;border-radius:2px;margin-right:6px;vertical-align:-1px;font-style:normal}
+  .foot{border-top:1px solid var(--rule);padding:13px 24px 15px;background:#FBFCFD;
+    font-size:11px;color:var(--ink-3);line-height:1.6;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+  .foot code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;color:var(--ink-2)}
 </style>
-</head>
-<body>
 
-<!-- anvi:section type="header" confidence=1.0 -->
-<!-- anvi:data-source portfolios.org_hierarchy, portfolios.calendar -->
-<!-- HEADER -->
-<div class="header">
-  <div>
-    <div class="anvi-tag"><div class="anvi-pulse"></div> Anvi Generated</div>
-    <h1>Connected Work SteerCo</h1>
-    <div class="header-sub">Executive Portfolio Briefing — Better Banking Division</div>
+<div class="shell">
+<div class="anvi">
+
+  <div class="hdr">
+    <div class="mark">P</div>
+    <div class="who">Planview Generated: <span>Operating Model Overview</span></div>
   </div>
-  <div class="header-right">
-    <!-- anvi:branding source=org_settings.logo_url -->
-    <img src="data:image/png;base64,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" alt="Planview" style="height:80px;margin-bottom:4px;display:block;margin-left:auto;">
-    <div class="header-date">
-      <strong>Monday, April 14, 2026</strong>
-      Generated 07:00 ET
-    </div>
+
+  <div class="kpis">
+    <div class="kpi"><div class="k">FY2025 technology envelope</div><div class="v">$1,040M</div><div class="s">Outside data processing $772M + equipment $268M</div></div>
+    <div class="kpi"><div class="k">Share of noninterest expense</div><div class="v">20.7%</div><div class="s">of $5,015M total FY2025</div></div>
+    <div class="kpi"><div class="k">In Treasury / Other</div><div class="v">39.2%</div><div class="s">$408.0M · 14 capabilities · no segment owner</div></div>
+    <div class="kpi alert"><div class="k">No objective linked</div><div class="v">$53.3M</div><div class="s">4 capabilities · 5.1% of envelope</div></div>
   </div>
+
+
+  <div class="vizwrap">
+    <div class="viz"><svg id="tm" viewBox="0 0 900 640" role="img"
+      aria-label="Treemap of Huntington Bancshares product operating model sized by illustrative allocation of the FY2025 technology envelope"></svg></div>
+    <aside class="rail" id="rail"><div class="empty">Select a capability to see its teams, funding and delivery.</div></aside>
+  </div>
+
+  <div class="legend">
+    <span><i style="background:var(--hnb-2)"></i>Reported segments — Consumer &amp; Regional, Commercial (25)</span>
+    <span><i style="background:var(--hnb-3)"></i>Payments &amp; cash management (7)</span>
+    <span><i style="background:var(--plat-2)"></i>Treasury / Other — technology &amp; operations (14)</span>
+    <span><i style="background:repeating-linear-gradient(45deg,var(--pv-red) 0 2px,#fff 2px 4px);border:1px solid var(--rule)"></i>No objective linked</span>
+    <span>Area = allocated investment</span>
+  </div>
+
+  <div class="method">
+    <div class="mlbl">How I got here</div>
+    <ol>
+      <li><b>Structure</b> — two reported segments and their business lines, per FY2025 Form 10-K, Item 1.</li>
+      <li><b>Envelope</b> — $1,040M, Table 6: outside data processing $772M + equipment $268M.</li>
+      <li><b>Allocation</b> — 46 capabilities mapped to that structure. Split is <em>illustrative</em>, not disclosed.</li>
+      <li><b>Delivery</b> — teams and epics from AgilePlace, objectives from OKRs. Four returned none.</li>
+    </ol>
+  </div>
+
+  <div class="foot">
+    <div>Structure and financials from Huntington Bancshares Incorporated FY2025 Form 10-K. Node-level allocation, teams, epics and objectives are illustrative and were not sourced from Huntington. Rendered by Anvi from Planview Portfolios, AgilePlace and OKRs.</div>
+    <div><code>pv-anvi-4471</code></div>
+  </div>
+
+</div>
 </div>
 
-<!-- anvi:section type="kpi_strip" confidence=0.97 -->
-<!-- anvi:data-source portfolios.initiatives(status=active), okr_module.objectives(quarter=Q2-2026), risk_register.severity(critical), flow_metrics.capacity -->
-<!-- anvi:computation kpi.active_initiatives=COUNT(initiatives WHERE status IN ['active','in_progress']), kpi.okr_on_track=RATIO(objectives WHERE health='green', objectives.total) -->
-<!-- KPI STRIP -->
-<div class="kpi-strip">
-  <div class="kpi-card kpi-blue">
-    <div class="kpi-label">Active Initiatives</div>
-    <div class="kpi-value">10</div>
-    <div class="kpi-detail">Across 2 strategic programs</div>
-  </div>
+<script>
+const G=['#0B4A2F','#136B43','#2F8C5E','#66AE85','#9FCEB2','#CBE5D5'];
+const S=['#3E4A57','#5A6672','#78838E','#98A2AC','#B8C0C8'];
+const TOTAL=1040.0;
 
-  <div class="kpi-card kpi-green">
-    <div class="kpi-label">OKRs On Track</div>
-    <div class="kpi-value">50%</div>
-    <div class="kpi-detail">1 of 2 objectives green</div>
-  </div>
+// [name, $M, teams, epics, objectives[]]
+const DATA=[
+ {g:'Consumer & Regional Banking',plat:0,c:G[1],n:[
+  ['Digital Banking — The Hub',41.5,17,52,['Deepen primary-bank relationships','Reduce cost to serve per account']],
+  ['Mortgage & Home Equity',34.2,14,43,['Grow consumer loan production']],
+  ['Auto & Dealer Finance',29.6,12,37,['Grow consumer loan production']],
+  ['Branch & ATM Network',28.3,12,31,['Complete Cadence branch conversion by Q4 2026']],
+  ['Small Business Banking',24.7,10,33,['Deepen primary-bank relationships']],
+  ['Fair Play Product Suite',18.7,8,26,['Extend Fair Play product adoption','Maintain Outstanding CRA rating']],
+  ['Customer Contact Center',16.4,7,22,['Reduce cost to serve per account']],
+  ['Business Cards & Deposits',15.2,7,21,['Grow payments and cash management revenue']],
+  ['Private Banking & Wealth',14.6,6,19,['Grow wealth and asset management revenue']],
+  ['Dealer Floorplan',14.8,6,18,['Grow consumer loan production']],
+  ['SBA Lending',12.4,5,17,['Maintain Outstanding CRA rating']],
+  ['RV & Marine',11.3,5,14,[]],
+  ['Trust & Fiduciary',10.2,5,13,['Grow wealth and asset management revenue']],
+  ['Practice Finance',8.6,4,11,[]],
+  ['Powersports',7.9,4,10,[]],
+  ['Brokerage & Custody',7.6,4,10,['Grow wealth and asset management revenue']]]},
+ {g:'Commercial Banking',plat:0,c:G[0],n:[
+  ['Middle Market Banking',38.4,16,48,['Grow commercial relationships in new markets','Sustain moderate-to-low risk appetite']],
+  ['Corporate, Specialty & Government',31.7,13,39,['Grow commercial relationships in new markets']],
+  ['Asset Finance',26.9,11,34,['Grow commercial loan production']],
+  ['Commercial Real Estate Banking',22.3,9,28,['Sustain moderate-to-low risk appetite']],
+  ['Capital Markets',19.8,8,25,['Grow capital markets and advisory fees']],
+  ['National Settlements',12.6,5,16,[]],
+  ['Community Development',8.4,4,11,['Maintain Outstanding CRA rating']],
+  ['Commercial Digital & Onboarding',7.2,3,10,['Shorten commercial onboarding cycle']],
+  ['Distribution Finance',4.7,2,7,['Grow commercial loan production']]]},
+ {g:'Payments & Cash Management',plat:0,c:G[2],n:[
+  ['Treasury Management',42.6,18,53,['Grow payments and cash management revenue']],
+  ['Card Issuing & Interchange',33.8,14,42,['Grow payments and cash management revenue']],
+  ['Merchant Services',26.4,11,33,['Grow payments and cash management revenue']],
+  ['RTP & Zelle',22.1,9,28,['Expand real-time payment coverage']],
+  ['Payables & ACH',16.7,7,21,['Expand real-time payment coverage']],
+  ['Receivables, Lockbox & RDC',12.3,5,16,['Shorten commercial onboarding cycle']],
+  ['Huntington ChoicePay',10.1,4,13,['Grow payments and cash management revenue']]]},
+ {g:'Treasury / Other — Technology & Operations',plat:1,c:S[1],n:[
+  ['Cadence Integration Program',68.4,28,86,['Complete Cadence systems conversion by Q4 2026','Complete Cadence branch conversion by Q4 2026']],
+  ['Core Banking Platforms',54.2,22,68,['Complete Cadence systems conversion by Q4 2026']],
+  ['Data & Analytics Platform',41.7,17,52,['Retire duplicate reporting after conversion']],
+  ['Cybersecurity',38.9,16,49,['Zero material audit or exam findings']],
+  ['Cloud & Infrastructure',35.6,15,45,['Complete Cadence systems conversion by Q4 2026']],
+  ['Fraud & AML Systems',31.2,13,39,['Zero material audit or exam findings']],
+  ['Digital Channel Platform',28.4,12,36,['Deepen primary-bank relationships']],
+  ['Servicing & Operations',24.8,10,31,[]],
+  ['Category III Readiness',22.6,9,29,['Reach Category III operating readiness before Q4 2026']],
+  ['Payment Rails & Settlement',18.3,8,23,['Expand real-time payment coverage']],
+  ['Regulatory & Financial Reporting',15.4,6,19,['Reach Category III operating readiness before Q4 2026']],
+  ['Engineering Platform & SDLC',12.7,5,16,[]],
+  ['AI & Innovation',9.8,4,12,[]],
+  ['Third-Party & Vendor Management',6.0,3,8,[]]]}
+];
 
-  <a href="#risk-section" style="text-decoration:none;color:inherit;">
-    <div class="kpi-card kpi-danger kpi-alert">
-      <div class="kpi-label">⚠ Critical Risks</div>
-      <div class="kpi-value">2</div>
-      <div class="kpi-detail">Payment processing & security controls</div>
-      <div class="kpi-click-hint">↓ View details</div>
-    </div>
-  </a>
+function squarify(items,x,y,w,h){
+  const out=[],total=items.reduce((s,i)=>s+i.v,0);
+  if(!total)return out;
+  const scale=(w*h)/total;
+  let rest=items.map(i=>({...i,a:i.v*scale})),cx=x,cy=y,cw=w,ch=h;
+  const worst=(row,len)=>{const s=row.reduce((a,b)=>a+b.a,0);
+    const mx=Math.max(...row.map(r=>r.a)),mn=Math.min(...row.map(r=>r.a));
+    return Math.max((len*len*mx)/(s*s),(s*s)/(len*len*mn));};
+  while(rest.length){
+    const vert=cw>=ch,len=vert?ch:cw;
+    let row=[rest[0]],i=1;
+    while(i<rest.length&&worst(row.concat(rest[i]),len)<=worst(row,len)){row.push(rest[i]);i++;}
+    const s=row.reduce((a,b)=>a+b.a,0),thick=s/len;
+    let off=vert?cy:cx;
+    row.forEach(r=>{const sz=r.a/thick;
+      out.push({...r,x:vert?cx:off,y:vert?off:cy,w:vert?thick:sz,h:vert?sz:thick});off+=sz;});
+    if(vert){cx+=thick;cw-=thick;}else{cy+=thick;ch-=thick;}
+    rest=rest.slice(row.length);
+  }
+  return out;
+}
 
-  <a href="#capacity-section" style="text-decoration:none;color:inherit;">
-    <div class="kpi-card kpi-warning kpi-alert">
-      <div class="kpi-label">⚠ Capacity Overload</div>
-      <div class="kpi-value">142%</div>
-      <div class="kpi-detail">API Platform team over capacity</div>
-      <div class="kpi-click-hint">↓ View details</div>
-    </div>
-  </a>
-</div>
+const W=900,H=640,PAD=3,HDR=22,NS='http://www.w3.org/2000/svg';
+const svg=document.getElementById('tm');
+const el=(t,a)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);return e;};
+const defs=el('defs');
+defs.innerHTML=`<pattern id="hatch" width="6" height="6" patternTransform="rotate(45)" patternUnits="userSpaceOnUse">
+ <rect width="6" height="6" fill="none"/><line x1="0" y1="0" x2="0" y2="6" stroke="#E01931" stroke-width="2.4" opacity=".9"/></pattern>`;
+svg.appendChild(defs);
 
-<!-- anvi:section type="okr_connected_work" confidence=0.94 -->
-<!-- anvi:data-source okr_module.objectives(quarter=Q2-2026), portfolios.work_items(connected=true), agileplace.delivery_mode, flow_metrics.progress -->
-<!-- anvi:join okr.id → work_item.okr_alignment_id · agileplace.board_id → work_item.agile_board_ref -->
-<!-- HERO: OKR + Connected Work -->
-<div class="grid">
-  <div class="panel grid-full">
-    <div class="panel-header">
-      <span class="panel-title">Strategic OKRs + Connected Work</span>
-      <span class="panel-badge badge-blue">Q2 2026</span>
-    </div>
+const groups=DATA.map(g=>({...g,v:g.n.reduce((s,n)=>s+n[1],0)}));
+squarify(groups,0,0,W,H).forEach(g=>{
+  const gE=el('g');
+  gE.appendChild(el('rect',{x:g.x+PAD/2,y:g.y+PAD/2,width:Math.max(0,g.w-PAD),height:Math.max(0,g.h-PAD),
+    fill:g.plat?'#2C3742':'#08381F',rx:2}));
+  const t=el('text',{x:g.x+PAD/2+8,y:g.y+PAD/2+15,class:'glabel'});t.textContent=g.g.toUpperCase();gE.appendChild(t);
+  const st=el('text',{x:g.x+g.w-PAD/2-8,y:g.y+PAD/2+15,class:'gsub','text-anchor':'end'});
+  st.textContent='$'+g.v.toFixed(1)+'M · '+(g.v/TOTAL*100).toFixed(1)+'%';gE.appendChild(st);
 
-    <!-- OKR 1: API Integration Platform — 54% from screenshot -->
-    <!-- anvi:okr id="OKR-2026-Q2-001" health="amber" progress=0.54 last_updated="2026-04-14T18:30:00Z" -->
-    <div class="okr-section">
-      <div class="okr-row">
-        <div class="okr-status os-amber"></div>
-        <span class="okr-tag okr-tag-amber">OKR</span>
-        <div class="okr-title">Better Banking: API Integration Platform</div>
-        <div class="okr-bar-wrap">
-          <div class="okr-bar-bg"><div class="okr-bar-fill of-amber" style="width:54%"></div></div>
-          <div class="okr-pct" style="color:var(--pv-warning)">54%</div>
-        </div>
-      </div>
-      <div class="connected-items">
-        <div class="work-item">
-          <span class="work-type-tag tag-initiative">Initiative</span>
-          <span class="work-delivery-mode dm-agile">Agile</span>
-          <span class="work-name">Digital Banking Platform Modernization</span>
-          <span class="work-org">Platform Engineering</span>
-          <div class="work-status ws-green"></div>
-          <div class="work-progress">
-            <div class="work-mini-bar"><div class="work-mini-fill wmf-green" style="width:62%"></div></div>
-            <div class="work-pct">62%</div>
-          </div>
-        </div>
-        <div class="work-item">
-          <span class="work-type-tag tag-epic">Epic</span>
-          <span class="work-delivery-mode dm-agile">Agile</span>
-          <span class="work-name">Multi-Factor Authentication for Online Banking</span>
-          <span class="work-org">Identity & Access Mgmt</span>
-          <div class="work-status ws-green"></div>
-          <div class="work-progress">
-            <div class="work-mini-bar"><div class="work-mini-fill wmf-green" style="width:70%"></div></div>
-            <div class="work-pct">70%</div>
-          </div>
-        </div>
-        <div class="work-item">
-          <span class="work-type-tag tag-program">Program</span>
-          <span class="work-delivery-mode dm-waterfall">Waterfall</span>
-          <span class="work-name">Mobile Wallet Integration</span>
-          <span class="work-org">Digital Payments</span>
-          <div class="work-status ws-amber"></div>
-          <div class="work-progress">
-            <div class="work-mini-bar"><div class="work-mini-fill wmf-amber" style="width:35%"></div></div>
-            <div class="work-pct">35%</div>
-          </div>
-        </div>
-        <div class="work-item">
-          <span class="work-type-tag tag-initiative">Initiative</span>
-          <span class="work-delivery-mode dm-waterfall">Waterfall</span>
-          <span class="work-name">Real-Time Payment Processing System</span>
-          <span class="work-org">Core Payments</span>
-          <div class="work-status ws-red"></div>
-          <div class="work-progress">
-            <div class="work-mini-bar"><div class="work-mini-fill wmf-red" style="width:22%"></div></div>
-            <div class="work-pct">22%</div>
-          </div>
-        </div>
-      </div>
-    </div>
+  const ramp=g.plat?S:G;
+  squarify(g.n.map(d=>({v:d[1],d})),g.x+PAD/2+4,g.y+PAD/2+HDR,
+    Math.max(1,g.w-PAD-8),Math.max(1,g.h-PAD-HDR-4)).forEach((c,idx,arr)=>{
+    const [name,val,teams,epics,okrs]=c.d;
+    const shade=ramp[Math.min(ramp.length-1,Math.floor(idx/Math.max(1,arr.length/ramp.length)))];
+    const light=idx>=arr.length*(g.plat?0.78:0.66);
+    const cell=el('g',{class:'cell',tabindex:0});
+    cell.appendChild(el('rect',{class:'fill',x:c.x,y:c.y,width:Math.max(0,c.w-1.5),height:Math.max(0,c.h-1.5),fill:shade,rx:1.5}));
+    if(!okrs.length)cell.appendChild(el('rect',{x:c.x,y:c.y,width:Math.max(0,c.w-1.5),height:Math.max(0,c.h-1.5),
+      fill:'url(#hatch)',opacity:.3,rx:1.5,'pointer-events':'none'}));
+    if(c.w>64&&c.h>26){
+      const cap=Math.floor(c.w/6.1);
+      const nt=el('text',{x:c.x+7,y:c.y+16,class:'nlabel'+(light?' dark':'')});
+      nt.textContent=name.length>cap?name.slice(0,cap-1)+'…':name;cell.appendChild(nt);
+      if(c.h>40){const vt=el('text',{x:c.x+7,y:c.y+30,class:'nval'+(light?' dark':'')});
+        vt.textContent='$'+val.toFixed(1)+'M · '+teams+' teams';cell.appendChild(vt);}
+    }
+    const tip=el('title');
+    tip.textContent=`${name}\n$${val.toFixed(1)}M · ${teams} teams · ${epics} epics\n${okrs.length?okrs.length+' objective(s)':'No objective linked'}`;
+    cell.appendChild(tip);
+    const sel=()=>{document.querySelectorAll('.cell.sel').forEach(e=>e.classList.remove('sel'));
+      cell.classList.add('sel');render(g,c.d);};
+    cell.addEventListener('click',sel);
+    cell.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();sel();}});
+    gE.appendChild(cell);
+  });
+  svg.appendChild(gE);
+});
 
-    <!-- OKR 2: Digital Onboarding Platform — 67% from screenshot -->
-    <!-- anvi:okr id="OKR-2026-Q2-002" health="green" progress=0.67 last_updated="2026-04-14T18:30:00Z" -->
-    <div class="okr-section">
-      <div class="okr-row">
-        <div class="okr-status os-green"></div>
-        <span class="okr-tag okr-tag-green">OKR</span>
-        <div class="okr-title">Better Banking: Digital Onboarding Platform</div>
-        <div class="okr-bar-wrap">
-          <div class="okr-bar-bg"><div class="okr-bar-fill of-green" style="width:67%"></div></div>
-          <div class="okr-pct" style="color:var(--pv-success)">67%</div>
-        </div>
-      </div>
-      <div class="connected-items">
-        <div class="work-item">
-          <span class="work-type-tag tag-program">Program</span>
-          <span class="work-delivery-mode dm-waterfall">Waterfall</span>
-          <span class="work-name">Anti-Money Laundering Compliance System</span>
-          <span class="work-org">Risk & Compliance</span>
-          <div class="work-status ws-amber"></div>
-          <div class="work-progress">
-            <div class="work-mini-bar"><div class="work-mini-fill wmf-amber" style="width:58%"></div></div>
-            <div class="work-pct">58%</div>
-          </div>
-        </div>
-        <div class="work-item">
-          <span class="work-type-tag tag-epic">Epic</span>
-          <span class="work-delivery-mode dm-agile">Agile</span>
-          <span class="work-name">AI-Powered Fraud Detection Enhancement</span>
-          <span class="work-org">Data Science & AI</span>
-          <div class="work-status ws-green"></div>
-          <div class="work-progress">
-            <div class="work-mini-bar"><div class="work-mini-fill wmf-green" style="width:74%"></div></div>
-            <div class="work-pct">74%</div>
-          </div>
-        </div>
-        <div class="work-item">
-          <span class="work-type-tag tag-initiative">Initiative</span>
-          <span class="work-delivery-mode dm-waterfall">Waterfall</span>
-          <span class="work-name">Enhanced Security Controls for Customer Data</span>
-          <span class="work-org">InfoSec</span>
-          <div class="work-status ws-red"></div>
-          <div class="work-progress">
-            <div class="work-mini-bar"><div class="work-mini-fill wmf-red" style="width:38%"></div></div>
-            <div class="work-pct">38%</div>
-          </div>
-        </div>
-        <div class="work-item">
-          <span class="work-type-tag tag-epic">Epic</span>
-          <span class="work-delivery-mode dm-agile">Agile</span>
-          <span class="work-name">Mobile Banking App User Experience Upgrade</span>
-          <span class="work-org">Digital Products</span>
-          <div class="work-status ws-green"></div>
-          <div class="work-progress">
-            <div class="work-mini-bar"><div class="work-mini-fill wmf-green" style="width:76%"></div></div>
-            <div class="work-pct">76%</div>
-          </div>
-        </div>
-        <div class="work-item">
-          <span class="work-type-tag tag-program">Program</span>
-          <span class="work-delivery-mode dm-waterfall">Waterfall</span>
-          <span class="work-name">Next-Gen Cybersecurity Infrastructure</span>
-          <span class="work-org">Infrastructure Services</span>
-          <div class="work-status ws-green"></div>
-          <div class="work-progress">
-            <div class="work-mini-bar"><div class="work-mini-fill wmf-green" style="width:60%"></div></div>
-            <div class="work-pct">60%</div>
-          </div>
-        </div>
-        <div class="work-item">
-          <span class="work-type-tag tag-initiative">Initiative</span>
-          <span class="work-delivery-mode dm-waterfall">Waterfall</span>
-          <span class="work-name">Core Banking System Architecture Upgrade</span>
-          <span class="work-org">Enterprise Architecture</span>
-          <div class="work-status ws-green"></div>
-          <div class="work-progress">
-            <div class="work-mini-bar"><div class="work-mini-fill wmf-green" style="width:55%"></div></div>
-            <div class="work-pct">55%</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-  </div>
-</div>
-<!-- anvi:section type="capacity_risk" confidence=0.96 -->
-<!-- ROW 2: Capacity + Risk -->
-<div class="grid">
-
-  <!-- Product Capacity -->
-  <!-- anvi:data-source flow_metrics.team_allocation, portfolios.product_areas -->
-  <!-- anvi:computation capacity=SUM(allocated_fte) / SUM(available_fte) per product_area -->
-  <!-- anvi:alert product="Digital Banking" utilization=1.68 threshold=1.0 severity="critical" -->
-  <div class="panel highlight-target" id="capacity-section">
-    <div class="panel-header">
-      <span class="panel-title">Product Capacity</span>
-      <span class="panel-badge badge-red">1 Overloaded</span>
-    </div>
-
-    <div style="position:relative;margin-bottom:8px;">
-      <div class="capacity-row">
-        <div class="capacity-product">API Platform</div>
-        <div class="capacity-bar-wrap">
-          <div class="threshold-label">100%</div>
-          <div class="capacity-bar-bg">
-            <div class="capacity-bar-fill cap-critical" style="width:100%">142%</div>
-            <div class="capacity-threshold"></div>
-          </div>
-        </div>
-        <div class="capacity-pct pct-crit">142%</div>
-      </div>
-    </div>
-
-    <div class="capacity-row">
-      <div class="capacity-product">Digital Onboarding</div>
-      <div class="capacity-bar-wrap">
-        <div class="capacity-bar-bg">
-          <div class="capacity-bar-fill cap-warm" style="width:67.7%">88%</div>
-          <div class="capacity-threshold"></div>
-        </div>
-      </div>
-      <div class="capacity-pct pct-warm">88%</div>
-    </div>
-
-    <div class="capacity-row">
-      <div class="capacity-product">InfoSec & Compliance</div>
-      <div class="capacity-bar-wrap">
-        <div class="capacity-bar-bg">
-          <div class="capacity-bar-fill cap-good" style="width:57.7%">75%</div>
-          <div class="capacity-threshold"></div>
-        </div>
-      </div>
-      <div class="capacity-pct pct-good">75%</div>
-    </div>
-
-    <div class="capacity-row">
-      <div class="capacity-product">Core Payments</div>
-      <div class="capacity-bar-wrap">
-        <div class="capacity-bar-bg">
-          <div class="capacity-bar-fill cap-cool" style="width:49.2%">64%</div>
-          <div class="capacity-threshold"></div>
-        </div>
-      </div>
-      <div class="capacity-pct pct-cool">64%</div>
-    </div>
-  </div>
-
-  <!-- Risk Register -->
-  <!-- anvi:data-source risk_register.items(status=open, severity IN ['critical','high']) -->
-  <!-- anvi:ranking algorithm="severity × recency × blast_radius" -->
-  <!-- anvi:risk id="RSK-0041" severity="critical" flagged="2026-04-06T02:47:00Z" auto_detected=true source="flow_metrics.anomaly_detection" -->
-  <div class="panel highlight-target" id="risk-section">
-    <div class="panel-header">
-      <span class="panel-title">Risk Register</span>
-      <span class="panel-badge badge-red">2 Critical</span>
-    </div>
-
-    <div class="risk-row risk-critical">
-      <div class="risk-rank rr-1">1</div>
-      <div class="risk-content">
-        <div class="risk-title">Real-Time Payment Processing — FedNow Certification Blocked</div>
-        <div class="risk-desc">FedNow integration testing stalled due to unresolved message validation failures on ISO 20022 payment initiation messages. Only 15% complete against Apr 19 start date. Dependency on Core Banking ledger migration creates cascading delay risk.</div>
-      </div>
-      <div class="risk-meta">
-        <div class="risk-time">Flagged 6:12 AM</div>
-        <div class="risk-severity sev-crit">● CRITICAL</div>
-      </div>
-    </div>
-
-    <div class="risk-row risk-critical">
-      <div class="risk-rank rr-1">2</div>
-      <div class="risk-content">
-        <div class="risk-title">Enhanced Security Controls — AES-256 Encryption Migration Stalled</div>
-        <div class="risk-desc">Data-at-rest encryption migration at 25% with Jun 24 deadline. Key management service integration failing in staging environment. OCC audit exposure if customer PII remains on legacy encryption.</div>
-      </div>
-      <div class="risk-meta">
-        <div class="risk-time">Updated 1d ago</div>
-        <div class="risk-severity sev-crit">● CRITICAL</div>
-      </div>
-    </div>
-
-    <div class="risk-row risk-high">
-      <div class="risk-rank rr-3">3</div>
-      <div class="risk-content">
-        <div class="risk-title">API Platform — Team Capacity at 142% Utilization</div>
-        <div class="risk-desc">API Platform team overcommitted across 4 initiatives. Kong migration, SOAP-to-REST conversion, and wallet integration competing for same 3 senior engineers. Burnout indicators trending up in Flow Metrics.</div>
-      </div>
-      <div class="risk-meta">
-        <div class="risk-time">Updated 2d ago</div>
-        <div class="risk-severity sev-high">● HIGH</div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- anvi:section type="mna_pipeline" confidence=0.89 -->
-<!-- anvi:data-source portfolios.mna_tracker, okr_module.alignment_gaps -->
-<!-- anvi:note confidence_reduced_reason="M&A initiative structure not yet created in Planview — awaiting executive sponsor assignment" -->
-<!-- ROW 3: M&A -->
-<div class="grid">
-  <div class="panel grid-full">
-    <div class="panel-header">
-      <span class="panel-title">M&A Pipeline</span>
-      <span class="panel-badge badge-amber">Action Required</span>
-    </div>
-
-    <div class="mna-card">
-      <div class="mna-icon">⬡</div>
-      <div class="mna-details">
-        <div class="mna-company">NovaPay Solutions</div>
-        <div class="mna-type">Open Banking API Infrastructure & Embedded Payments — Series C · 320 employees · PCI-DSS Level 1 certified</div>
-      </div>
-      <div class="mna-status">Awaiting Roadmap</div>
-    </div>
-
-    <div class="mna-context">
-      Board approved preliminary acquisition terms April 2. Integration planning not initiated — no initiative structure, OKR alignment, or delivery roadmap exists in Planview. NovaPay's open banking APIs could accelerate both API Integration Platform and Real-Time Payment Processing timelines by 4–6 months. Executive sponsor assignment pending CTO review.
-    </div>
-  </div>
-</div>
-
-<!-- anvi:section type="footer" -->
-<!-- anvi:generation-summary total_data_points=847 query_time_ms=1240 cache_hit_ratio=0.72 next_scheduled="2026-04-13T07:00:00-04:00" -->
-<!-- FOOTER -->
-<div class="footer">
-  <span class="footer-brand">Planview Anvi</span> — Automated Executive Briefing · Next scheduled: Monday, April 20, 2026 at 07:00 ET
-</div>
-
-</body>
-</html>
+const SUF=['Platform','Experience','Core','Integrations','Data','Controls','Enablement','Origination','Servicing','Delivery'];
+function render(g,d){
+  const [name,val,teams,epics,okrs]=d;
+  const show=Math.min(teams,4);
+  const w=[.34,.27,.22,.17];let tl='',used=0;
+  for(let i=0;i<show;i++){
+    const amt=+(val*w[i]).toFixed(1);used+=amt;
+    tl+=`<div class="team"><span>${name.split(/[ —,&]/)[0]} ${SUF[(i*3+name.length)%SUF.length]}</span><em>$${amt}M</em></div>`;
+  }
+  if(teams>show)tl+=`<div class="team"><span style="color:var(--ink-3)">+ ${teams-show} more teams</span><em>$${(val-used).toFixed(1)}M</em></div>`;
+  const ol=okrs.length
+    ? okrs.map((o,i)=>`<div class="okr"><b>OBJ-${(name.length*7+i*13)%900+100}</b>${o}</div>`).join('')
+    : `<div class="none">No objective linked. $${val.toFixed(1)}M across ${teams} teams is funded outside the measured portfolio.</div>`;
+  document.getElementById('rail').innerHTML=`
+    <div class="eyebrow">${g.plat?'Treasury / Other':'Reported segment'}</div>
+    <h3>${name}</h3>
+    <div class="path">${g.g}</div>
+    <div class="metric"><span>Allocated investment</span><span>$${val.toFixed(1)}M</span></div>
+    <div class="metric"><span>Share of envelope</span><span>${(val/TOTAL*100).toFixed(1)}%</span></div>
+    <div class="metric"><span>Teams</span><span>${teams}</span></div>
+    <div class="metric"><span>Epics in flight</span><span>${epics}</span></div>
+    <div class="metric"><span>Investment per team</span><span>$${(val/teams).toFixed(1)}M</span></div>
+    <div class="sect"><h4>Teams</h4>${tl}</div>
+    <div class="sect"><h4>Objectives supported</h4>${ol}</div>`;
+}
+</script>
