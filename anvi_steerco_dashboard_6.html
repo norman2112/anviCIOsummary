@@ -3,673 +3,650 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="robots" content="noindex">
-<title>Monday Program Brief — Meridian Financial Group (Demo)</title>
+<title>Dependency &amp; Delivery Risk — Network Programs</title>
 <style>
-:root{
-  --chrome:#141c2e; --brand:#2c4a7c; --eyebrow:#8a5a1f;
-  --canvas:#eceef2; --surface:#ffffff;
-  --anvi:#5b3fa8; --anvi-bg:#f6f3fd; --anvi-line:#ddd3f2;
-  --off:#c8362c; --risk:#dda01f; --on:#1a8f5f; --done:#4a7fb5; --none:#b9c2be;
-  --bad:#c8362c; --good:#1a8f5f;
-  --ink:#151a24; --ink-2:#4d5566; --ink-3:#7f8798; --hair:#dde0e6; --r:10px;
-  --src-pf:#2c4a7c; --src-ap:#1d7a8c; --src-jira:#8a5a1f; --src-okr:#5b3fa8;
-}
-*{box-sizing:border-box}
-body{margin:0;background:var(--canvas);color:var(--ink);
-  font-family:ui-sans-serif,system-ui,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-  font-size:13px;line-height:1.5;font-variant-numeric:tabular-nums}
-.num{font-variant-numeric:tabular-nums;letter-spacing:-.02em}
-.mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+  :root{
+    --red:#E4002B;
+    --red-dk:#B00021;
+    --red-tint:#FDECEF;
+    --ink:#111112;
+    --ink-2:#3d3d40;
+    --ink-3:#77777d;
+    --ink-4:#a3a3a9;
+    --line:#e2e2e4;
+    --line-2:#f0f0f1;
+    --paper:#ffffff;
+    --wash:#fafaf9;
+    --amber:#B87400;
+    --amber-tint:#FDF4E3;
+    --green:#0F7A4A;
+    --green-tint:#EAF6F0;
+    --slate:#2F4858;
+    --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  }
 
-/* CHROME */
-.topbar{background:var(--chrome);color:#fff;padding:16px 22px}
-.brandline{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
-.mark{font-weight:700;font-size:15px;letter-spacing:.16em}
-.mark::after{content:"";display:inline-block;width:1px;height:13px;background:rgba(255,255,255,.3);margin-left:14px;vertical-align:-2px}
-.pagetitle{font-size:16px;font-weight:450;color:#e6e9f0}
-.byline{margin-left:auto;font-size:11px;color:#8b96ad;display:flex;gap:16px;flex-wrap:wrap}
-.byline b{font-weight:500;color:#b3bccd}
-.edition{margin-top:12px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:11px;color:#8b96ad}
-.edtag{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.16);border-radius:999px;padding:3px 11px;color:#d3d9e4}
-.edtag.on{background:#fff;color:var(--chrome);font-weight:700;border-color:#fff}
-.srcbar{margin-top:10px;display:flex;gap:14px;flex-wrap:wrap;font-size:10px;color:#78829a;letter-spacing:.04em}
-.srcbar i{display:inline-block;width:7px;height:7px;border-radius:2px;margin-right:5px}
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    background:var(--wash);
+    color:var(--ink);
+    font-family:var(--sans);
+    font-size:14px;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1280px;margin:0 auto;padding:0 28px 64px}
 
-/* META */
-.meta{display:flex;flex-wrap:wrap;gap:0 34px;align-items:center;padding:13px 22px;
-  border-bottom:1px solid var(--hair);background:var(--surface)}
-.meta dl{margin:0;display:flex;flex-direction:column;gap:1px}
-.meta dt{font-size:10px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3);font-weight:600}
-.meta dd{margin:0;font-size:13.5px;font-weight:600}
-.chips{margin-left:auto;display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
-.chip{background:#f1f3f6;border:1px solid var(--hair);border-radius:999px;padding:3px 11px;font-size:11px;color:var(--ink-2)}
-.chip b{color:var(--ink);font-weight:600}
+  /* ---------- masthead ---------- */
+  .mast{
+    border-top:5px solid var(--red);
+    background:var(--paper);
+    padding:26px 28px 22px;
+    margin:0 -28px 24px;
+    border-bottom:1px solid var(--line);
+  }
+  .mast-inner{max-width:1224px;margin:0 auto}
+  .eyebrow{
+    font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--red);margin-bottom:9px;
+  }
+  h1{
+    font-size:29px;line-height:1.15;font-weight:700;letter-spacing:-.022em;
+    margin:0 0 8px;
+  }
+  .dek{color:var(--ink-3);font-size:14px;max-width:74ch;margin:0}
+  .mast-meta{
+    display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center;
+    margin-top:16px;padding-top:14px;border-top:1px solid var(--line-2);
+    font-size:11.5px;color:var(--ink-3);
+  }
+  .mast-meta b{color:var(--ink-2);font-weight:600}
 
-/* LAYOUT */
-.lede{padding:18px 22px 0}
-.grid{display:grid;grid-template-columns:1.04fr 1fr;gap:14px;padding:14px 22px 22px;align-items:start}
-.stack{display:flex;flex-direction:column;gap:14px}
-.card{background:var(--surface);border:1px solid var(--hair);border-radius:var(--r);padding:16px 18px}
-.card h2{font-size:10.5px;letter-spacing:.11em;text-transform:uppercase;color:var(--eyebrow);font-weight:700;margin:0}
-.card h2 .ct{float:right;color:var(--ink-3);letter-spacing:.02em;text-transform:none;font-weight:500}
-.rule{height:1px;background:var(--hair);margin:9px 0 14px}
-.sub{font-size:11.5px;color:var(--ink-3);margin:-4px 0 12px}
+  /* ---------- source chips ---------- */
+  .srcs{display:flex;flex-wrap:wrap;gap:6px}
+  .src{
+    font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;
+    padding:3px 8px;border-radius:3px;border:1px solid transparent;white-space:nowrap;
+  }
+  .s-ap{background:#EDF1F7;color:#2F4858;border-color:#d6dfea}
+  .s-pf{background:var(--red-tint);color:var(--red-dk);border-color:#f6d3da}
+  .s-okr{background:#F1EDF7;color:#4A2F58;border-color:#e0d6ea}
 
-/* SOURCE TAGS */
-.srcs{display:flex;gap:5px;flex-wrap:wrap;margin-top:7px}
-.src{font-size:9px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;padding:2px 7px;border-radius:4px;color:#fff}
-.s-pf{background:var(--src-pf)} .s-ap{background:var(--src-ap)}
-.s-jira{background:var(--src-jira)} .s-okr{background:var(--src-okr)}
+  /* ---------- layout ---------- */
+  .cols{display:grid;grid-template-columns:1.32fr 1fr;gap:22px;align-items:start}
+  .stack{display:flex;flex-direction:column;gap:22px}
 
-/* FIELD BASIS */
-.basis{font-size:10px;color:var(--ink-3);margin-top:4px;line-height:1.4;
-  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;letter-spacing:-.01em}
-.basis b{color:var(--ink-2);font-weight:600}
+  .card{
+    background:var(--paper);border:1px solid var(--line);border-radius:6px;
+    padding:22px 22px 20px;
+  }
+  .card > h2{
+    font-size:17px;font-weight:700;letter-spacing:-.012em;margin:0 0 3px;
+    display:flex;align-items:baseline;gap:9px;flex-wrap:wrap;
+  }
+  .ct{font-size:11px;font-weight:600;color:var(--ink-4);letter-spacing:.02em}
+  .sub{color:var(--ink-3);font-size:12.5px;margin:0 0 13px}
+  .rule{height:1px;background:var(--line-2);margin:14px 0}
 
-/* ANVI */
-.anvi{background:var(--anvi-bg);border:1px solid var(--anvi-line);border-radius:var(--r);padding:14px 16px}
-.anvi-tag{display:inline-flex;align-items:center;gap:6px;font-size:9.5px;font-weight:800;
-  letter-spacing:.13em;text-transform:uppercase;color:var(--anvi);margin-bottom:7px}
-.anvi-tag::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--anvi)}
-.anvi p{margin:0 0 8px;font-size:13px;line-height:1.55}
-.anvi p:last-child{margin-bottom:0}
-.anvi b{font-weight:650}
-.anvi .basis{margin-top:10px;padding-top:9px;border-top:1px solid var(--anvi-line)}
-.card .anvi{margin-top:14px}
+  /* ---------- stat blocks ---------- */
+  .stats{display:grid;gap:11px}
+  .stats-2{grid-template-columns:1fr 1fr}
+  .stats-3{grid-template-columns:repeat(3,1fr)}
+  .stats-4{grid-template-columns:repeat(4,1fr)}
+  .stat{
+    border:1px solid var(--line);border-left-width:3px;border-radius:4px;
+    padding:11px 13px 12px;background:var(--paper);
+  }
+  .stat .k{
+    font-size:10.5px;font-weight:600;letter-spacing:.045em;text-transform:uppercase;
+    color:var(--ink-3);line-height:1.35;margin-bottom:6px;min-height:2.7em;
+  }
+  .stat .v{font-size:27px;font-weight:700;letter-spacing:-.03em;line-height:1}
+  .stat .f{font-size:11px;color:var(--ink-3);margin-top:5px}
+  .num{font-variant-numeric:tabular-nums}
+  .stat.alert{border-left-color:var(--red)}
+  .stat.alert .v{color:var(--red)}
+  .stat.warn{border-left-color:var(--amber)}
+  .stat.warn .v{color:var(--amber)}
+  .stat.ok{border-left-color:var(--green)}
+  .stat.ok .v{color:var(--green)}
+  .stat.neutral{border-left-color:var(--slate)}
 
-/* HEADLINE */
-.headline{background:var(--surface);border:1px solid var(--hair);border-radius:var(--r);padding:18px 20px;margin-bottom:14px}
-.headline .k{font-size:10px;letter-spacing:.11em;text-transform:uppercase;color:var(--eyebrow);font-weight:700}
-.headline .h{font-size:21px;font-weight:600;letter-spacing:-.025em;line-height:1.3;margin:8px 0 0;max-width:96ch}
-.headline .h em{font-style:normal;background:linear-gradient(transparent 62%,#fbe9c9 62%)}
+  /* ---------- RAG pills ---------- */
+  .rag{
+    font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+    padding:2.5px 7px;border-radius:3px;vertical-align:middle;white-space:nowrap;
+  }
+  .rag-risk{background:var(--red-tint);color:var(--red-dk)}
+  .rag-watch{background:var(--amber-tint);color:var(--amber)}
+  .rag-ok{background:var(--green-tint);color:var(--green)}
 
-/* CONFLICT */
-.conflict{display:grid;grid-template-columns:1fr auto 1fr;gap:14px;align-items:center;margin:14px 0 0;
-  border:1px solid var(--hair);border-radius:8px;padding:13px 15px;background:#fbfcfd}
-.conflict .side{text-align:center}
-.conflict .fld{font-size:10px;color:var(--ink-3);font-family:ui-monospace,Menlo,monospace}
-.conflict .lbl{font-size:11px;color:var(--ink-2);margin-top:3px}
-.conflict .val{font-size:23px;font-weight:600;letter-spacing:-.035em;margin-top:3px}
-.conflict .vs{font-size:11px;font-weight:800;color:var(--ink-3);letter-spacing:.1em}
-.conflict .good{color:var(--good)} .conflict .bad{color:var(--bad)}
+  /* ---------- cascade blocks ---------- */
+  .casc{
+    border:1px solid var(--line);border-left:3px solid var(--red);border-radius:4px;
+    padding:13px 15px 14px;margin-bottom:12px;background:#fffdfd;
+  }
+  .casc.watch{border-left-color:var(--amber);background:#fffdf8}
+  .casc .p{
+    font-size:14.5px;font-weight:700;letter-spacing:-.008em;margin-bottom:9px;
+    display:flex;align-items:center;gap:8px;flex-wrap:wrap;
+  }
+  .casc .arrow{
+    position:relative;padding-left:17px;font-size:12.5px;color:var(--ink-2);
+    margin-top:5px;line-height:1.45;
+  }
+  .casc .arrow::before{
+    content:"";position:absolute;left:2px;top:.55em;
+    width:6px;height:6px;border-right:1.5px solid var(--red);
+    border-bottom:1.5px solid var(--red);transform:rotate(-45deg);
+  }
+  .casc.watch .arrow::before{border-color:var(--amber)}
+  .casc .arrow b{font-weight:700;color:var(--ink)}
+  .edge{
+    font-family:var(--mono);font-size:10.5px;background:#f2f2f3;
+    padding:1px 5px;border-radius:3px;color:var(--ink-2);
+  }
 
-/* DECISIONS */
-.decisions{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:14px}
-.dec{background:var(--surface);border:1px solid var(--hair);border-left:3px solid var(--eyebrow);border-radius:var(--r);padding:13px 15px}
-.dec .n{font-size:9.5px;letter-spacing:.11em;text-transform:uppercase;color:var(--eyebrow);font-weight:700}
-.dec .t{font-size:13.5px;font-weight:650;margin:5px 0;line-height:1.35}
-.dec .w{font-size:11.5px;color:var(--ink-2);line-height:1.45}
-.dec .o{font-size:10.5px;color:var(--ink-3);margin-top:7px;padding-top:7px;border-top:1px solid #f1f3f6}
-.dec .o b{color:var(--ink-2);font-weight:600}
+  /* ---------- basis footer ---------- */
+  .basis{
+    font-size:11px;color:var(--ink-4);line-height:1.5;
+    border-top:1px dashed var(--line);padding-top:9px;margin-top:14px;
+  }
+  .basis b{color:var(--ink-3);font-weight:600;font-family:var(--mono);font-size:10.5px}
 
-/* DELTA */
-.delta{display:inline-block;font-size:10.5px;font-weight:700;padding:1px 7px;border-radius:999px;white-space:nowrap}
-.d-bad{background:#fbe9e7;color:#96261e}
-.d-good{background:#e3f4ec;color:#136245}
-.d-flat{background:#f1f3f6;color:var(--ink-3)}
-.chg{display:grid;grid-template-columns:78px 1fr auto;gap:12px;align-items:baseline;padding:8px 0;font-size:12.5px}
-.chg + .chg{border-top:1px solid #f3f5f8}
-.chg .when{font-size:10px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-3);font-weight:600}
-.chg b{font-weight:650}
+  /* ---------- tables ---------- */
+  table{width:100%;border-collapse:collapse;font-size:12.5px}
+  th{
+    text-align:left;font-size:10px;font-weight:700;letter-spacing:.06em;
+    text-transform:uppercase;color:var(--ink-3);
+    padding:0 9px 7px 0;border-bottom:1.5px solid var(--ink);
+  }
+  td{padding:8px 9px 8px 0;border-bottom:1px solid var(--line-2);vertical-align:top}
+  tr:last-child td{border-bottom:none}
+  td.r,th.r{text-align:right;padding-right:0;font-variant-numeric:tabular-nums}
+  .zero{color:var(--red);font-weight:700}
+  .mono{font-family:var(--mono);font-size:11px;color:var(--ink-3)}
 
-/* DISTRIBUTION */
-.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:10.5px;color:var(--ink-2);margin-bottom:12px}
-.legend i{display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:5px}
-.drow{display:grid;grid-template-columns:112px 1fr 128px;gap:13px;align-items:center;padding:9px 0}
-.drow + .drow{border-top:1px solid #f1f3f6}
-.drow.newdim{background:#fdfbf5;margin:0 -18px;padding-left:18px;padding-right:18px}
-.dlabel{font-weight:650;font-size:12.5px}
-.dlabel small{display:block;font-weight:400;font-size:10px;color:var(--ink-3);font-family:ui-monospace,Menlo,monospace}
-.dlabel .nb{display:inline-block;background:#fdf3dc;color:#8a6109;font-size:8.5px;font-weight:800;
-  letter-spacing:.06em;padding:1px 5px;border-radius:3px;margin-left:5px;vertical-align:1px}
-.bar{display:flex;height:9px;border-radius:999px;overflow:hidden;background:#f1f3f6}
-.bar i{display:block}
-.counts{display:flex;gap:12px;margin-top:6px;font-size:11px;color:var(--ink-2);flex-wrap:wrap}
-.counts b{font-weight:650;color:var(--ink)}
-.counts span.zero b{color:var(--ink-3);font-weight:400}
-.counts i{display:inline-block;width:7px;height:7px;border-radius:2px;margin-right:4px}
-.pillcell{text-align:right;display:flex;gap:6px;justify-content:flex-end;align-items:center;flex-wrap:wrap}
-.rag{display:inline-block;font-size:10.5px;font-weight:700;padding:3px 10px;border-radius:999px;white-space:nowrap}
-.rag-risk{background:#fdf3dc;color:#8a6109;box-shadow:inset 0 0 0 1px #edd9a4}
-.rag-on{background:#e3f4ec;color:#136245;box-shadow:inset 0 0 0 1px #b3ddc9}
-.rag-off{background:#fbe9e7;color:#96261e;box-shadow:inset 0 0 0 1px #eebfba}
+  /* ---------- svg chain ---------- */
+  .chainwrap{
+    border:1px solid var(--line);border-radius:5px;background:var(--paper);
+    padding:6px;overflow-x:auto;
+  }
+  .chainwrap svg{display:block;min-width:640px;width:100%;height:auto}
 
-/* NAMED */
-.named{margin-top:12px;border-top:1px solid var(--hair);padding-top:12px}
-.named .h{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);font-weight:700;margin-bottom:8px}
-.item{display:grid;grid-template-columns:1fr auto;gap:10px;padding:7px 0;font-size:12.5px;align-items:baseline}
-.item + .item{border-top:1px solid #f5f6f9}
-.item .nm{font-weight:650}
-.item .wy{display:block;font-weight:400;font-size:11.5px;color:var(--ink-2);margin-top:1px}
-.item .mt{text-align:right;font-size:10.5px;color:var(--ink-3);white-space:nowrap}
-.new{background:#fdf3dc;color:#8a6109;font-size:9.5px;font-weight:800;letter-spacing:.06em;padding:1px 6px;border-radius:4px;margin-left:6px;vertical-align:1px}
+  .legend{
+    display:flex;flex-wrap:wrap;gap:6px 18px;margin-top:11px;
+    font-size:11px;color:var(--ink-3);
+  }
+  .legend span{display:inline-flex;align-items:center;gap:6px}
+  .sw{width:20px;height:0;border-top-width:2px;border-top-style:solid;display:inline-block}
 
-/* TABLES */
-table{width:100%;border-collapse:collapse;font-size:12.5px}
-th{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);font-weight:600;
-  text-align:right;padding:0 0 7px;border-bottom:1px solid var(--hair);vertical-align:bottom}
-th:first-child{text-align:left}
-td{padding:8px 0;text-align:right;border-bottom:1px solid #f3f5f8}
-td:first-child{text-align:left;font-weight:600}
-tr:last-child td{border-bottom:0}
-.dim{color:var(--ink-3);font-weight:400}
-.sev{display:inline-block;min-width:32px;padding:2px 8px;border-radius:6px;font-weight:600}
-.sev-m{background:#fdf3dc;color:#8a6109} .sev-l{background:#f1f3f6;color:var(--ink-2)}
-.sev-0{background:transparent;color:var(--ink-3);font-weight:400}
-.age{font-size:11px;color:var(--ink-3)}
-.age.stale{color:#96261e;font-weight:600}
+  /* ---------- action list ---------- */
+  .acts{list-style:none;margin:0;padding:0;counter-reset:a}
+  .acts li{
+    counter-increment:a;position:relative;padding:11px 0 11px 40px;
+    border-bottom:1px solid var(--line-2);font-size:13px;line-height:1.5;
+  }
+  .acts li:last-child{border-bottom:none;padding-bottom:0}
+  .acts li::before{
+    content:counter(a);position:absolute;left:0;top:11px;
+    width:24px;height:24px;border-radius:50%;background:var(--ink);color:#fff;
+    font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;
+    font-variant-numeric:tabular-nums;
+  }
+  .acts b{font-weight:700}
+  .who{
+    display:block;font-size:11px;color:var(--ink-3);margin-top:3px;
+  }
 
-/* STATS */
-.stats{display:grid;gap:10px}
-.stats-2{grid-template-columns:1fr 1fr}
-.stats-4{grid-template-columns:repeat(4,1fr)}
-.stat{border:1px solid var(--hair);border-radius:8px;padding:11px 13px;background:#fbfcfd}
-.stat .k{font-size:10px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-3);font-weight:600;line-height:1.35;min-height:26px}
-.stat .v{font-size:23px;font-weight:600;letter-spacing:-.035em;margin-top:4px}
-.stat .v sup{font-size:11px;font-weight:500;letter-spacing:0;color:var(--ink-3);vertical-align:super}
-.stat .f{font-size:10.5px;color:var(--ink-3);margin-top:3px}
-.stat.accent{background:#f2f8f5;border-color:#cfe7dc}
-.stat.warn{background:#fdf8ec;border-color:#eddfb8}
-.stat.alert{background:#fdf0ee;border-color:#f0cdc7}
+  /* ---------- footer ---------- */
+  .foot{
+    margin-top:30px;padding-top:16px;border-top:2px solid var(--ink);
+    font-size:11px;color:var(--ink-3);line-height:1.6;
+    display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;
+  }
+  .foot b{color:var(--ink-2)}
 
-/* OKR */
-.okr{padding:11px 0}
-.okr + .okr{border-top:1px solid #f1f3f6}
-.okr .top{display:grid;grid-template-columns:1fr 58px 86px;gap:12px;align-items:baseline}
-.okr .o{font-weight:650;font-size:12.5px;line-height:1.35}
-.okr .pct{text-align:right;font-size:17px;font-weight:600;letter-spacing:-.03em}
-.okr .track{height:7px;border-radius:999px;background:#f1f3f6;overflow:hidden;margin-top:7px;position:relative}
-.okr .fill{height:100%;border-radius:999px}
-.okr .pace{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--ink-2);border-radius:2px}
-.okr .thr{font-size:11px;color:var(--ink-2);margin-top:7px;padding-left:11px;border-left:2px solid var(--risk)}
-.okr .thr b{font-weight:650}
+  /* ---------- responsive ---------- */
+  @media (max-width:1000px){
+    .cols{grid-template-columns:1fr}
+    .stats-4{grid-template-columns:1fr 1fr}
+  }
+  @media (max-width:620px){
+    .wrap{padding:0 16px 44px}
+    .mast{margin:0 -16px 20px;padding:22px 16px 18px}
+    h1{font-size:23px}
+    .stats-2,.stats-3,.stats-4{grid-template-columns:1fr}
+  }
 
-/* CAPACITY */
-.cap{display:grid;grid-template-columns:150px 1fr 74px;gap:12px;align-items:center;padding:8px 0;font-size:12.5px}
-.cap + .cap{border-top:1px solid #f3f5f8}
-.cap .r{font-weight:600}
-.cap .track{height:11px;background:#f1f3f6;border-radius:3px;position:relative}
-.cap .have{position:absolute;left:0;top:0;bottom:0;background:#ccd6e4;border-radius:3px}
-.cap .over{position:absolute;top:0;bottom:0;background:repeating-linear-gradient(45deg,#f4c9c4,#f4c9c4 4px,#fbe9e7 4px,#fbe9e7 8px)}
-.cap .need{position:absolute;left:0;top:0;bottom:0;border-right:2px solid var(--ink);border-radius:3px}
-.cap .g{text-align:right;font-weight:650}
-.cap .g.short{color:var(--bad)} .cap .g.ok{color:var(--ink-3);font-weight:400}
-.caplegend{font-size:10.5px;color:var(--ink-3);margin-top:10px;display:flex;gap:16px;flex-wrap:wrap}
-.caplegend i{display:inline-block;width:12px;height:8px;border-radius:2px;margin-right:5px}
-
-/* CASCADE */
-.casc{border:1px solid var(--hair);border-radius:8px;padding:12px 14px;margin-top:11px;background:#fbfcfd}
-.casc .p{font-weight:650;font-size:12.5px}
-.casc .p .rag{margin-left:7px}
-.casc .arrow{font-size:11.5px;color:var(--ink-2);margin-top:7px;padding-left:15px;position:relative}
-.casc .arrow::before{content:"↳";position:absolute;left:0;color:var(--ink-3)}
-.casc .arrow b{font-weight:700;color:var(--ink)}
-.edge{font-size:9.5px;font-family:ui-monospace,Menlo,monospace;color:#fff;background:var(--src-ap);
-  padding:1px 5px;border-radius:3px;margin-left:6px}
-
-/* THRESHOLD */
-.thresh .track{position:relative;height:7px;border-radius:999px;background:#f1f3f6}
-.thresh .fill{position:absolute;inset:0 auto 0 0;border-radius:999px}
-.thresh .tick{position:absolute;top:-4px;bottom:-4px;width:2px;background:var(--ink-2);border-radius:2px}
-.thresh .cap2{display:flex;justify-content:space-between;font-size:10.5px;color:var(--ink-3);margin-top:6px}
-
-/* FOOTER */
-.footer{background:var(--chrome);color:#8b96ad;padding:16px 22px;font-size:11.5px;line-height:1.6}
-.footer a{color:#fff;text-decoration:none;border-bottom:1px solid rgba(255,255,255,.35)}
-.footer .row{display:flex;gap:22px;flex-wrap:wrap;align-items:center}
-.footer .ask{margin-top:11px;padding-top:11px;border-top:1px solid rgba(255,255,255,.14);color:#d3d9e4}
-.footer .ask b{color:#fff;font-weight:600}
-.footer .src2{margin-top:7px;font-size:10.5px;color:#78829a}
-.footer .disc{margin-top:9px;font-size:10.5px;color:#78829a;font-style:italic}
-
-@media (max-width:1080px){
-  .grid{grid-template-columns:1fr} .decisions{grid-template-columns:1fr}
-  .chips{margin-left:0;justify-content:flex-start} .byline{margin-left:0;width:100%;margin-top:6px}
-}
-@media (max-width:620px){
-  .drow{grid-template-columns:1fr;row-gap:8px}
-  .pillcell{justify-content:flex-start}
-  .stats-4{grid-template-columns:1fr 1fr}
-  .cap{grid-template-columns:1fr auto;row-gap:6px} .cap .track{grid-column:1/-1}
-  .chg{grid-template-columns:1fr;row-gap:2px}
-  .conflict{grid-template-columns:1fr;text-align:center}
-}
-@media (prefers-reduced-motion:reduce){*{transition:none!important}}
-@media print{
-  body{background:#fff}
-  .topbar,.footer{background:#fff;color:var(--ink);border:1px solid var(--chrome)}
-  .card,.dec,.anvi,.headline{break-inside:avoid}
-}
+  /* ---------- print ---------- */
+  @media print{
+    body{background:#fff;font-size:11px}
+    .wrap{max-width:none;padding:0}
+    .card{break-inside:avoid;page-break-inside:avoid;border-color:#ccc}
+    .casc{break-inside:avoid}
+    .cols{grid-template-columns:1fr}
+    .mast{margin:0 0 16px;padding:0 0 14px}
+    .chainwrap svg{min-width:0}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{animation:none!important;transition:none!important}
+  }
 </style>
 </head>
 <body>
 
-<header class="topbar">
-  <div class="brandline">
-    <span class="mark">MERIDIAN</span>
-    <span class="pagetitle">Monday Program Brief</span>
-    <span class="byline">
-      <span><b>Generated by Anvi</b> Mon · 06:00 ET</span>
-      <span><b>Live query</b> — not a scheduled extract</span>
-    </span>
-  </div>
-  <div class="edition">
-    <span>Edition:</span>
-    <span class="edtag on">Steering Council</span>
-    <span class="edtag">Investment Committee</span>
-    <span class="edtag">Delivery Orgs</span>
-    <span style="opacity:.7">— same query, three framings</span>
-  </div>
-  <div class="srcbar">
-    <span><i style="background:#6f9bd8"></i>Portfolios</span>
-    <span><i style="background:#4fb6c4"></i>AgilePlace</span>
-    <span><i style="background:#d4a556"></i>Jira via Hub</span>
-    <span><i style="background:#a58fd8"></i>OKRs</span>
-    <span style="margin-left:auto;opacity:.8">Every figure carries its source field. Nothing is inferred without one.</span>
-  </div>
-</header>
+<div class="wrap">
 
-<section class="meta">
-  <dl><dt>Program</dt><dd>PRG-4417 · Payments Platform Modernization</dd></dl>
-  <dl><dt>Owner</dt><dd>Elena Marchetti</dd></dl>
-  <dl><dt>Window</dt><dd>Jan 2024 – Dec 2029</dd></dl>
-  <div class="chips">
-    <span class="chip">Elapsed <b>40.3%</b></span>
-    <span class="chip">SPI <b>0.82</b></span>
-    <span class="chip">CPI <b>1.06</b></span>
-  </div>
-</section>
-
-<div class="lede">
-
-  <div class="headline">
-    <div class="k">This week in one line</div>
-    <p class="h">Two initiatives moved to At Risk — but the finding is that <em>cost efficiency is genuinely good and it is hiding a schedule problem</em>, because unstarted work does not spend.</p>
-
-    <div class="conflict">
-      <div class="side">
-        <div class="fld">1010 · Cost Variance (FP|BV−FV)</div>
-        <div class="lbl">Baseline vs. current forecast</div>
-        <div class="val good">+$1.7M</div>
-        <div class="lbl">favourable — the figure most reports show</div>
-      </div>
-      <div class="vs">VS</div>
-      <div class="side">
-        <div class="fld">1166 · Schedule Performance Index</div>
-        <div class="lbl">Earned value vs. planned value</div>
-        <div class="val bad">0.82</div>
-        <div class="lbl">18% behind — rarely reported alongside</div>
+  <!-- ============ MASTHEAD ============ -->
+  <header class="mast">
+    <div class="mast-inner">
+      <div class="eyebrow">Planview Anvi &middot; Portfolio Delivery Intelligence</div>
+      <h1>Dependency &amp; Delivery Risk — Network Programs</h1>
+      <p class="dek">
+        Where a slip stops being a schedule problem and starts being a contract problem.
+        Real dependency edges joined to schedule float and contracted delivery dates —
+        not a count of open risks.
+      </p>
+      <div class="mast-meta">
+        <span><b>Scope</b> Physical Network &middot; Digital Services Platform &middot; Legacy Decom &amp; Cost-Out</span>
+        <span><b>Horizon</b> Next 90 days</span>
+        <span><b>Refreshed</b> live at open</span>
+        <div class="srcs">
+          <span class="src s-ap">AgilePlace</span>
+          <span class="src s-pf">Portfolios</span>
+          <span class="src s-okr">OKRs</span>
+        </div>
       </div>
     </div>
+  </header>
+
+  <!-- ============ TOP-LINE ============ -->
+  <div class="card" style="margin-bottom:22px">
+    <h2>Exposure at a glance <span class="ct">90-day window</span></h2>
+    <p class="sub">Every number below resolves to specific work items. Nothing here is a rollup of a rollup.</p>
+    <div class="stats stats-4">
+      <div class="stat alert">
+        <div class="k">Zero-float milestones behind at-risk work</div>
+        <div class="v num">11 <span style="font-size:14px;color:var(--ink-3);font-weight:600">of 26</span></div>
+        <div class="f">TOTAL_FLOAT = 0, due &lt; 90d</div>
+      </div>
+      <div class="stat alert">
+        <div class="k">Contracted PCF milestones in the blast radius</div>
+        <div class="v num">4</div>
+        <div class="f">Customer-committed dates</div>
+      </div>
+      <div class="stat warn">
+        <div class="k">Cross-board dependency edges</div>
+        <div class="v num">63</div>
+        <div class="f">3 cross-program</div>
+      </div>
+      <div class="stat warn">
+        <div class="k">At-risk programs on one resource pool</div>
+        <div class="v num">2</div>
+        <div class="f">Outside Plant Engineering</div>
+      </div>
+    </div>
+    <div class="basis">
+      Basis — AgilePlace <b>getBoardDependencyGraph</b> (upstream/downstream edges, <span class="edge">finishToStart</span> timing,
+      cross-board children) joined to Portfolios <b>TOTAL_FLOAT</b>, <b>FREE_FLOAT</b>, <b>IsMilestone</b>, <b>ConstraintDate</b>.
+      Contracted flag derived from milestone constraint type <b>MustFinishOn</b> plus program classification.
+    </div>
   </div>
 
-  <div class="anvi" style="margin-bottom:14px">
-    <div class="anvi-tag">Anvi insight</div>
-    <p><b>Both cost measures are favourable, and on their own both are misleading.</b> Earned value stands at $126.0M against a planned value of $153.6M for the elapsed period — an SPI of 0.82. The program converts plan into delivered value 18% slower than scheduled.</p>
-    <p>CPI of 1.06 says the work that <i>has</i> been done cost less than budgeted. That is real efficiency, and it is why cost variance reads green. But the $1.7M under-run is not primarily efficiency — 40 of 92 initiatives have not started, and unstarted work does not spend. The favourable cost position is substantially a by-product of the schedule position.</p>
-    <p><b>Recommendation:</b> report SPI alongside cost variance. A program at CPI 1.06 / SPI 0.82 is not an on-budget program — it is a late program that has not yet paid for being late.</p>
-    <div class="basis">Basis — <b>1163</b> Earned Value · <b>1164</b> CPI · <b>1166</b> SPI · <b>1167</b> Schedule Variance · <b>1168</b> Cost Variance (CV) · <b>1010</b> Cost Variance (FP|BV−FV) · <b>1001</b> Actual Costs to Date · <b>1003</b> Total Baseline Costs · <b>Wbs709</b> Overall Status Assessment</div>
+  <div class="cols">
+
+    <!-- ============ LEFT COLUMN ============ -->
+    <div class="stack">
+
+      <!-- CASCADE SPINE -->
+      <section class="card">
+        <h2>The Route 7 spine <span class="ct">one chain, six commitments</span></h2>
+        <p class="sub">
+          Every box downstream of the splice has zero float. There is no absorbing this one internally —
+          it lands on a customer date.
+        </p>
+
+        <div class="chainwrap">
+          <svg viewBox="0 0 980 300" xmlns="http://www.w3.org/2000/svg" role="img"
+               aria-label="Dependency chain from permitting through fiber splice to contracted hyperscaler acceptance milestone">
+            <defs>
+              <marker id="ar-red" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto">
+                <path d="M0,0 L9,4.5 L0,9 z" fill="#E4002B"/>
+              </marker>
+              <marker id="ar-amb" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto">
+                <path d="M0,0 L9,4.5 L0,9 z" fill="#B87400"/>
+              </marker>
+              <marker id="ar-gry" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto">
+                <path d="M0,0 L9,4.5 L0,9 z" fill="#a3a3a9"/>
+              </marker>
+            </defs>
+
+            <!-- swimlane labels -->
+            <text x="8" y="20" font-family="-apple-system,Segoe UI,sans-serif" font-size="9.5"
+                  font-weight="700" letter-spacing="1.1" fill="#a3a3a9">PHYSICAL NETWORK</text>
+            <line x1="8" y1="28" x2="972" y2="28" stroke="#f0f0f1" stroke-width="1"/>
+
+            <text x="8" y="200" font-family="-apple-system,Segoe UI,sans-serif" font-size="9.5"
+                  font-weight="700" letter-spacing="1.1" fill="#a3a3a9">DIGITAL SERVICES PLATFORM</text>
+            <line x1="8" y1="208" x2="972" y2="208" stroke="#f0f0f1" stroke-width="1"/>
+
+            <!-- ROW 1 nodes: y 44..112 -->
+            <!-- node 1 -->
+            <rect x="8" y="44" width="176" height="66" rx="4" fill="#fff" stroke="#B87400" stroke-width="2"/>
+            <text x="20" y="63" font-family="-apple-system,Segoe UI,sans-serif" font-size="11.5" font-weight="700" fill="#111112">Permit &amp; Make-Ready</text>
+            <text x="20" y="79" font-family="-apple-system,Segoe UI,sans-serif" font-size="10" fill="#77777d">Maricopa County · 41 poles</text>
+            <text x="20" y="96" font-family="ui-monospace,Menlo,monospace" font-size="9.5" fill="#B87400">FLOAT 6d · 9d LATE</text>
+
+            <!-- node 2 -->
+            <rect x="212" y="44" width="176" height="66" rx="4" fill="#fff" stroke="#E4002B" stroke-width="2"/>
+            <text x="224" y="63" font-family="-apple-system,Segoe UI,sans-serif" font-size="11.5" font-weight="700" fill="#111112">Conduit / IRU Access</text>
+            <text x="224" y="79" font-family="-apple-system,Segoe UI,sans-serif" font-size="10" fill="#77777d">Route 7 · DEN→PHX</text>
+            <text x="224" y="96" font-family="ui-monospace,Menlo,monospace" font-size="9.5" fill="#E4002B">FLOAT 0d</text>
+
+            <!-- node 3 -->
+            <rect x="416" y="44" width="176" height="66" rx="4" fill="#fffdfd" stroke="#E4002B" stroke-width="3"/>
+            <text x="428" y="63" font-family="-apple-system,Segoe UI,sans-serif" font-size="11.5" font-weight="700" fill="#111112">Intercity Fiber Splice</text>
+            <text x="428" y="79" font-family="-apple-system,Segoe UI,sans-serif" font-size="10" fill="#77777d">4 crews · OSP Engineering</text>
+            <text x="428" y="96" font-family="ui-monospace,Menlo,monospace" font-size="9.5" font-weight="700" fill="#E4002B">AT RISK · FLOAT 0d</text>
+
+            <!-- node 4 -->
+            <rect x="620" y="44" width="176" height="66" rx="4" fill="#fff" stroke="#E4002B" stroke-width="2"/>
+            <text x="632" y="63" font-family="-apple-system,Segoe UI,sans-serif" font-size="11.5" font-weight="700" fill="#111112">400G Wave Provisioning</text>
+            <text x="632" y="79" font-family="-apple-system,Segoe UI,sans-serif" font-size="10" fill="#77777d">PRG-4108 Network Ops</text>
+            <text x="632" y="96" font-family="ui-monospace,Menlo,monospace" font-size="9.5" fill="#E4002B">FLOAT 0d · CROSS-PROGRAM</text>
+
+            <!-- node 5 : contract milestone -->
+            <rect x="824" y="44" width="148" height="66" rx="4" fill="#E4002B" stroke="#B00021" stroke-width="2"/>
+            <text x="836" y="63" font-family="-apple-system,Segoe UI,sans-serif" font-size="11.5" font-weight="700" fill="#ffffff">Hyperscaler</text>
+            <text x="836" y="77" font-family="-apple-system,Segoe UI,sans-serif" font-size="11.5" font-weight="700" fill="#ffffff">Acceptance — M4</text>
+            <text x="836" y="96" font-family="ui-monospace,Menlo,monospace" font-size="9.5" fill="#ffd6de">CONTRACTED · MustFinishOn</text>
+
+            <!-- row1 arrows -->
+            <line x1="184" y1="77" x2="206" y2="77" stroke="#B87400" stroke-width="2" marker-end="url(#ar-amb)"/>
+            <line x1="388" y1="77" x2="410" y2="77" stroke="#E4002B" stroke-width="2" marker-end="url(#ar-red)"/>
+            <line x1="592" y1="77" x2="614" y2="77" stroke="#E4002B" stroke-width="2.5" marker-end="url(#ar-red)"/>
+            <line x1="796" y1="77" x2="818" y2="77" stroke="#E4002B" stroke-width="2.5" marker-end="url(#ar-red)"/>
+
+            <!-- cross-lane branch from splice down to NaaS -->
+            <path d="M504,110 L504,150 L504,224" stroke="#E4002B" stroke-width="2"
+                  stroke-dasharray="5 4" fill="none" marker-end="url(#ar-red)"/>
+            <path d="M708,110 L708,150 L716,150 L716,224" stroke="#a3a3a9" stroke-width="1.75"
+                  stroke-dasharray="4 4" fill="none" marker-end="url(#ar-gry)"/>
+
+            <!-- ROW 2 nodes -->
+            <rect x="416" y="228" width="176" height="60" rx="4" fill="#fff" stroke="#E4002B" stroke-width="2"/>
+            <text x="428" y="247" font-family="-apple-system,Segoe UI,sans-serif" font-size="11.5" font-weight="700" fill="#111112">NaaS Edge Node</text>
+            <text x="428" y="261" font-family="-apple-system,Segoe UI,sans-serif" font-size="11.5" font-weight="700" fill="#111112">Activation</text>
+            <text x="428" y="278" font-family="ui-monospace,Menlo,monospace" font-size="9.5" fill="#E4002B">FLOAT 0d · PRG-4127</text>
+
+            <rect x="628" y="228" width="176" height="60" rx="4" fill="#fff" stroke="#e2e2e4" stroke-width="1.5"/>
+            <text x="640" y="247" font-family="-apple-system,Segoe UI,sans-serif" font-size="11.5" font-weight="700" fill="#3d3d40">Multi-Cloud Gateway</text>
+            <text x="640" y="261" font-family="-apple-system,Segoe UI,sans-serif" font-size="11.5" font-weight="700" fill="#3d3d40">Region 2 GA</text>
+            <text x="640" y="278" font-family="ui-monospace,Menlo,monospace" font-size="9.5" fill="#77777d">FLOAT 4d</text>
+
+            <line x1="592" y1="258" x2="622" y2="258" stroke="#a3a3a9" stroke-width="1.75"
+                  stroke-dasharray="4 4" marker-end="url(#ar-gry)"/>
+
+            <!-- callout -->
+            <text x="8" y="288" font-family="-apple-system,Segoe UI,sans-serif" font-size="10" fill="#77777d">
+              <tspan font-weight="700" fill="#E4002B">9 days late at the permit</tspan> consumes all
+            </text>
+            <text x="8" y="272" font-family="-apple-system,Segoe UI,sans-serif" font-size="10" fill="#77777d">
+              downstream float. M4 moves day-for-day.
+            </text>
+          </svg>
+        </div>
+
+        <div class="legend">
+          <span><i class="sw" style="border-color:#E4002B"></i> Zero-float path</span>
+          <span><i class="sw" style="border-color:#B87400"></i> Float remaining, currently late</span>
+          <span><i class="sw" style="border-top-style:dashed;border-color:#E4002B"></i> Cross-program edge</span>
+          <span><i class="sw" style="border-top-style:dashed;border-color:#a3a3a9"></i> Normal dependency</span>
+          <span><span style="display:inline-block;width:11px;height:11px;background:#E4002B;border-radius:2px"></span> Contracted milestone</span>
+        </div>
+
+        <div class="basis">
+          Basis — chain reconstructed from AgilePlace <b>getBoardDependencyGraph</b> upstream traversal on card
+          <b>PCF-R7-SPLICE</b>; float and constraint type from Portfolios <b>TOTAL_FLOAT</b> and
+          <b>ConstraintDate</b>. Late-days figure is baseline finish minus current forecast finish,
+          not a percent-complete estimate.
+        </div>
+      </section>
+
+      <!-- ZERO FLOAT TABLE -->
+      <section class="card">
+        <h2>Zero-float milestones downstream of at-risk work</h2>
+        <p class="sub">Sorted by days to due. These absorb nothing — a one-day upstream slip is a one-day milestone slip.</p>
+        <div class="srcs" style="margin-bottom:12px">
+          <span class="src s-ap">AgilePlace</span><span class="src s-pf">Portfolios</span>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Milestone</th>
+              <th>Program</th>
+              <th class="r">Due in</th>
+              <th class="r">Float</th>
+              <th>Upstream at-risk</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><b>Hyperscaler Acceptance — M4</b><div class="mono">Contracted · MustFinishOn</div></td>
+              <td>PCF Route 7</td>
+              <td class="r">18d</td>
+              <td class="r zero">0d</td>
+              <td>Intercity Fiber Splice</td>
+            </tr>
+            <tr>
+              <td><b>400G Wave Turn-Up — Phase A</b></td>
+              <td>PRG-4108 Network Ops</td>
+              <td class="r">24d</td>
+              <td class="r zero">0d</td>
+              <td>Conduit / IRU Access</td>
+            </tr>
+            <tr>
+              <td><b>NaaS Edge Node Activation</b></td>
+              <td>PRG-4127 Field Construction</td>
+              <td class="r">31d</td>
+              <td class="r zero">0d</td>
+              <td>Intercity Fiber Splice</td>
+            </tr>
+            <tr>
+              <td><b>TDM Cutover Window — Wave 3</b><div class="mono">Regulatory notice filed</div></td>
+              <td>Legacy Decom</td>
+              <td class="r">39d</td>
+              <td class="r zero">0d</td>
+              <td>Subscriber Migration Batch 7</td>
+            </tr>
+            <tr>
+              <td><b>Copper Retirement Certification</b></td>
+              <td>Legacy Decom</td>
+              <td class="r">47d</td>
+              <td class="r zero">0d</td>
+              <td>TDM Cutover Window</td>
+            </tr>
+            <tr>
+              <td><b>Hyperscaler Acceptance — M5</b><div class="mono">Contracted · MustFinishOn</div></td>
+              <td>PCF Route 7</td>
+              <td class="r">62d</td>
+              <td class="r zero">0d</td>
+              <td>400G Wave Turn-Up</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="basis">
+          Showing 6 of 11. Filter — <b>IsMilestone = true</b>, <b>TOTAL_FLOAT = 0</b>,
+          <b>ConstraintDate</b> within 90 days, with at least one upstream
+          <span class="edge">finishToStart</span> predecessor whose card status resolves to At Risk or Blocked.
+        </div>
+      </section>
+
+    </div>
+
+    <!-- ============ RIGHT COLUMN ============ -->
+    <div class="stack">
+
+      <!-- DEPENDENCY CHAIN CARDS -->
+      <section class="card">
+        <h2>Dependency chain <span class="ct">real edges, not counts</span></h2>
+        <p class="sub">AgilePlace holds the graph. Portfolios holds the float. Joined.</p>
+        <div class="srcs" style="margin-bottom:13px">
+          <span class="src s-ap">AgilePlace</span><span class="src s-pf">Portfolios</span>
+        </div>
+        <div class="rule"></div>
+
+        <div class="casc">
+          <div class="p">PCF Route 7 — Denver→Phoenix Splice <span class="rag rag-risk">At Risk</span></div>
+          <div class="arrow"><b>6</b> downstream edges <span class="edge">finishToStart</span> into milestones with <b>TOTAL_FLOAT = 0</b>, all due inside 90 days</div>
+          <div class="arrow">Blocks <b>400G Wave Provisioning</b> → objective <b>contracted capacity delivered on date</b></div>
+          <div class="arrow"><b>2 edges cross program boundaries</b> — into PRG-4108 and PRG-4127</div>
+          <div class="arrow">Owning pool <b>Outside Plant Engineering</b> · Resourcing RAG red</div>
+          <div class="arrow">Terminal node is a <b>contracted acceptance milestone</b>, not an internal date</div>
+        </div>
+
+        <div class="casc">
+          <div class="p">Legacy TDM Switch Decom — Wave 3 <span class="rag rag-risk">At Risk</span></div>
+          <div class="arrow"><b>3</b> downstream edges <span class="edge">finishToStart</span> into zero-float milestones inside 90 days</div>
+          <div class="arrow">Blocks <b>Copper Retirement Certification</b> → objective <b>opex per route mile</b></div>
+          <div class="arrow">Cutover window is <b>regulator-noticed</b> — moving it restarts the notice clock</div>
+          <div class="arrow">Owning pool <b>Outside Plant Engineering</b> — same pool as above</div>
+        </div>
+
+        <div class="casc watch">
+          <div class="p">Multi-Cloud Gateway — Region 2 GA <span class="rag rag-watch">Watch</span></div>
+          <div class="arrow"><b>2</b> downstream edges, float <b>4d</b> — absorbs a short slip, not a long one</div>
+          <div class="arrow">Upstream of <b>NaaS onboarding automation</b>, not of a contracted date</div>
+        </div>
+
+        <div class="stats stats-2" style="margin-top:14px">
+          <div class="stat alert">
+            <div class="k">Zero-float milestones &lt; 90d behind at-risk work</div>
+            <div class="v num">11 <span style="font-size:14px;color:var(--ink-3);font-weight:600">of 26</span></div>
+          </div>
+          <div class="stat warn">
+            <div class="k">Cross-board dependency edges</div>
+            <div class="v num">63</div>
+            <div class="f">3 cross-program</div>
+          </div>
+        </div>
+
+        <div class="basis">
+          Basis — AgilePlace <b>getBoardDependencyGraph</b> (upstream/downstream edges,
+          <span class="edge">finishToStart</span> timing, cross-board children) joined to Portfolios
+          <b>TOTAL_FLOAT</b>, <b>FREE_FLOAT</b>, <b>IsMilestone</b>, <b>ConstraintDate</b>.
+        </div>
+      </section>
+
+      <!-- RESOURCE CONCENTRATION -->
+      <section class="card">
+        <h2>Single point of failure <span class="ct">the actual story</span></h2>
+        <p class="sub">Both at-risk chains resolve to the same crew pool. This is a capacity problem wearing a schedule costume.</p>
+        <div class="srcs" style="margin-bottom:13px">
+          <span class="src s-pf">Portfolios</span>
+        </div>
+
+        <div class="stats stats-3">
+          <div class="stat alert">
+            <div class="k">At-risk programs owned</div>
+            <div class="v num">2</div>
+            <div class="f">of 2 total</div>
+          </div>
+          <div class="stat alert">
+            <div class="k">Zero-float milestones downstream</div>
+            <div class="v num">9</div>
+            <div class="f">of 11</div>
+          </div>
+          <div class="stat warn">
+            <div class="k">Splice crews assigned vs. planned</div>
+            <div class="v num">4<span style="font-size:15px;color:var(--ink-3)">/7</span></div>
+            <div class="f">3 unfilled since Q1</div>
+          </div>
+        </div>
+
+        <div class="rule"></div>
+        <table>
+          <thead>
+            <tr><th>Pool</th><th class="r">Cost variance</th><th>Resourcing RAG</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><b>Outside Plant Engineering</b></td><td class="r zero">−$2.4M</td><td><span class="rag rag-risk">Red</span></td></tr>
+            <tr><td>Network Operations</td><td class="r">−$310K</td><td><span class="rag rag-watch">Amber</span></td></tr>
+            <tr><td>Platform Engineering</td><td class="r" style="color:var(--green);font-weight:600">+$180K</td><td><span class="rag rag-ok">Green</span></td></tr>
+          </tbody>
+        </table>
+
+        <div class="basis">
+          Basis — Portfolios <b>Cost Variance</b> against baseline, rolled to owning resource pool.
+          Cost variance is used deliberately here rather than budget consumption —
+          Budget at Completion is not reliably populated at the pool level in this tenant.
+        </div>
+      </section>
+
+      <!-- OBJECTIVES -->
+      <section class="card">
+        <h2>What strategy is exposed</h2>
+        <p class="sub">Tracing each blocked chain up to the objective it was funded to move.</p>
+        <div class="srcs" style="margin-bottom:13px">
+          <span class="src s-okr">OKRs</span><span class="src s-pf">Portfolios</span>
+        </div>
+        <table>
+          <thead><tr><th>Objective</th><th class="r">Progress</th><th class="r">Chains at risk</th></tr></thead>
+          <tbody>
+            <tr><td><b>Deliver contracted capacity on committed dates</b><div class="mono">PCF delivery</div></td><td class="r">58%</td><td class="r zero">2</td></tr>
+            <tr><td><b>Reduce opex per route mile</b><div class="mono">Legacy cost-out</div></td><td class="r">41%</td><td class="r zero">1</td></tr>
+            <tr><td><b>Grow NaaS platform adoption</b><div class="mono">Digital services</div></td><td class="r">67%</td><td class="r" style="color:var(--amber);font-weight:700">1</td></tr>
+          </tbody>
+        </table>
+        <div class="basis">
+          Basis — objective linkage via card-to-objective association; progress values read live,
+          not recomputed. Chains counted where at least one <span class="edge">finishToStart</span>
+          path reaches a zero-float milestone contributing to the objective.
+        </div>
+      </section>
+
+    </div>
   </div>
 
-  <div class="decisions">
-    <div class="dec">
-      <div class="n">Decision 1</div>
-      <div class="t">Fund the Payments Engineering shortfall</div>
-      <div class="w">Resourcing RAG is Red — the only red on the board. Baseline FTE 199 against actual 182. Both at-risk dependency chains trace to this pool.</div>
-      <div class="o">Owner <b>E. Marchetti</b> · By <b>12 Jun</b> · Basis <b>Wbs723, BL_FTE_SUM, FTE_AC_SUM</b></div>
+  <!-- ============ SO WHAT ============ -->
+  <section class="card" style="margin-top:22px">
+    <h2>What to decide this week</h2>
+    <p class="sub">Three moves, in order of leverage. Each one is a decision someone in the room can actually make.</p>
+    <ol class="acts">
+      <li>
+        <b>Escalate the Maricopa permit, not the splice.</b>
+        The splice team is not the constraint — they are 9 days behind because make-ready has not cleared.
+        Escalating the crew adds cost and moves nothing.
+        <span class="who">Owner: Outside Plant Engineering &middot; Decision: external escalation path to county</span>
+      </li>
+      <li>
+        <b>Break the shared-pool coupling before it breaks itself.</b>
+        Both at-risk chains draw on the same four splice crews. Sequence them explicitly or
+        contract a second crew — running them in parallel on shared capacity is how both slip.
+        <span class="who">Owner: Resource Management &middot; Decision: sequence vs. augment</span>
+      </li>
+      <li>
+        <b>Re-baseline M5 now, while it is still a conversation.</b>
+        M4 has 18 days and zero float. If the permit does not clear inside two weeks,
+        M5 moves regardless — better to renegotiate on a forecast than to miss on a fact.
+        <span class="who">Owner: Program Delivery &middot; Decision: customer notification timing</span>
+      </li>
+    </ol>
+  </section>
+
+  <footer class="foot">
+    <div>
+      <b>Planview Anvi</b> — Dependency &amp; Delivery Risk, Network Programs.<br>
+      Every figure resolves to a named work item, field, and source system. No blended scores, no synthetic health index.
     </div>
-    <div class="dec">
-      <div class="n">Decision 2</div>
-      <div class="t">Adopt SPI in the investment pack</div>
-      <div class="w">Cost variance alone has reported green for six consecutive periods while SPI has fallen from 0.94 to 0.82.</div>
-      <div class="o">Owner <b>EPMO</b> · By <b>5 Jun</b> · Basis <b>1166, 1010</b></div>
+    <div style="text-align:right">
+      <b>Illustrative environment.</b><br>
+      Programs, milestones, and figures are representative, not customer data.
     </div>
-    <div class="dec">
-      <div class="n">Decision 3</div>
-      <div class="t">Break the Payment Rails v2 dependency chain</div>
-      <div class="w">Six finish-to-start edges into zero-float milestones inside 90 days. Longest single blocker on the board.</div>
-      <div class="o">Owner <b>S. Raghavan</b> · By <b>19 Jun</b> · Basis <b>AgilePlace dependency graph, TOTAL_FLOAT</b></div>
-    </div>
-  </div>
+  </footer>
 
 </div>
-
-<main class="grid">
-
-  <!-- LEFT -->
-  <div class="stack">
-
-    <section class="card">
-      <h2>What changed since last Monday</h2>
-      <div class="srcs"><span class="src s-pf">Portfolios</span><span class="src s-ap">AgilePlace</span><span class="src s-jira">Jira · Hub</span></div>
-      <div class="rule"></div>
-      <div class="chg"><span class="when">Health</span><span><b>2 initiatives</b> moved On Track → At Risk (Regulatory Reporting Alignment, Client Portal API Gateway)</span><span class="delta d-bad">At Risk 2 → 4</span></div>
-      <div class="chg"><span class="when">Schedule</span><span>Schedule Performance Index continued its decline — fifth consecutive week</span><span class="delta d-bad">SPI 0.84 → 0.82</span></div>
-      <div class="chg"><span class="when">Milestones</span><span><b>2 program-critical milestones completed</b>; 3 more pulled into the 90-day window</span><span class="delta d-good">Complete 36 → 38</span></div>
-      <div class="chg"><span class="when">Float</span><span><b>2 milestones</b> lost all remaining float this week</span><span class="delta d-bad">Zero-float 7 → 9</span></div>
-      <div class="chg"><span class="when">Flow</span><span>Board throughput fell; <b>Ready for Integration Test</b> is now the constraint lane</span><span class="delta d-bad">41 → 34 cards/wk</span></div>
-      <div class="chg"><span class="when">Risk</span><span><b>3 risks raised</b>, none closed. Two relate to reporting scope.</span><span class="delta d-bad">88 → 91</span></div>
-      <div class="chg"><span class="when">Scope</span><span><b>2 change requests approved</b>, clearing the open queue</span><span class="delta d-good">Open 4 → 2</span></div>
-      <div class="chg"><span class="when">Quality</span><span>Defect leakage rose; <b>2 new QA criticals</b> opened beyond threshold</span><span class="delta d-bad">0.94% → 1.01%</span></div>
-      <div class="basis" style="margin-top:11px">Prior-week values from a retained snapshot. <b>Portfolios does not store weekly state natively</b> — week-over-week comparison requires a scheduled snapshot job.</div>
-    </section>
-
-    <section class="card">
-      <h2>Health &amp; Schedule <span class="ct">92 initiatives · 7 dimensions</span></h2>
-      <div class="sub">Most program views report four of the seven RAG dimensions Portfolios maintains. The three highlighted below are populated and unused.</div>
-      <div class="srcs"><span class="src s-pf">Portfolios</span></div>
-      <div class="rule"></div>
-      <div class="legend">
-        <span><i style="background:var(--off)"></i>Off Track</span>
-        <span><i style="background:var(--risk)"></i>At Risk</span>
-        <span><i style="background:var(--on)"></i>On Track</span>
-        <span><i style="background:var(--done)"></i>Complete</span>
-        <span><i style="background:var(--none)"></i>Not Started</span>
-      </div>
-
-      <div class="drow">
-        <div class="dlabel">Overall<small>Wbs709</small></div>
-        <div>
-          <div class="bar"><i style="width:4.35%;background:var(--risk)"></i><i style="width:25%;background:var(--on)"></i><i style="width:28.26%;background:var(--done)"></i><i style="width:42.39%;background:var(--none)"></i></div>
-          <div class="counts"><span class="zero"><i style="background:var(--off)"></i><b>0</b></span><span><i style="background:var(--risk)"></i><b>4</b></span><span><i style="background:var(--on)"></i><b>23</b></span><span><i style="background:var(--done)"></i><b>26</b></span><span><i style="background:var(--none)"></i><b>39</b></span></div>
-        </div>
-        <div class="pillcell"><span class="delta d-bad">+2</span><span class="rag rag-risk">At Risk</span></div>
-      </div>
-
-      <div class="drow">
-        <div class="dlabel">Schedule<small>Wbs722</small></div>
-        <div>
-          <div class="bar"><i style="width:5.43%;background:var(--risk)"></i><i style="width:23.91%;background:var(--on)"></i><i style="width:28.26%;background:var(--done)"></i><i style="width:42.39%;background:var(--none)"></i></div>
-          <div class="counts"><span class="zero"><i style="background:var(--off)"></i><b>0</b></span><span><i style="background:var(--risk)"></i><b>5</b></span><span><i style="background:var(--on)"></i><b>22</b></span><span><i style="background:var(--done)"></i><b>26</b></span><span><i style="background:var(--none)"></i><b>39</b></span></div>
-        </div>
-        <div class="pillcell"><span class="delta d-bad">+2</span><span class="rag rag-risk">At Risk</span></div>
-      </div>
-
-      <div class="drow">
-        <div class="dlabel">Scope<small>Wbs726</small></div>
-        <div>
-          <div class="bar"><i style="width:28.26%;background:var(--on)"></i><i style="width:28.26%;background:var(--done)"></i><i style="width:43.48%;background:var(--none)"></i></div>
-          <div class="counts"><span class="zero"><i style="background:var(--off)"></i><b>0</b></span><span class="zero"><i style="background:var(--risk)"></i><b>0</b></span><span><i style="background:var(--on)"></i><b>26</b></span><span><i style="background:var(--done)"></i><b>26</b></span><span><i style="background:var(--none)"></i><b>40</b></span></div>
-        </div>
-        <div class="pillcell"><span class="delta d-flat">—</span><span class="rag rag-on">On Track</span></div>
-      </div>
-
-      <div class="drow">
-        <div class="dlabel">Cost<small>Wbs721</small></div>
-        <div>
-          <div class="bar"><i style="width:28.26%;background:var(--on)"></i><i style="width:28.26%;background:var(--done)"></i><i style="width:43.48%;background:var(--none)"></i></div>
-          <div class="counts"><span class="zero"><i style="background:var(--off)"></i><b>0</b></span><span class="zero"><i style="background:var(--risk)"></i><b>0</b></span><span><i style="background:var(--on)"></i><b>26</b></span><span><i style="background:var(--done)"></i><b>26</b></span><span><i style="background:var(--none)"></i><b>40</b></span></div>
-        </div>
-        <div class="pillcell"><span class="delta d-flat">—</span><span class="rag rag-on">On Track</span></div>
-      </div>
-
-      <div class="drow newdim">
-        <div class="dlabel">Resourcing<span class="nb">unused</span><small>Wbs723</small></div>
-        <div>
-          <div class="bar"><i style="width:2.17%;background:var(--off)"></i><i style="width:11.96%;background:var(--risk)"></i><i style="width:15.22%;background:var(--on)"></i><i style="width:28.26%;background:var(--done)"></i><i style="width:42.39%;background:var(--none)"></i></div>
-          <div class="counts"><span><i style="background:var(--off)"></i><b>2</b></span><span><i style="background:var(--risk)"></i><b>11</b></span><span><i style="background:var(--on)"></i><b>14</b></span><span><i style="background:var(--done)"></i><b>26</b></span><span><i style="background:var(--none)"></i><b>39</b></span></div>
-        </div>
-        <div class="pillcell"><span class="rag rag-off">Off Track</span></div>
-      </div>
-
-      <div class="drow newdim">
-        <div class="dlabel">Quality<span class="nb">unused</span><small>Wbs724</small></div>
-        <div>
-          <div class="bar"><i style="width:6.52%;background:var(--risk)"></i><i style="width:22.83%;background:var(--on)"></i><i style="width:28.26%;background:var(--done)"></i><i style="width:42.39%;background:var(--none)"></i></div>
-          <div class="counts"><span class="zero"><i style="background:var(--off)"></i><b>0</b></span><span><i style="background:var(--risk)"></i><b>6</b></span><span><i style="background:var(--on)"></i><b>21</b></span><span><i style="background:var(--done)"></i><b>26</b></span><span><i style="background:var(--none)"></i><b>39</b></span></div>
-        </div>
-        <div class="pillcell"><span class="rag rag-risk">At Risk</span></div>
-      </div>
-
-      <div class="drow newdim">
-        <div class="dlabel">Benefit<span class="nb">unused</span><small>Wbs725</small></div>
-        <div>
-          <div class="bar"><i style="width:8.7%;background:var(--risk)"></i><i style="width:20.65%;background:var(--on)"></i><i style="width:28.26%;background:var(--done)"></i><i style="width:42.39%;background:var(--none)"></i></div>
-          <div class="counts"><span class="zero"><i style="background:var(--off)"></i><b>0</b></span><span><i style="background:var(--risk)"></i><b>8</b></span><span><i style="background:var(--on)"></i><b>19</b></span><span><i style="background:var(--done)"></i><b>26</b></span><span><i style="background:var(--none)"></i><b>39</b></span></div>
-        </div>
-        <div class="pillcell"><span class="rag rag-risk">At Risk</span></div>
-      </div>
-
-      <div class="anvi">
-        <div class="anvi-tag">Anvi insight</div>
-        <p><b>Adding the three dimensions already maintained changes the board from "two amber, two green" to one containing a red.</b> Resourcing is Off Track — two initiatives red, eleven amber — and it is the only red status anywhere in this program.</p>
-        <p>It is also the upstream cause of the other two. Quality At Risk and the rising defect leakage both trace to test environment contention, which is a resourcing constraint. Benefit At Risk follows from initiatives not starting.</p>
-        <div class="basis">Basis — <b>Wbs709</b> Overall · <b>Wbs722</b> Schedule · <b>Wbs726</b> Scope · <b>Wbs721</b> Cost · <b>Wbs723</b> Resourcing · <b>Wbs724</b> Quality · <b>Wbs725</b> Benefit. All seven are native status assessment fields at Primary Planning Level.</div>
-      </div>
-
-      <div class="named">
-        <div class="h">The 4 initiatives behind the Overall rating</div>
-        <div class="item"><div><span class="nm">Core Ledger Migration — Phase 2</span><span class="wy">Vendor resource ramp incomplete; Resourcing RAG red</span></div><div class="mt">At risk 118d<br>M. Okonkwo</div></div>
-        <div class="item"><div><span class="nm">Real-Time Payments Engine</span><span class="wy">Downstream of Payment Rails v2 Cutover; zero float</span></div><div class="mt">At risk 96d<br>S. Raghavan</div></div>
-        <div class="item"><div><span class="nm">Regulatory Reporting Alignment<span class="new">new</span></span><span class="wy">Scope ambiguity raised 22 May; baseline not agreed</span></div><div class="mt">At risk 9d<br>D. Feldman</div></div>
-        <div class="item"><div><span class="nm">Client Portal API Gateway<span class="new">new</span></span><span class="wy">Auth standard undecided; two teams on different assumptions</span></div><div class="mt">At risk 9d<br>P. Ansah</div></div>
-      </div>
-    </section>
-
-    <section class="card">
-      <h2>Earned Value &amp; Forecast</h2>
-      <div class="sub">Actual rate, planned rate and schedule variance are native fields — not a roadmap item</div>
-      <div class="srcs"><span class="src s-pf">Portfolios</span></div>
-      <div class="rule"></div>
-
-      <div class="stats stats-4">
-        <div class="stat"><div class="k">Earned value</div><div class="v num">126.0<sup>M</sup></div><div class="f mono">1163</div></div>
-        <div class="stat"><div class="k">Planned value</div><div class="v num">153.6<sup>M</sup></div><div class="f">40.3% of baseline</div></div>
-        <div class="stat alert"><div class="k">Schedule variance</div><div class="v num">−27.6<sup>M</sup></div><div class="f mono">1167 · SV</div></div>
-        <div class="stat accent"><div class="k">Cost variance</div><div class="v num">+7.6<sup>M</sup></div><div class="f mono">1168 · CV</div></div>
-      </div>
-      <div class="stats stats-4" style="margin-top:10px">
-        <div class="stat alert"><div class="k">Schedule perf. index</div><div class="v num">0.82</div><div class="f mono">1166 · SPI</div></div>
-        <div class="stat accent"><div class="k">Cost perf. index</div><div class="v num">1.06</div><div class="f mono">1164 · CPI</div></div>
-        <div class="stat"><div class="k">To-complete perf. index</div><div class="v num">0.97</div><div class="f mono">1171 · TCPI</div></div>
-        <div class="stat warn"><div class="k">Projected landing</div><div class="v num">Q4-30</div><div class="f">at current SPI</div></div>
-      </div>
-
-      <div class="anvi">
-        <div class="anvi-tag">Anvi insight</div>
-        <p><b>TCPI of 0.97 says the program can finish inside budget running slightly below planned efficiency. SPI of 0.82 says it cannot finish on time at all without changing something.</b> Holding the current index, the remaining 43 planned months take roughly 52 — landing in Q4 2030, three quarters past commitment.</p>
-        <div class="basis">Basis — <b>1163</b> Earned Value · <b>1164</b> CPI · <b>1166</b> SPI · <b>1167</b> SV · <b>1171</b> TCPI · <b>1003</b> Total Baseline Costs. <b>1162</b> Budget at Completion frequently unpopulated; planned value derived from baseline costs and elapsed duration.</div>
-      </div>
-    </section>
-
-    <section class="card">
-      <h2>Resource &amp; Capacity</h2>
-      <div class="srcs"><span class="src s-pf">Portfolios</span></div>
-      <div class="rule"></div>
-      <div class="cap"><div class="r">Payments Engineering</div>
-        <div class="track"><div class="have" style="width:84.5%"></div><div class="over" style="left:84.5%;right:0"></div><div class="need" style="width:100%"></div></div>
-        <div class="g short">−13</div></div>
-      <div class="cap"><div class="r">Regulatory / Compliance</div>
-        <div class="track"><div class="have" style="width:58.3%"></div><div class="over" style="left:58.3%;right:0"></div><div class="need" style="width:100%"></div></div>
-        <div class="g short">−5</div></div>
-      <div class="cap"><div class="r">Data &amp; Integration</div>
-        <div class="track"><div class="have" style="width:95.7%"></div><div class="over" style="left:95.7%;right:0"></div><div class="need" style="width:100%"></div></div>
-        <div class="g short">−2</div></div>
-      <div class="cap"><div class="r">Program / PMO</div>
-        <div class="track"><div class="have" style="width:100%"></div><div class="need" style="width:100%"></div></div>
-        <div class="g ok">0</div></div>
-      <div class="cap"><div class="r">QA &amp; Test</div>
-        <div class="track"><div class="have" style="width:100%"></div><div class="need" style="width:92.7%"></div></div>
-        <div class="g ok">+3</div></div>
-      <div class="caplegend">
-        <span><i style="background:#ccd6e4"></i>Actual FTE</span>
-        <span><i style="background:repeating-linear-gradient(45deg,#f4c9c4,#f4c9c4 3px,#fbe9e7 3px,#fbe9e7 6px)"></i>Shortfall</span>
-        <span><i style="background:var(--ink);width:2px"></i>Baseline FTE</span>
-        <span style="margin-left:auto">Net <b style="color:var(--bad)">−17 FTE</b> (8.5%)</span>
-      </div>
-      <div class="basis" style="margin-top:10px">Basis — <b>BL_FTE_SUM</b> Baseline FTE rolled up (199) vs <b>FTE_AC_SUM</b> Actual FTE rolled up (182) · <b>1129</b> Contractor FTEs · <b>1130</b> Full Time FTEs · role split from <b>1064–1070</b> resource cost by role. <b>Baseline-vs-actual, not pool capacity</b> — true capacity planning sits in Resource Management.</div>
-    </section>
-
-  </div>
-
-  <!-- RIGHT -->
-  <div class="stack">
-
-    <section class="card">
-      <h2>Dependency chain <span class="ct">real edges, not counts</span></h2>
-      <div class="sub">AgilePlace holds the graph; Portfolios holds the float. Joined.</div>
-      <div class="srcs"><span class="src s-ap">AgilePlace</span><span class="src s-pf">Portfolios</span></div>
-      <div class="rule"></div>
-
-      <div class="casc">
-        <div class="p">Payment Rails v2 Cutover <span class="rag rag-risk">At Risk</span></div>
-        <div class="arrow"><b>6</b> downstream edges <span class="edge">finishToStart</span> into milestones with <b>TOTAL_FLOAT = 0</b>, all due inside 90 days</div>
-        <div class="arrow">Blocks <b>Real-Time Payments Engine</b> → objective <b>real-time settlement</b></div>
-        <div class="arrow"><b>2 edges cross program boundaries</b> — into PRG-4402 and PRG-4431</div>
-        <div class="arrow">Owning pool <b>Payments Engineering</b> · Resourcing RAG red</div>
-      </div>
-      <div class="casc">
-        <div class="p">Ledger Read-Only Freeze <span class="rag rag-risk">At Risk</span></div>
-        <div class="arrow"><b>3</b> downstream edges <span class="edge">finishToStart</span> into zero-float milestones inside 90 days</div>
-        <div class="arrow">Blocks <b>Core Ledger Migration Ph.2</b> → objective <b>cost per transaction</b></div>
-        <div class="arrow">Owning pool <b>Payments Engineering</b> — same pool as above</div>
-      </div>
-
-      <div class="stats stats-2" style="margin-top:12px">
-        <div class="stat alert"><div class="k">Zero-float milestones &lt; 90d behind at-risk work</div><div class="v num">9 <span style="font-size:14px;color:var(--ink-3)">of 22</span></div></div>
-        <div class="stat warn"><div class="k">Cross-board dependency edges</div><div class="v num">47</div><div class="f">2 cross-program</div></div>
-      </div>
-      <div class="basis" style="margin-top:10px">Basis — AgilePlace <b>getBoardDependencyGraph</b> (upstream/downstream edges, finishToStart timing, cross-board children) joined to Portfolios <b>TOTAL_FLOAT</b>, <b>FREE_FLOAT</b>, <b>IsMilestone</b>, <b>ConstraintDate</b>. Portfolios exposes no predecessor/successor fields — the edge list comes from AgilePlace, the criticality from float.</div>
-    </section>
-
-    <section class="card">
-      <h2>Delivery flow</h2>
-      <div class="srcs"><span class="src s-ap">AgilePlace</span></div>
-      <div class="rule"></div>
-      <div class="stats stats-2">
-        <div class="stat warn"><div class="k">Throughput, trailing 4wk</div><div class="v num">34<sup>/wk</sup></div><div class="f"><span class="delta d-bad">−17%</span> from 41</div></div>
-        <div class="stat warn"><div class="k">Cycle time, median</div><div class="v num">18.2<sup>d</sup></div><div class="f">was 15.6d</div></div>
-        <div class="stat alert"><div class="k">Blocked cards</div><div class="v num">23</div><div class="f">9 blocked &gt; 14 days</div></div>
-        <div class="stat"><div class="k">Constraint lane</div><div class="v" style="font-size:14px;line-height:1.3;margin-top:7px">Ready for Integration Test</div><div class="f">18 cards, avg age 12.4d</div></div>
-      </div>
-      <div class="basis" style="margin-top:10px">Basis — <b>getBoardThroughputReport</b> · <b>getLaneBottleneckReport</b> · <b>getCardStatistics</b> · <b>LK_IS_BLOCKED</b>.</div>
-    </section>
-
-    <section class="card">
-      <h2>Objectives <span class="ct">4 program OKRs</span></h2>
-      <div class="sub">Attainment vs. time-elapsed pace</div>
-      <div class="srcs"><span class="src s-okr">OKRs</span><span class="src s-pf">Portfolios</span></div>
-      <div class="rule"></div>
-
-      <div class="okr">
-        <div class="top"><div class="o">Reduce payment failure rate by 40% by FY27</div><div class="pct num">62<sup style="font-size:11px">%</sup></div>
-          <div style="text-align:right"><span class="rag rag-on">On Track</span></div></div>
-        <div class="track"><div class="fill" style="width:62%;background:var(--on)"></div><div class="pace" style="left:55%"></div></div>
-      </div>
-      <div class="okr">
-        <div class="top"><div class="o">Cut cost per transaction by 25%</div><div class="pct num">38<sup style="font-size:11px">%</sup></div>
-          <div style="text-align:right"><span class="rag rag-risk">At Risk</span></div></div>
-        <div class="track"><div class="fill" style="width:38%;background:var(--risk)"></div><div class="pace" style="left:55%"></div></div>
-        <div class="thr">Linked work items include <b>Core Ledger Migration Ph.2</b> and <b>Netting Optimization</b> — both at risk</div>
-      </div>
-      <div class="okr">
-        <div class="top"><div class="o">Real-time settlement for 80% of eligible volume</div><div class="pct num">21<sup style="font-size:11px">%</sup></div>
-          <div style="text-align:right"><span class="rag rag-risk">At Risk</span></div></div>
-        <div class="track"><div class="fill" style="width:21%;background:var(--risk)"></div><div class="pace" style="left:40%"></div></div>
-        <div class="thr"><b>Single linked initiative</b> — Real-Time Payments Engine. No alternative contributor in the portfolio.</div>
-      </div>
-      <div class="okr">
-        <div class="top"><div class="o">Zero critical regulatory findings</div><div class="pct num">100<sup style="font-size:11px">%</sup></div>
-          <div style="text-align:right"><span class="rag rag-on">On Track</span></div></div>
-        <div class="track"><div class="fill" style="width:100%;background:var(--on)"></div></div>
-      </div>
-      <div class="basis" style="margin-top:11px">Basis — OKR <b>progress_percentage</b>, <b>rolled_up_progress_percentage</b>, <b>starts_at</b>/<b>ends_at</b> (pace marker), <b>work_item_container_id</b> (initiative join). Contribution weighting per initiative is <i>not</i> a stored field — linkage is shown, apportionment is not claimed.</div>
-    </section>
-
-    <section class="card">
-      <h2>Benefit realisation</h2>
-      <div class="srcs"><span class="src s-pf">Portfolios</span></div>
-      <div class="rule"></div>
-      <div class="stats stats-2">
-        <div class="stat"><div class="k">Total benefits planned</div><div class="v num">612.0<sup>M</sup></div><div class="f mono">1132</div></div>
-        <div class="stat alert"><div class="k">Benefits realised to date</div><div class="v num">47.3<sup>M</sup></div><div class="f">7.7% at 40.3% elapsed</div></div>
-        <div class="stat"><div class="k">Total benefit / revenue</div><div class="v num">284.0<sup>M</sup></div><div class="f mono">1013</div></div>
-        <div class="stat warn"><div class="k">Profitability variance</div><div class="v num">−8.2<sup>M</sup></div><div class="f mono">1205</div></div>
-      </div>
-      <div class="anvi">
-        <div class="anvi-tag">Anvi insight</div>
-        <p><b>Benefit realisation runs at 7.7% against 40.3% elapsed — the widest gap of any measure in this brief, and it appears on no standard program view.</b></p>
-        <p>Cost variance answers "did we spend what we said." This answers "did we get what we paid for."</p>
-        <div class="basis">Basis — <b>1132</b> Total Benefits · <b>1013</b> Total Benefit/Revenue · <b>1205</b> Profitability Variance · <b>Wbs725</b> Benefit Status Assessment. Detail fields <b>actual_dollars_saved</b> / <b>proj_dollars_saved</b> are frequently unpopulated — verify per tenant.</div>
-      </div>
-    </section>
-
-    <section class="card">
-      <h2>Risks by score <span class="ct">91 open · 3 raised</span></h2>
-      <div class="srcs"><span class="src s-pf">Portfolios</span></div>
-      <div class="rule"></div>
-      <table>
-        <tr><th>Risk</th><th>Level</th><th>Score</th><th>Age</th></tr>
-        <tr><td>R-0412 · Vendor resource ramp, ledger migration</td><td><span class="sev sev-m">Med</span></td><td class="num">8.4</td><td class="age stale">118d</td></tr>
-        <tr><td>R-0388 · Payment rails latency spec unresolved</td><td><span class="sev sev-m">Med</span></td><td class="num">7.9</td><td class="age stale">96d</td></tr>
-        <tr><td>R-0455 · Reporting scope ambiguity <span class="new">new</span></td><td><span class="sev sev-m">Med</span></td><td class="num">7.1</td><td class="age">9d</td></tr>
-        <tr><td>R-0301 · Test environment contention</td><td><span class="sev sev-m">Med</span></td><td class="num">6.6</td><td class="age stale">164d</td></tr>
-        <tr><td>R-0467 · Client API auth standard undecided <span class="new">new</span></td><td><span class="sev sev-l">Low</span></td><td class="num">4.2</td><td class="age">9d</td></tr>
-      </table>
-      <div class="stats stats-2" style="margin-top:14px">
-        <div class="stat warn"><div class="k">Open &gt; 90 days, no update</div><div class="v num">3</div></div>
-        <div class="stat"><div class="k">Issues open</div><div class="v num">11</div><div class="f">1 medium, 10 low</div></div>
-      </div>
-      <div class="basis" style="margin-top:10px">Basis — <b>score2</b> Investment Risk Score · <b>Wbs708</b> Work Risk · <b>Wbs69</b> Technical Risk · <b>Wbs77</b> Business Risk · <b>Wbs61–63</b> risk scoring dimensions. <b>Dollar exposure is not a stored field</b> — ranking is by composite score, not modelled financial impact.</div>
-    </section>
-
-    <section class="card">
-      <h2>Financials <span class="ct">$M</span></h2>
-      <div class="srcs"><span class="src s-pf">Portfolios</span></div>
-      <div class="rule"></div>
-      <div class="stats stats-2">
-        <div class="stat"><div class="k">Total costs at complete</div><div class="v num">379.5<sup>M</sup></div><div class="f mono">1011</div></div>
-        <div class="stat"><div class="k">Actual costs to date</div><div class="v num">118.4<sup>M</sup></div><div class="f mono">1001 · 31.2% consumed</div></div>
-        <div class="stat"><div class="k">Total capitalised costs</div><div class="v num">241.8<sup>M</sup></div><div class="f mono">1017</div></div>
-        <div class="stat"><div class="k">Total expense costs</div><div class="v num">137.7<sup>M</sup></div><div class="f mono">1015</div></div>
-      </div>
-      <div style="margin-top:14px">
-        <div style="display:flex;align-items:baseline;gap:10px;margin-bottom:9px">
-          <span style="font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);font-weight:600">Spend consumed vs. time elapsed</span>
-          <span class="num" style="margin-left:auto;font-size:18px;font-weight:600">31.2%</span>
-          <span style="font-size:11px;color:var(--ink-3)">of 40.3%</span>
-        </div>
-        <div class="thresh"><div class="track"><div class="fill" style="width:31.2%;background:var(--risk)"></div><div class="tick" style="left:40.3%"></div></div>
-          <div class="cap2"><span>0%</span><span>▲ elapsed 40.3%</span><span>100%</span></div></div>
-      </div>
-      <div class="basis" style="margin-top:12px">Basis — <b>1011</b> Total Costs at Complete · <b>1001</b> Actual Costs to Date · <b>1003</b> Total Baseline Costs · <b>1017</b> Total Capitalised Costs · <b>1015</b> Total Expense Costs · <b>1127</b>/<b>1125</b> capital and expense variance.</div>
-    </section>
-
-    <section class="card">
-      <h2>Delivery Quality</h2>
-      <div class="srcs"><span class="src s-jira">Jira · Hub</span><span class="src s-pf">Portfolios</span></div>
-      <div class="rule"></div>
-      <table>
-        <tr><th>Environment</th><th>Open critical &amp; high<br><span class="dim">beyond threshold</span></th><th>Closed</th></tr>
-        <tr><td>QA</td><td><span class="sev sev-m">3</span> <span class="delta d-bad">+2</span></td><td class="num">490</td></tr>
-        <tr><td>Staging</td><td><span class="sev sev-0">0</span></td><td class="num">84</td></tr>
-        <tr><td>Production</td><td><span class="sev sev-0">0</span></td><td class="num">11</td></tr>
-      </table>
-      <div style="margin-top:14px">
-        <div style="display:flex;align-items:baseline;gap:10px">
-          <span style="font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);font-weight:600">Defect leakage to production</span>
-          <span class="num" style="margin-left:auto;font-size:18px;font-weight:600">1.01%</span>
-          <span class="delta d-bad">from 0.94%</span>
-        </div>
-        <div class="thresh" style="margin-top:9px"><div class="track"><div class="fill" style="width:33.7%;background:var(--on)"></div><div class="tick" style="left:66.7%"></div></div>
-          <div class="cap2"><span>0%</span><span>Target ≤ 2.0%</span><span>3%</span></div></div>
-      </div>
-      <div class="basis" style="margin-top:10px">Basis — Jira defect data via Planview Hub. <b>Portfolios holds no defect fields</b> — only <b>Wbs724</b> Quality Status Assessment. This section requires the Hub connector.</div>
-    </section>
-
-  </div>
-</main>
-
-<footer class="footer">
-  <div class="row">
-    <span>Meridian Financial Group · Steering Council edition</span>
-    <a href="#">Open full dashboard</a><a href="#">Change edition</a>
-  </div>
-  <div class="ask"><b>Reply to this brief to ask a follow-up.</b> Anvi re-queries Portfolios, AgilePlace and Jira live — for example: <i>"which of the 40 not-started initiatives have funding approved but no assigned resource?"</i></div>
-  <div class="src2">Sources — Planview Portfolios (RAG ×7, EVM, milestones, float, financials, FTE, benefits, risk scoring) · Planview OKRs · AgilePlace (dependency graph, throughput, bottleneck, blocked) · Jira via Planview Hub. Week-over-week comparison requires a retained snapshot.</div>
-  <div class="disc">Illustrative concept artifact using synthetic data. Meridian Financial Group is fictional. Field identifiers reference Planview Portfolios schema; population varies by tenant.</div>
-</footer>
-
 </body>
 </html>
