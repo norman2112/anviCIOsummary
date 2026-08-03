@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Dependency &amp; Delivery Risk — Network Programs</title>
+<title>Dependency &amp; Delivery Risk</title>
 <style>
   :root{
     --red:#E4002B;
@@ -21,7 +21,6 @@
     --amber-tint:#FDF4E3;
     --green:#0F7A4A;
     --green-tint:#EAF6F0;
-    --slate:#2F4858;
     --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
     --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
   }
@@ -29,41 +28,28 @@
   *{box-sizing:border-box}
   html,body{margin:0;padding:0}
   body{
-    background:var(--wash);
-    color:var(--ink);
-    font-family:var(--sans);
-    font-size:14px;
-    line-height:1.5;
-    -webkit-font-smoothing:antialiased;
+    background:var(--wash);color:var(--ink);font-family:var(--sans);
+    font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased;
   }
   .wrap{max-width:1280px;margin:0 auto;padding:0 28px 64px}
 
-  /* ---------- masthead ---------- */
   .mast{
-    border-top:5px solid var(--red);
-    background:var(--paper);
-    padding:26px 28px 22px;
-    margin:0 -28px 24px;
-    border-bottom:1px solid var(--line);
+    border-top:5px solid var(--red);background:var(--paper);
+    padding:24px 28px 20px;margin:0 -28px 22px;border-bottom:1px solid var(--line);
   }
   .mast-inner{max-width:1224px;margin:0 auto}
   .eyebrow{
     font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
-    color:var(--red);margin-bottom:9px;
+    color:var(--red);margin-bottom:8px;
   }
-  h1{
-    font-size:29px;line-height:1.15;font-weight:700;letter-spacing:-.022em;
-    margin:0 0 8px;
-  }
-  .dek{color:var(--ink-3);font-size:14px;max-width:74ch;margin:0}
+  h1{font-size:28px;line-height:1.15;font-weight:700;letter-spacing:-.022em;margin:0}
   .mast-meta{
     display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center;
-    margin-top:16px;padding-top:14px;border-top:1px solid var(--line-2);
+    margin-top:15px;padding-top:13px;border-top:1px solid var(--line-2);
     font-size:11.5px;color:var(--ink-3);
   }
   .mast-meta b{color:var(--ink-2);font-weight:600}
 
-  /* ---------- source chips ---------- */
   .srcs{display:flex;flex-wrap:wrap;gap:6px}
   .src{
     font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;
@@ -73,63 +59,52 @@
   .s-pf{background:var(--red-tint);color:var(--red-dk);border-color:#f6d3da}
   .s-okr{background:#F1EDF7;color:#4A2F58;border-color:#e0d6ea}
 
-  /* ---------- layout ---------- */
   .cols{display:grid;grid-template-columns:1.32fr 1fr;gap:22px;align-items:start}
   .stack{display:flex;flex-direction:column;gap:22px}
 
   .card{
     background:var(--paper);border:1px solid var(--line);border-radius:6px;
-    padding:22px 22px 20px;
+    padding:20px 22px 18px;
   }
-  .card > h2{
-    font-size:17px;font-weight:700;letter-spacing:-.012em;margin:0 0 3px;
-    display:flex;align-items:baseline;gap:9px;flex-wrap:wrap;
-  }
-  .ct{font-size:11px;font-weight:600;color:var(--ink-4);letter-spacing:.02em}
-  .sub{color:var(--ink-3);font-size:12.5px;margin:0 0 13px}
+  .card > h2{font-size:16px;font-weight:700;letter-spacing:-.012em;margin:0 0 4px}
+  .sub{color:var(--ink-3);font-size:12px;margin:0 0 13px;font-family:var(--mono)}
   .rule{height:1px;background:var(--line-2);margin:14px 0}
 
-  /* ---------- stat blocks ---------- */
   .stats{display:grid;gap:11px}
   .stats-2{grid-template-columns:1fr 1fr}
   .stats-3{grid-template-columns:repeat(3,1fr)}
   .stats-4{grid-template-columns:repeat(4,1fr)}
   .stat{
     border:1px solid var(--line);border-left-width:3px;border-radius:4px;
-    padding:11px 13px 12px;background:var(--paper);
+    padding:11px 13px 12px;
   }
   .stat .k{
     font-size:10.5px;font-weight:600;letter-spacing:.045em;text-transform:uppercase;
     color:var(--ink-3);line-height:1.35;margin-bottom:6px;min-height:2.7em;
   }
-  .stat .v{font-size:27px;font-weight:700;letter-spacing:-.03em;line-height:1}
-  .stat .f{font-size:11px;color:var(--ink-3);margin-top:5px}
+  .stat .v{font-size:26px;font-weight:700;letter-spacing:-.03em;line-height:1}
+  .stat .f{font-size:11px;color:var(--ink-3);margin-top:5px;font-family:var(--mono)}
   .num{font-variant-numeric:tabular-nums}
   .stat.alert{border-left-color:var(--red)}
   .stat.alert .v{color:var(--red)}
   .stat.warn{border-left-color:var(--amber)}
   .stat.warn .v{color:var(--amber)}
-  .stat.ok{border-left-color:var(--green)}
-  .stat.ok .v{color:var(--green)}
-  .stat.neutral{border-left-color:var(--slate)}
 
-  /* ---------- RAG pills ---------- */
   .rag{
     font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
-    padding:2.5px 7px;border-radius:3px;vertical-align:middle;white-space:nowrap;
+    padding:2.5px 7px;border-radius:3px;white-space:nowrap;
   }
   .rag-risk{background:var(--red-tint);color:var(--red-dk)}
   .rag-watch{background:var(--amber-tint);color:var(--amber)}
   .rag-ok{background:var(--green-tint);color:var(--green)}
 
-  /* ---------- cascade blocks ---------- */
   .casc{
     border:1px solid var(--line);border-left:3px solid var(--red);border-radius:4px;
-    padding:13px 15px 14px;margin-bottom:12px;background:#fffdfd;
+    padding:12px 15px 13px;margin-bottom:11px;
   }
-  .casc.watch{border-left-color:var(--amber);background:#fffdf8}
+  .casc.watch{border-left-color:var(--amber)}
   .casc .p{
-    font-size:14.5px;font-weight:700;letter-spacing:-.008em;margin-bottom:9px;
+    font-size:14px;font-weight:700;letter-spacing:-.008em;margin-bottom:8px;
     display:flex;align-items:center;gap:8px;flex-wrap:wrap;
   }
   .casc .arrow{
@@ -137,9 +112,9 @@
     margin-top:5px;line-height:1.45;
   }
   .casc .arrow::before{
-    content:"";position:absolute;left:2px;top:.55em;
-    width:6px;height:6px;border-right:1.5px solid var(--red);
-    border-bottom:1.5px solid var(--red);transform:rotate(-45deg);
+    content:"";position:absolute;left:2px;top:.55em;width:6px;height:6px;
+    border-right:1.5px solid var(--red);border-bottom:1.5px solid var(--red);
+    transform:rotate(-45deg);
   }
   .casc.watch .arrow::before{border-color:var(--amber)}
   .casc .arrow b{font-weight:700;color:var(--ink)}
@@ -148,14 +123,12 @@
     padding:1px 5px;border-radius:3px;color:var(--ink-2);
   }
 
-  /* ---------- basis footer ---------- */
   .basis{
     font-size:11px;color:var(--ink-4);line-height:1.5;
     border-top:1px dashed var(--line);padding-top:9px;margin-top:14px;
   }
   .basis b{color:var(--ink-3);font-weight:600;font-family:var(--mono);font-size:10.5px}
 
-  /* ---------- tables ---------- */
   table{width:100%;border-collapse:collapse;font-size:12.5px}
   th{
     text-align:left;font-size:10px;font-weight:700;letter-spacing:.06em;
@@ -168,7 +141,6 @@
   .zero{color:var(--red);font-weight:700}
   .mono{font-family:var(--mono);font-size:11px;color:var(--ink-3)}
 
-  /* ---------- svg chain ---------- */
   .chainwrap{
     border:1px solid var(--line);border-radius:5px;background:var(--paper);
     padding:6px;overflow-x:auto;
@@ -182,33 +154,11 @@
   .legend span{display:inline-flex;align-items:center;gap:6px}
   .sw{width:20px;height:0;border-top-width:2px;border-top-style:solid;display:inline-block}
 
-  /* ---------- action list ---------- */
-  .acts{list-style:none;margin:0;padding:0;counter-reset:a}
-  .acts li{
-    counter-increment:a;position:relative;padding:11px 0 11px 40px;
-    border-bottom:1px solid var(--line-2);font-size:13px;line-height:1.5;
-  }
-  .acts li:last-child{border-bottom:none;padding-bottom:0}
-  .acts li::before{
-    content:counter(a);position:absolute;left:0;top:11px;
-    width:24px;height:24px;border-radius:50%;background:var(--ink);color:#fff;
-    font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;
-    font-variant-numeric:tabular-nums;
-  }
-  .acts b{font-weight:700}
-  .who{
-    display:block;font-size:11px;color:var(--ink-3);margin-top:3px;
-  }
-
-  /* ---------- footer ---------- */
   .foot{
-    margin-top:30px;padding-top:16px;border-top:2px solid var(--ink);
+    margin-top:26px;padding-top:14px;border-top:2px solid var(--ink);
     font-size:11px;color:var(--ink-3);line-height:1.6;
-    display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;
   }
-  .foot b{color:var(--ink-2)}
 
-  /* ---------- responsive ---------- */
   @media (max-width:1000px){
     .cols{grid-template-columns:1fr}
     .stats-4{grid-template-columns:1fr 1fr}
@@ -216,11 +166,9 @@
   @media (max-width:620px){
     .wrap{padding:0 16px 44px}
     .mast{margin:0 -16px 20px;padding:22px 16px 18px}
-    h1{font-size:23px}
+    h1{font-size:22px}
     .stats-2,.stats-3,.stats-4{grid-template-columns:1fr}
   }
-
-  /* ---------- print ---------- */
   @media print{
     body{background:#fff;font-size:11px}
     .wrap{max-width:none;padding:0}
@@ -230,29 +178,21 @@
     .mast{margin:0 0 16px;padding:0 0 14px}
     .chainwrap svg{min-width:0}
   }
-  @media (prefers-reduced-motion:reduce){
-    *{animation:none!important;transition:none!important}
-  }
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
 <body>
 
 <div class="wrap">
 
-  <!-- ============ MASTHEAD ============ -->
   <header class="mast">
     <div class="mast-inner">
-      <div class="eyebrow">Planview Anvi &middot; Portfolio Delivery Intelligence</div>
-      <h1>Dependency &amp; Delivery Risk — Network Programs</h1>
-      <p class="dek">
-        Where a slip stops being a schedule problem and starts being a contract problem.
-        Real dependency edges joined to schedule float and contracted delivery dates —
-        not a count of open risks.
-      </p>
+      <div class="eyebrow">Planview Anvi</div>
+      <h1>Dependency &amp; Delivery Risk</h1>
       <div class="mast-meta">
-        <span><b>Scope</b> Physical Network &middot; Digital Services Platform &middot; Legacy Decom &amp; Cost-Out</span>
-        <span><b>Horizon</b> Next 90 days</span>
-        <span><b>Refreshed</b> live at open</span>
+        <span><b>Scope</b> Network Build &middot; Platform Services &middot; Legacy Decommission</span>
+        <span><b>Horizon</b> 90 days</span>
+        <span><b>Data</b> Live at open</span>
         <div class="srcs">
           <span class="src s-ap">AgilePlace</span>
           <span class="src s-pf">Portfolios</span>
@@ -262,20 +202,19 @@
     </div>
   </header>
 
-  <!-- ============ TOP-LINE ============ -->
   <div class="card" style="margin-bottom:22px">
-    <h2>Exposure at a glance <span class="ct">90-day window</span></h2>
-    <p class="sub">Every number below resolves to specific work items. Nothing here is a rollup of a rollup.</p>
+    <h2>Summary</h2>
+    <p class="sub">90-day window</p>
     <div class="stats stats-4">
       <div class="stat alert">
         <div class="k">Zero-float milestones behind at-risk work</div>
         <div class="v num">11 <span style="font-size:14px;color:var(--ink-3);font-weight:600">of 26</span></div>
-        <div class="f">TOTAL_FLOAT = 0, due &lt; 90d</div>
+        <div class="f">TOTAL_FLOAT = 0</div>
       </div>
       <div class="stat alert">
-        <div class="k">Contracted PCF milestones in the blast radius</div>
+        <div class="k">Contracted milestones in the chain</div>
         <div class="v num">4</div>
-        <div class="f">Customer-committed dates</div>
+        <div class="f">MustFinishOn</div>
       </div>
       <div class="stat warn">
         <div class="k">Cross-board dependency edges</div>
@@ -285,32 +224,28 @@
       <div class="stat warn">
         <div class="k">At-risk programs on one resource pool</div>
         <div class="v num">2</div>
-        <div class="f">Outside Plant Engineering</div>
+        <div class="f">Outside Plant Eng.</div>
       </div>
     </div>
     <div class="basis">
-      Basis — AgilePlace <b>getBoardDependencyGraph</b> (upstream/downstream edges, <span class="edge">finishToStart</span> timing,
-      cross-board children) joined to Portfolios <b>TOTAL_FLOAT</b>, <b>FREE_FLOAT</b>, <b>IsMilestone</b>, <b>ConstraintDate</b>.
-      Contracted flag derived from milestone constraint type <b>MustFinishOn</b> plus program classification.
+      Basis — AgilePlace <b>getBoardDependencyGraph</b> (upstream/downstream edges,
+      <span class="edge">finishToStart</span> timing, cross-board children) joined to Portfolios
+      <b>TOTAL_FLOAT</b>, <b>FREE_FLOAT</b>, <b>IsMilestone</b>, <b>ConstraintDate</b>.
+      Contracted flag derived from constraint type <b>MustFinishOn</b>.
     </div>
   </div>
 
   <div class="cols">
 
-    <!-- ============ LEFT COLUMN ============ -->
     <div class="stack">
 
-      <!-- CASCADE SPINE -->
       <section class="card">
-        <h2>The Route 7 spine <span class="ct">one chain, six commitments</span></h2>
-        <p class="sub">
-          Every box downstream of the splice has zero float. There is no absorbing this one internally —
-          it lands on a customer date.
-        </p>
+        <h2>Route 7 dependency chain</h2>
+        <p class="sub">Upstream traversal from card PCF-R7-SPLICE</p>
 
         <div class="chainwrap">
-          <svg viewBox="0 0 980 300" xmlns="http://www.w3.org/2000/svg" role="img"
-               aria-label="Dependency chain from permitting through fiber splice to contracted hyperscaler acceptance milestone">
+          <svg viewBox="0 0 980 292" xmlns="http://www.w3.org/2000/svg" role="img"
+               aria-label="Dependency chain from permit and make-ready through fiber splice to contracted customer acceptance milestone">
             <defs>
               <marker id="ar-red" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto">
                 <path d="M0,0 L9,4.5 L0,9 z" fill="#E4002B"/>
@@ -323,236 +258,175 @@
               </marker>
             </defs>
 
-            <!-- swimlane labels -->
             <text x="8" y="20" font-family="-apple-system,Segoe UI,sans-serif" font-size="9.5"
-                  font-weight="700" letter-spacing="1.1" fill="#a3a3a9">PHYSICAL NETWORK</text>
+                  font-weight="700" letter-spacing="1.1" fill="#a3a3a9">NETWORK BUILD</text>
             <line x1="8" y1="28" x2="972" y2="28" stroke="#f0f0f1" stroke-width="1"/>
 
             <text x="8" y="200" font-family="-apple-system,Segoe UI,sans-serif" font-size="9.5"
-                  font-weight="700" letter-spacing="1.1" fill="#a3a3a9">DIGITAL SERVICES PLATFORM</text>
+                  font-weight="700" letter-spacing="1.1" fill="#a3a3a9">PLATFORM SERVICES</text>
             <line x1="8" y1="208" x2="972" y2="208" stroke="#f0f0f1" stroke-width="1"/>
 
-            <!-- ROW 1 nodes: y 44..112 -->
-            <!-- node 1 -->
             <rect x="8" y="44" width="176" height="66" rx="4" fill="#fff" stroke="#B87400" stroke-width="2"/>
             <text x="20" y="63" font-family="-apple-system,Segoe UI,sans-serif" font-size="11.5" font-weight="700" fill="#111112">Permit &amp; Make-Ready</text>
-            <text x="20" y="79" font-family="-apple-system,Segoe UI,sans-serif" font-size="10" fill="#77777d">Maricopa County · 41 poles</text>
+            <text x="20" y="79" font-family="-apple-system,Segoe UI,sans-serif" font-size="10" fill="#77777d">41 poles</text>
             <text x="20" y="96" font-family="ui-monospace,Menlo,monospace" font-size="9.5" fill="#B87400">FLOAT 6d · 9d LATE</text>
 
-            <!-- node 2 -->
             <rect x="212" y="44" width="176" height="66" rx="4" fill="#fff" stroke="#E4002B" stroke-width="2"/>
             <text x="224" y="63" font-family="-apple-system,Segoe UI,sans-serif" font-size="11.5" font-weight="700" fill="#111112">Conduit / IRU Access</text>
-            <text x="224" y="79" font-family="-apple-system,Segoe UI,sans-serif" font-size="10" fill="#77777d">Route 7 · DEN→PHX</text>
+            <text x="224" y="79" font-family="-apple-system,Segoe UI,sans-serif" font-size="10" fill="#77777d">Route 7</text>
             <text x="224" y="96" font-family="ui-monospace,Menlo,monospace" font-size="9.5" fill="#E4002B">FLOAT 0d</text>
 
-            <!-- node 3 -->
             <rect x="416" y="44" width="176" height="66" rx="4" fill="#fffdfd" stroke="#E4002B" stroke-width="3"/>
             <text x="428" y="63" font-family="-apple-system,Segoe UI,sans-serif" font-size="11.5" font-weight="700" fill="#111112">Intercity Fiber Splice</text>
-            <text x="428" y="79" font-family="-apple-system,Segoe UI,sans-serif" font-size="10" fill="#77777d">4 crews · OSP Engineering</text>
+            <text x="428" y="79" font-family="-apple-system,Segoe UI,sans-serif" font-size="10" fill="#77777d">4 crews · Outside Plant Eng.</text>
             <text x="428" y="96" font-family="ui-monospace,Menlo,monospace" font-size="9.5" font-weight="700" fill="#E4002B">AT RISK · FLOAT 0d</text>
 
-            <!-- node 4 -->
             <rect x="620" y="44" width="176" height="66" rx="4" fill="#fff" stroke="#E4002B" stroke-width="2"/>
             <text x="632" y="63" font-family="-apple-system,Segoe UI,sans-serif" font-size="11.5" font-weight="700" fill="#111112">400G Wave Provisioning</text>
-            <text x="632" y="79" font-family="-apple-system,Segoe UI,sans-serif" font-size="10" fill="#77777d">PRG-4108 Network Ops</text>
+            <text x="632" y="79" font-family="-apple-system,Segoe UI,sans-serif" font-size="10" fill="#77777d">PRG-4108</text>
             <text x="632" y="96" font-family="ui-monospace,Menlo,monospace" font-size="9.5" fill="#E4002B">FLOAT 0d · CROSS-PROGRAM</text>
 
-            <!-- node 5 : contract milestone -->
             <rect x="824" y="44" width="148" height="66" rx="4" fill="#E4002B" stroke="#B00021" stroke-width="2"/>
-            <text x="836" y="63" font-family="-apple-system,Segoe UI,sans-serif" font-size="11.5" font-weight="700" fill="#ffffff">Hyperscaler</text>
+            <text x="836" y="63" font-family="-apple-system,Segoe UI,sans-serif" font-size="11.5" font-weight="700" fill="#ffffff">Customer</text>
             <text x="836" y="77" font-family="-apple-system,Segoe UI,sans-serif" font-size="11.5" font-weight="700" fill="#ffffff">Acceptance — M4</text>
-            <text x="836" y="96" font-family="ui-monospace,Menlo,monospace" font-size="9.5" fill="#ffd6de">CONTRACTED · MustFinishOn</text>
+            <text x="836" y="96" font-family="ui-monospace,Menlo,monospace" font-size="9.5" fill="#ffd6de">MustFinishOn</text>
 
-            <!-- row1 arrows -->
             <line x1="184" y1="77" x2="206" y2="77" stroke="#B87400" stroke-width="2" marker-end="url(#ar-amb)"/>
             <line x1="388" y1="77" x2="410" y2="77" stroke="#E4002B" stroke-width="2" marker-end="url(#ar-red)"/>
             <line x1="592" y1="77" x2="614" y2="77" stroke="#E4002B" stroke-width="2.5" marker-end="url(#ar-red)"/>
             <line x1="796" y1="77" x2="818" y2="77" stroke="#E4002B" stroke-width="2.5" marker-end="url(#ar-red)"/>
 
-            <!-- cross-lane branch from splice down to NaaS -->
             <path d="M504,110 L504,150 L504,224" stroke="#E4002B" stroke-width="2"
                   stroke-dasharray="5 4" fill="none" marker-end="url(#ar-red)"/>
             <path d="M708,110 L708,150 L716,150 L716,224" stroke="#a3a3a9" stroke-width="1.75"
                   stroke-dasharray="4 4" fill="none" marker-end="url(#ar-gry)"/>
 
-            <!-- ROW 2 nodes -->
             <rect x="416" y="228" width="176" height="60" rx="4" fill="#fff" stroke="#E4002B" stroke-width="2"/>
-            <text x="428" y="247" font-family="-apple-system,Segoe UI,sans-serif" font-size="11.5" font-weight="700" fill="#111112">NaaS Edge Node</text>
+            <text x="428" y="247" font-family="-apple-system,Segoe UI,sans-serif" font-size="11.5" font-weight="700" fill="#111112">Edge Node</text>
             <text x="428" y="261" font-family="-apple-system,Segoe UI,sans-serif" font-size="11.5" font-weight="700" fill="#111112">Activation</text>
             <text x="428" y="278" font-family="ui-monospace,Menlo,monospace" font-size="9.5" fill="#E4002B">FLOAT 0d · PRG-4127</text>
 
             <rect x="628" y="228" width="176" height="60" rx="4" fill="#fff" stroke="#e2e2e4" stroke-width="1.5"/>
-            <text x="640" y="247" font-family="-apple-system,Segoe UI,sans-serif" font-size="11.5" font-weight="700" fill="#3d3d40">Multi-Cloud Gateway</text>
-            <text x="640" y="261" font-family="-apple-system,Segoe UI,sans-serif" font-size="11.5" font-weight="700" fill="#3d3d40">Region 2 GA</text>
+            <text x="640" y="247" font-family="-apple-system,Segoe UI,sans-serif" font-size="11.5" font-weight="700" fill="#3d3d40">Cloud Gateway</text>
+            <text x="640" y="261" font-family="-apple-system,Segoe UI,sans-serif" font-size="11.5" font-weight="700" fill="#3d3d40">Region 2</text>
             <text x="640" y="278" font-family="ui-monospace,Menlo,monospace" font-size="9.5" fill="#77777d">FLOAT 4d</text>
 
             <line x1="592" y1="258" x2="622" y2="258" stroke="#a3a3a9" stroke-width="1.75"
                   stroke-dasharray="4 4" marker-end="url(#ar-gry)"/>
-
-            <!-- callout -->
-            <text x="8" y="288" font-family="-apple-system,Segoe UI,sans-serif" font-size="10" fill="#77777d">
-              <tspan font-weight="700" fill="#E4002B">9 days late at the permit</tspan> consumes all
-            </text>
-            <text x="8" y="272" font-family="-apple-system,Segoe UI,sans-serif" font-size="10" fill="#77777d">
-              downstream float. M4 moves day-for-day.
-            </text>
           </svg>
         </div>
 
         <div class="legend">
-          <span><i class="sw" style="border-color:#E4002B"></i> Zero-float path</span>
+          <span><i class="sw" style="border-color:#E4002B"></i> Float 0d</span>
           <span><i class="sw" style="border-color:#B87400"></i> Float remaining, currently late</span>
           <span><i class="sw" style="border-top-style:dashed;border-color:#E4002B"></i> Cross-program edge</span>
-          <span><i class="sw" style="border-top-style:dashed;border-color:#a3a3a9"></i> Normal dependency</span>
+          <span><i class="sw" style="border-top-style:dashed;border-color:#a3a3a9"></i> Standard dependency</span>
           <span><span style="display:inline-block;width:11px;height:11px;background:#E4002B;border-radius:2px"></span> Contracted milestone</span>
         </div>
 
         <div class="basis">
-          Basis — chain reconstructed from AgilePlace <b>getBoardDependencyGraph</b> upstream traversal on card
-          <b>PCF-R7-SPLICE</b>; float and constraint type from Portfolios <b>TOTAL_FLOAT</b> and
-          <b>ConstraintDate</b>. Late-days figure is baseline finish minus current forecast finish,
-          not a percent-complete estimate.
+          Basis — AgilePlace <b>getBoardDependencyGraph</b> upstream traversal on card <b>PCF-R7-SPLICE</b>.
+          Float and constraint type from Portfolios <b>TOTAL_FLOAT</b> and <b>ConstraintDate</b>.
+          Late days = baseline finish minus forecast finish.
         </div>
       </section>
 
-      <!-- ZERO FLOAT TABLE -->
       <section class="card">
         <h2>Zero-float milestones downstream of at-risk work</h2>
-        <p class="sub">Sorted by days to due. These absorb nothing — a one-day upstream slip is a one-day milestone slip.</p>
-        <div class="srcs" style="margin-bottom:12px">
-          <span class="src s-ap">AgilePlace</span><span class="src s-pf">Portfolios</span>
-        </div>
+        <p class="sub">TOTAL_FLOAT = 0 &middot; due &lt; 90d &middot; at-risk upstream predecessor</p>
         <table>
           <thead>
             <tr>
-              <th>Milestone</th>
-              <th>Program</th>
-              <th class="r">Due in</th>
-              <th class="r">Float</th>
-              <th>Upstream at-risk</th>
+              <th>Milestone</th><th>Program</th>
+              <th class="r">Due in</th><th class="r">Float</th><th>Upstream at-risk</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td><b>Hyperscaler Acceptance — M4</b><div class="mono">Contracted · MustFinishOn</div></td>
-              <td>PCF Route 7</td>
-              <td class="r">18d</td>
-              <td class="r zero">0d</td>
+              <td><b>Customer Acceptance — M4</b><div class="mono">MustFinishOn</div></td>
+              <td>Route 7</td><td class="r">18d</td><td class="r zero">0d</td>
               <td>Intercity Fiber Splice</td>
             </tr>
             <tr>
               <td><b>400G Wave Turn-Up — Phase A</b></td>
-              <td>PRG-4108 Network Ops</td>
-              <td class="r">24d</td>
-              <td class="r zero">0d</td>
+              <td>PRG-4108</td><td class="r">24d</td><td class="r zero">0d</td>
               <td>Conduit / IRU Access</td>
             </tr>
             <tr>
-              <td><b>NaaS Edge Node Activation</b></td>
-              <td>PRG-4127 Field Construction</td>
-              <td class="r">31d</td>
-              <td class="r zero">0d</td>
+              <td><b>Edge Node Activation</b></td>
+              <td>PRG-4127</td><td class="r">31d</td><td class="r zero">0d</td>
               <td>Intercity Fiber Splice</td>
             </tr>
             <tr>
               <td><b>TDM Cutover Window — Wave 3</b><div class="mono">Regulatory notice filed</div></td>
-              <td>Legacy Decom</td>
-              <td class="r">39d</td>
-              <td class="r zero">0d</td>
+              <td>Legacy Decom</td><td class="r">39d</td><td class="r zero">0d</td>
               <td>Subscriber Migration Batch 7</td>
             </tr>
             <tr>
               <td><b>Copper Retirement Certification</b></td>
-              <td>Legacy Decom</td>
-              <td class="r">47d</td>
-              <td class="r zero">0d</td>
+              <td>Legacy Decom</td><td class="r">47d</td><td class="r zero">0d</td>
               <td>TDM Cutover Window</td>
             </tr>
             <tr>
-              <td><b>Hyperscaler Acceptance — M5</b><div class="mono">Contracted · MustFinishOn</div></td>
-              <td>PCF Route 7</td>
-              <td class="r">62d</td>
-              <td class="r zero">0d</td>
+              <td><b>Customer Acceptance — M5</b><div class="mono">MustFinishOn</div></td>
+              <td>Route 7</td><td class="r">62d</td><td class="r zero">0d</td>
               <td>400G Wave Turn-Up</td>
             </tr>
           </tbody>
         </table>
         <div class="basis">
-          Showing 6 of 11. Filter — <b>IsMilestone = true</b>, <b>TOTAL_FLOAT = 0</b>,
-          <b>ConstraintDate</b> within 90 days, with at least one upstream
-          <span class="edge">finishToStart</span> predecessor whose card status resolves to At Risk or Blocked.
+          6 of 11 shown. Filter — <b>IsMilestone = true</b>, <b>TOTAL_FLOAT = 0</b>,
+          <b>ConstraintDate</b> within 90 days, at least one upstream
+          <span class="edge">finishToStart</span> predecessor with status At Risk or Blocked.
         </div>
       </section>
 
     </div>
 
-    <!-- ============ RIGHT COLUMN ============ -->
     <div class="stack">
 
-      <!-- DEPENDENCY CHAIN CARDS -->
       <section class="card">
-        <h2>Dependency chain <span class="ct">real edges, not counts</span></h2>
-        <p class="sub">AgilePlace holds the graph. Portfolios holds the float. Joined.</p>
-        <div class="srcs" style="margin-bottom:13px">
-          <span class="src s-ap">AgilePlace</span><span class="src s-pf">Portfolios</span>
-        </div>
-        <div class="rule"></div>
+        <h2>Dependency chains</h2>
+        <p class="sub">AgilePlace edges joined to Portfolios float</p>
 
         <div class="casc">
-          <div class="p">PCF Route 7 — Denver→Phoenix Splice <span class="rag rag-risk">At Risk</span></div>
+          <div class="p">Route 7 — Intercity Fiber Splice <span class="rag rag-risk">At Risk</span></div>
           <div class="arrow"><b>6</b> downstream edges <span class="edge">finishToStart</span> into milestones with <b>TOTAL_FLOAT = 0</b>, all due inside 90 days</div>
           <div class="arrow">Blocks <b>400G Wave Provisioning</b> → objective <b>contracted capacity delivered on date</b></div>
           <div class="arrow"><b>2 edges cross program boundaries</b> — into PRG-4108 and PRG-4127</div>
           <div class="arrow">Owning pool <b>Outside Plant Engineering</b> · Resourcing RAG red</div>
-          <div class="arrow">Terminal node is a <b>contracted acceptance milestone</b>, not an internal date</div>
+          <div class="arrow">Terminal node is a contracted milestone (<b>MustFinishOn</b>)</div>
         </div>
 
         <div class="casc">
-          <div class="p">Legacy TDM Switch Decom — Wave 3 <span class="rag rag-risk">At Risk</span></div>
+          <div class="p">Legacy TDM Decom — Wave 3 <span class="rag rag-risk">At Risk</span></div>
           <div class="arrow"><b>3</b> downstream edges <span class="edge">finishToStart</span> into zero-float milestones inside 90 days</div>
           <div class="arrow">Blocks <b>Copper Retirement Certification</b> → objective <b>opex per route mile</b></div>
-          <div class="arrow">Cutover window is <b>regulator-noticed</b> — moving it restarts the notice clock</div>
+          <div class="arrow">Cutover window has a filed regulatory notice</div>
           <div class="arrow">Owning pool <b>Outside Plant Engineering</b> — same pool as above</div>
         </div>
 
         <div class="casc watch">
-          <div class="p">Multi-Cloud Gateway — Region 2 GA <span class="rag rag-watch">Watch</span></div>
-          <div class="arrow"><b>2</b> downstream edges, float <b>4d</b> — absorbs a short slip, not a long one</div>
-          <div class="arrow">Upstream of <b>NaaS onboarding automation</b>, not of a contracted date</div>
-        </div>
-
-        <div class="stats stats-2" style="margin-top:14px">
-          <div class="stat alert">
-            <div class="k">Zero-float milestones &lt; 90d behind at-risk work</div>
-            <div class="v num">11 <span style="font-size:14px;color:var(--ink-3);font-weight:600">of 26</span></div>
-          </div>
-          <div class="stat warn">
-            <div class="k">Cross-board dependency edges</div>
-            <div class="v num">63</div>
-            <div class="f">3 cross-program</div>
-          </div>
+          <div class="p">Cloud Gateway — Region 2 <span class="rag rag-watch">Watch</span></div>
+          <div class="arrow"><b>2</b> downstream edges · float <b>4d</b></div>
+          <div class="arrow">No contracted milestone downstream</div>
         </div>
 
         <div class="basis">
-          Basis — AgilePlace <b>getBoardDependencyGraph</b> (upstream/downstream edges,
-          <span class="edge">finishToStart</span> timing, cross-board children) joined to Portfolios
+          Basis — AgilePlace <b>getBoardDependencyGraph</b> joined to Portfolios
           <b>TOTAL_FLOAT</b>, <b>FREE_FLOAT</b>, <b>IsMilestone</b>, <b>ConstraintDate</b>.
         </div>
       </section>
 
-      <!-- RESOURCE CONCENTRATION -->
       <section class="card">
-        <h2>Single point of failure <span class="ct">the actual story</span></h2>
-        <p class="sub">Both at-risk chains resolve to the same crew pool. This is a capacity problem wearing a schedule costume.</p>
-        <div class="srcs" style="margin-bottom:13px">
-          <span class="src s-pf">Portfolios</span>
-        </div>
+        <h2>Resource pools</h2>
+        <p class="sub">Owning pool for each at-risk chain</p>
 
         <div class="stats stats-3">
           <div class="stat alert">
             <div class="k">At-risk programs owned</div>
             <div class="v num">2</div>
-            <div class="f">of 2 total</div>
+            <div class="f">of 2</div>
           </div>
           <div class="stat alert">
             <div class="k">Zero-float milestones downstream</div>
@@ -562,15 +436,13 @@
           <div class="stat warn">
             <div class="k">Splice crews assigned vs. planned</div>
             <div class="v num">4<span style="font-size:15px;color:var(--ink-3)">/7</span></div>
-            <div class="f">3 unfilled since Q1</div>
+            <div class="f">3 unfilled</div>
           </div>
         </div>
 
         <div class="rule"></div>
         <table>
-          <thead>
-            <tr><th>Pool</th><th class="r">Cost variance</th><th>Resourcing RAG</th></tr>
-          </thead>
+          <thead><tr><th>Pool</th><th class="r">Cost variance</th><th>Resourcing RAG</th></tr></thead>
           <tbody>
             <tr><td><b>Outside Plant Engineering</b></td><td class="r zero">−$2.4M</td><td><span class="rag rag-risk">Red</span></td></tr>
             <tr><td>Network Operations</td><td class="r">−$310K</td><td><span class="rag rag-watch">Amber</span></td></tr>
@@ -580,71 +452,33 @@
 
         <div class="basis">
           Basis — Portfolios <b>Cost Variance</b> against baseline, rolled to owning resource pool.
-          Cost variance is used deliberately here rather than budget consumption —
-          Budget at Completion is not reliably populated at the pool level in this tenant.
+          Budget at Completion is not populated at pool level in this tenant.
         </div>
       </section>
 
-      <!-- OBJECTIVES -->
       <section class="card">
-        <h2>What strategy is exposed</h2>
-        <p class="sub">Tracing each blocked chain up to the objective it was funded to move.</p>
-        <div class="srcs" style="margin-bottom:13px">
-          <span class="src s-okr">OKRs</span><span class="src s-pf">Portfolios</span>
-        </div>
+        <h2>Linked objectives</h2>
+        <p class="sub">Objectives with a chain reaching a zero-float milestone</p>
         <table>
           <thead><tr><th>Objective</th><th class="r">Progress</th><th class="r">Chains at risk</th></tr></thead>
           <tbody>
-            <tr><td><b>Deliver contracted capacity on committed dates</b><div class="mono">PCF delivery</div></td><td class="r">58%</td><td class="r zero">2</td></tr>
-            <tr><td><b>Reduce opex per route mile</b><div class="mono">Legacy cost-out</div></td><td class="r">41%</td><td class="r zero">1</td></tr>
-            <tr><td><b>Grow NaaS platform adoption</b><div class="mono">Digital services</div></td><td class="r">67%</td><td class="r" style="color:var(--amber);font-weight:700">1</td></tr>
+            <tr><td><b>Contracted capacity delivered on date</b></td><td class="r">58%</td><td class="r zero">2</td></tr>
+            <tr><td><b>Opex per route mile</b></td><td class="r">41%</td><td class="r zero">1</td></tr>
+            <tr><td><b>Platform adoption</b></td><td class="r">67%</td><td class="r" style="color:var(--amber);font-weight:700">1</td></tr>
           </tbody>
         </table>
         <div class="basis">
-          Basis — objective linkage via card-to-objective association; progress values read live,
-          not recomputed. Chains counted where at least one <span class="edge">finishToStart</span>
-          path reaches a zero-float milestone contributing to the objective.
+          Basis — card-to-objective association; progress values read live, not recomputed.
+          Chain counted where at least one <span class="edge">finishToStart</span> path reaches a
+          zero-float milestone contributing to the objective.
         </div>
       </section>
 
     </div>
   </div>
 
-  <!-- ============ SO WHAT ============ -->
-  <section class="card" style="margin-top:22px">
-    <h2>What to decide this week</h2>
-    <p class="sub">Three moves, in order of leverage. Each one is a decision someone in the room can actually make.</p>
-    <ol class="acts">
-      <li>
-        <b>Escalate the Maricopa permit, not the splice.</b>
-        The splice team is not the constraint — they are 9 days behind because make-ready has not cleared.
-        Escalating the crew adds cost and moves nothing.
-        <span class="who">Owner: Outside Plant Engineering &middot; Decision: external escalation path to county</span>
-      </li>
-      <li>
-        <b>Break the shared-pool coupling before it breaks itself.</b>
-        Both at-risk chains draw on the same four splice crews. Sequence them explicitly or
-        contract a second crew — running them in parallel on shared capacity is how both slip.
-        <span class="who">Owner: Resource Management &middot; Decision: sequence vs. augment</span>
-      </li>
-      <li>
-        <b>Re-baseline M5 now, while it is still a conversation.</b>
-        M4 has 18 days and zero float. If the permit does not clear inside two weeks,
-        M5 moves regardless — better to renegotiate on a forecast than to miss on a fact.
-        <span class="who">Owner: Program Delivery &middot; Decision: customer notification timing</span>
-      </li>
-    </ol>
-  </section>
-
   <footer class="foot">
-    <div>
-      <b>Planview Anvi</b> — Dependency &amp; Delivery Risk, Network Programs.<br>
-      Every figure resolves to a named work item, field, and source system. No blended scores, no synthetic health index.
-    </div>
-    <div style="text-align:right">
-      <b>Illustrative environment.</b><br>
-      Programs, milestones, and figures are representative, not customer data.
-    </div>
+    Illustrative environment. Programs, milestones, and figures are representative, not customer data.
   </footer>
 
 </div>
