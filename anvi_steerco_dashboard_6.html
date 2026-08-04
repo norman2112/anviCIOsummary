@@ -1,486 +1,334 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
+<!--
+  ============================================================
+  ANVI GENERATIVE UI RESPONSE
+  session:      a7f3-2c91-hnb-pom
+  prompt_id:    pv-anvi-4471
+  surface:      Portfolios / Product Operating Model
+  tools_called: portfolios.getPortfolioInvestment,
+                portfolios.getCostCenterRollup,
+                agileplace.listCards(boardIds=[...]),
+                okr.listObjectives
+  data_asof:    2026-07-24T21:14:00Z
+  render:       treemap.squarified / PVDS tokens / customer-brand override
+  confidence:   high (funding, headcount) | medium (OKR linkage — 5 nodes unmapped)
+  ============================================================
+-->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Dependency &amp; Delivery Risk</title>
+<title>Anvi — Huntington Product Operating Model</title>
 <style>
   :root{
-    --red:#E4002B;
-    --red-dk:#B00021;
-    --red-tint:#FDECEF;
-    --ink:#111112;
-    --ink-2:#3d3d40;
-    --ink-3:#77777d;
-    --ink-4:#a3a3a9;
-    --line:#e2e2e4;
-    --line-2:#f0f0f1;
-    --paper:#ffffff;
-    --wash:#fafaf9;
-    --amber:#B87400;
-    --amber-tint:#FDF4E3;
-    --green:#0F7A4A;
-    --green-tint:#EAF6F0;
-    --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
-    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-  }
+    /* Anvi / PVDS chrome */
+    --pv-red:#E01931;
+    --ink:#101418;
+    --ink-2:#3D454E;
+    --ink-3:#6B7580;
+    --rule:#E3E7EB;
+    --surface:#FFFFFF;
+    --canvas:#F4F6F8;
 
+    /* Customer brand — Huntington deck palette */
+    --hnb-deep:#0D4F4C;
+    --hnb-1:#0D4F4C;
+    --hnb-2:#1A6F63;
+    --hnb-3:#3A9179;
+    --hnb-4:#6FB392;
+    --hnb-5:#A8D3B4;
+    --hnb-6:#D3E9D6;
+
+    /* Shared platforms — deliberately desaturated */
+    --plat-1:#3E4A57;
+    --plat-2:#5A6672;
+    --plat-3:#78838E;
+    --plat-4:#98A2AC;
+    --plat-5:#B8C0C8;
+  }
   *{box-sizing:border-box}
-  html,body{margin:0;padding:0}
-  body{
-    background:var(--wash);color:var(--ink);font-family:var(--sans);
-    font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased;
-  }
-  .wrap{max-width:1280px;margin:0 auto;padding:0 28px 64px}
+  html,body{margin:0;background:var(--canvas);color:var(--ink);
+    font-family:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    font-feature-settings:"tnum" 1,"cv05" 1;-webkit-font-smoothing:antialiased}
 
-  .mast{
-    border-top:5px solid var(--red);background:var(--paper);
-    padding:24px 28px 20px;margin:0 -28px 22px;border-bottom:1px solid var(--line);
-  }
-  .mast-inner{max-width:1224px;margin:0 auto}
-  .eyebrow{
-    font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
-    color:var(--red);margin-bottom:8px;
-  }
-  h1{font-size:28px;line-height:1.15;font-weight:700;letter-spacing:-.022em;margin:0}
-  .mast-meta{
-    display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center;
-    margin-top:15px;padding-top:13px;border-top:1px solid var(--line-2);
-    font-size:11.5px;color:var(--ink-3);
-  }
-  .mast-meta b{color:var(--ink-2);font-weight:600}
+  .shell{max-width:1240px;margin:0 auto;padding:28px 20px 56px}
 
-  .srcs{display:flex;flex-wrap:wrap;gap:6px}
-  .src{
-    font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;
-    padding:3px 8px;border-radius:3px;border:1px solid transparent;white-space:nowrap;
-  }
-  .s-ap{background:#EDF1F7;color:#2F4858;border-color:#d6dfea}
-  .s-pf{background:var(--red-tint);color:var(--red-dk);border-color:#f6d3da}
-  .s-okr{background:#F1EDF7;color:#4A2F58;border-color:#e0d6ea}
+  /* ---- Anvi response card ---- */
+  .anvi{background:var(--surface);border:1px solid var(--rule);border-radius:6px;
+    box-shadow:0 1px 2px rgba(16,20,24,.05),0 8px 24px rgba(16,20,24,.04);overflow:hidden}
+  .anvi:before{content:"";display:block;height:3px;background:var(--pv-red)}
 
-  .cols{display:grid;grid-template-columns:1.32fr 1fr;gap:22px;align-items:start}
-  .stack{display:flex;flex-direction:column;gap:22px}
 
-  .card{
-    background:var(--paper);border:1px solid var(--line);border-radius:6px;
-    padding:20px 22px 18px;
-  }
-  .card > h2{font-size:16px;font-weight:700;letter-spacing:-.012em;margin:0 0 4px}
-  .sub{color:var(--ink-3);font-size:12px;margin:0 0 13px;font-family:var(--mono)}
-  .rule{height:1px;background:var(--line-2);margin:14px 0}
+  .hdr{display:flex;align-items:flex-start;gap:12px;padding:22px 24px 0}
+  .mark{width:26px;height:26px;border-radius:50%;flex:0 0 26px;
+    background:conic-gradient(from 210deg,var(--pv-red),#7A0E1B 65%,var(--pv-red));
+    display:grid;place-items:center;color:#fff;font-size:11px;font-weight:700;letter-spacing:.02em}
+  .who{font-size:12px;font-weight:650;color:var(--ink);letter-spacing:.01em}
+  .who span{font-weight:400;color:var(--ink-3);margin-left:8px;letter-spacing:0}
 
-  .stats{display:grid;gap:11px}
-  .stats-2{grid-template-columns:1fr 1fr}
-  .stats-3{grid-template-columns:repeat(3,1fr)}
-  .stats-4{grid-template-columns:repeat(4,1fr)}
-  .stat{
-    border:1px solid var(--line);border-left-width:3px;border-radius:4px;
-    padding:11px 13px 12px;
-  }
-  .stat .k{
-    font-size:10.5px;font-weight:600;letter-spacing:.045em;text-transform:uppercase;
-    color:var(--ink-3);line-height:1.35;margin-bottom:6px;min-height:2.7em;
-  }
-  .stat .v{font-size:26px;font-weight:700;letter-spacing:-.03em;line-height:1}
-  .stat .f{font-size:11px;color:var(--ink-3);margin-top:5px;font-family:var(--mono)}
-  .num{font-variant-numeric:tabular-nums}
-  .stat.alert{border-left-color:var(--red)}
-  .stat.alert .v{color:var(--red)}
-  .stat.warn{border-left-color:var(--amber)}
-  .stat.warn .v{color:var(--amber)}
+  .narrative{padding:10px 24px 0 62px;max-width:860px}
+  .narrative p{margin:0 0 10px;font-size:14.5px;line-height:1.62;color:var(--ink-2)}
+  .narrative strong{color:var(--ink);font-weight:640}
+  .flag{display:inline-block;border-left:2px solid var(--pv-red);padding:2px 0 2px 10px;
+    font-size:13.5px;line-height:1.55;color:var(--ink-2);margin:2px 0 14px}
 
-  .rag{
-    font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
-    padding:2.5px 7px;border-radius:3px;white-space:nowrap;
-  }
-  .rag-risk{background:var(--red-tint);color:var(--red-dk)}
-  .rag-watch{background:var(--amber-tint);color:var(--amber)}
-  .rag-ok{background:var(--green-tint);color:var(--green)}
+  /* ---- KPI strip ---- */
+  .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--rule);
+    border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);margin-top:18px}
+  .kpi{background:var(--surface);padding:14px 24px}
+  .kpi .k{font-size:10px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3);font-weight:600}
+  .kpi .v{font-size:23px;font-weight:660;letter-spacing:-.02em;margin-top:3px}
+  .kpi .s{font-size:11.5px;color:var(--ink-3);margin-top:1px}
+  .kpi.alert .v{color:var(--pv-red)}
 
-  .casc{
-    border:1px solid var(--line);border-left:3px solid var(--red);border-radius:4px;
-    padding:12px 15px 13px;margin-bottom:11px;
-  }
-  .casc.watch{border-left-color:var(--amber)}
-  .casc .p{
-    font-size:14px;font-weight:700;letter-spacing:-.008em;margin-bottom:8px;
-    display:flex;align-items:center;gap:8px;flex-wrap:wrap;
-  }
-  .casc .arrow{
-    position:relative;padding-left:17px;font-size:12.5px;color:var(--ink-2);
-    margin-top:5px;line-height:1.45;
-  }
-  .casc .arrow::before{
-    content:"";position:absolute;left:2px;top:.55em;width:6px;height:6px;
-    border-right:1.5px solid var(--red);border-bottom:1.5px solid var(--red);
-    transform:rotate(-45deg);
-  }
-  .casc.watch .arrow::before{border-color:var(--amber)}
-  .casc .arrow b{font-weight:700;color:var(--ink)}
-  .edge{
-    font-family:var(--mono);font-size:10.5px;background:#f2f2f3;
-    padding:1px 5px;border-radius:3px;color:var(--ink-2);
-  }
+  /* ---- viz ---- */
+  .vizwrap{display:grid;grid-template-columns:1fr 288px;gap:0}
+  @media(max-width:900px){.vizwrap{grid-template-columns:1fr}}
+  .viz{padding:18px 8px 18px 18px}
+  svg{display:block;width:100%;height:auto}
 
-  .basis{
-    font-size:11px;color:var(--ink-4);line-height:1.5;
-    border-top:1px dashed var(--line);padding-top:9px;margin-top:14px;
-  }
-  .basis b{color:var(--ink-3);font-weight:600;font-family:var(--mono);font-size:10.5px}
+  .cell rect{stroke:#fff;stroke-width:1.25;transition:opacity .13s ease}
+  .cell:hover rect.fill{opacity:.82}
+  .cell{cursor:pointer}
+  .cell.sel rect.fill{stroke:var(--ink);stroke-width:2.5}
+  .glabel{font-size:11px;font-weight:700;letter-spacing:.055em;text-transform:uppercase;fill:#fff}
+  .gsub{font-size:10px;font-weight:500;fill:rgba(255,255,255,.72)}
+  .nlabel{font-size:11px;font-weight:600;fill:#fff;pointer-events:none}
+  .nval{font-size:10.5px;font-weight:500;fill:rgba(255,255,255,.78);pointer-events:none}
+  .nlabel.dark{fill:#1C2530}.nval.dark{fill:rgba(28,37,48,.68)}
 
-  table{width:100%;border-collapse:collapse;font-size:12.5px}
-  th{
-    text-align:left;font-size:10px;font-weight:700;letter-spacing:.06em;
-    text-transform:uppercase;color:var(--ink-3);
-    padding:0 9px 7px 0;border-bottom:1.5px solid var(--ink);
-  }
-  td{padding:8px 9px 8px 0;border-bottom:1px solid var(--line-2);vertical-align:top}
-  tr:last-child td{border-bottom:none}
-  td.r,th.r{text-align:right;padding-right:0;font-variant-numeric:tabular-nums}
-  .zero{color:var(--red);font-weight:700}
-  .mono{font-family:var(--mono);font-size:11px;color:var(--ink-3)}
+  /* ---- detail rail ---- */
+  .rail{border-left:1px solid var(--rule);padding:20px 20px 20px 18px;background:#FBFCFD;min-height:520px}
+  .rail .eyebrow{font-size:10px;letter-spacing:.11em;text-transform:uppercase;color:var(--ink-3);font-weight:600}
+  .rail h3{margin:5px 0 2px;font-size:17px;font-weight:650;letter-spacing:-.015em;line-height:1.25}
+  .rail .path{font-size:11.5px;color:var(--ink-3);margin-bottom:16px}
+  .metric{display:flex;justify-content:space-between;align-items:baseline;
+    padding:8px 0;border-bottom:1px solid var(--rule);font-size:12.5px}
+  .metric span:first-child{color:var(--ink-3)}
+  .metric span:last-child{font-weight:640;font-size:13.5px}
+  .sect{margin-top:18px}
+  .sect h4{margin:0 0 8px;font-size:10px;letter-spacing:.11em;text-transform:uppercase;color:var(--ink-3);font-weight:600}
+  .team{font-size:12.5px;padding:5px 0;color:var(--ink-2);display:flex;justify-content:space-between;gap:10px}
+  .team em{font-style:normal;color:var(--ink-3);font-size:11.5px;white-space:nowrap}
+  .okr{font-size:12.5px;line-height:1.45;padding:7px 0 7px 11px;border-left:2px solid var(--hnb-3);
+    color:var(--ink-2);margin-bottom:7px}
+  .okr b{display:block;font-weight:640;color:var(--ink);font-size:11px;letter-spacing:.05em;
+    text-transform:uppercase;margin-bottom:2px}
+  .none{font-size:12.5px;color:var(--pv-red);border-left:2px solid var(--pv-red);padding:7px 0 7px 11px;line-height:1.45}
+  .empty{font-size:13px;color:var(--ink-3);line-height:1.6;padding-top:60px;text-align:center}
 
-  .chainwrap{
-    border:1px solid var(--line);border-radius:5px;background:var(--paper);
-    padding:6px;overflow-x:auto;
-  }
-  .chainwrap svg{display:block;min-width:640px;width:100%;height:auto}
-
-  .legend{
-    display:flex;flex-wrap:wrap;gap:6px 18px;margin-top:11px;
-    font-size:11px;color:var(--ink-3);
-  }
-  .legend span{display:inline-flex;align-items:center;gap:6px}
-  .sw{width:20px;height:0;border-top-width:2px;border-top-style:solid;display:inline-block}
-
-  .foot{
-    margin-top:26px;padding-top:14px;border-top:2px solid var(--ink);
-    font-size:11px;color:var(--ink-3);line-height:1.6;
-  }
-
-  @media (max-width:1000px){
-    .cols{grid-template-columns:1fr}
-    .stats-4{grid-template-columns:1fr 1fr}
-  }
-  @media (max-width:620px){
-    .wrap{padding:0 16px 44px}
-    .mast{margin:0 -16px 20px;padding:22px 16px 18px}
-    h1{font-size:22px}
-    .stats-2,.stats-3,.stats-4{grid-template-columns:1fr}
-  }
-  @media print{
-    body{background:#fff;font-size:11px}
-    .wrap{max-width:none;padding:0}
-    .card{break-inside:avoid;page-break-inside:avoid;border-color:#ccc}
-    .casc{break-inside:avoid}
-    .cols{grid-template-columns:1fr}
-    .mast{margin:0 0 16px;padding:0 0 14px}
-    .chainwrap svg{min-width:0}
-  }
-  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+  /* ---- legend + footer ---- */
+  .legend{display:flex;flex-wrap:wrap;gap:18px;padding:0 24px 18px;font-size:11.5px;color:var(--ink-3)}
+  .legend i{display:inline-block;width:11px;height:11px;border-radius:2px;margin-right:6px;
+    vertical-align:-1px;font-style:normal}
+  .foot{border-top:1px solid var(--rule);padding:13px 24px 15px;background:#FBFCFD;
+    font-size:11px;color:var(--ink-3);line-height:1.6;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+  .foot code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;color:var(--ink-2)}
 </style>
-</head>
-<body>
 
-<div class="wrap">
+<div class="shell">
+<div class="anvi">
 
-  <header class="mast">
-    <div class="mast-inner">
-      <div class="eyebrow">Planview Anvi</div>
-      <h1>Dependency &amp; Delivery Risk</h1>
-      <div class="mast-meta">
-        <span><b>Scope</b> Network Build &middot; Platform Services &middot; Legacy Decommission</span>
-        <span><b>Horizon</b> 90 days</span>
-        <span><b>Data</b> Live at open</span>
-        <div class="srcs">
-          <span class="src s-ap">AgilePlace</span>
-          <span class="src s-pf">Portfolios</span>
-          <span class="src s-okr">OKRs</span>
-        </div>
-      </div>
-    </div>
-  </header>
-
-  <div class="card" style="margin-bottom:22px">
-    <h2>Summary</h2>
-    <p class="sub">90-day window</p>
-    <div class="stats stats-4">
-      <div class="stat alert">
-        <div class="k">Zero-float milestones behind at-risk work</div>
-        <div class="v num">11 <span style="font-size:14px;color:var(--ink-3);font-weight:600">of 26</span></div>
-        <div class="f">TOTAL_FLOAT = 0</div>
-      </div>
-      <div class="stat alert">
-        <div class="k">Contracted milestones in the chain</div>
-        <div class="v num">4</div>
-        <div class="f">MustFinishOn</div>
-      </div>
-      <div class="stat warn">
-        <div class="k">Cross-board dependency edges</div>
-        <div class="v num">63</div>
-        <div class="f">3 cross-program</div>
-      </div>
-      <div class="stat warn">
-        <div class="k">At-risk programs on one resource pool</div>
-        <div class="v num">2</div>
-        <div class="f">Outside Plant Eng.</div>
-      </div>
-    </div>
-    <div class="basis">
-      Basis — AgilePlace <b>getBoardDependencyGraph</b> (upstream/downstream edges,
-      <span class="edge">finishToStart</span> timing, cross-board children) joined to Portfolios
-      <b>TOTAL_FLOAT</b>, <b>FREE_FLOAT</b>, <b>IsMilestone</b>, <b>ConstraintDate</b>.
-      Contracted flag derived from constraint type <b>MustFinishOn</b>.
-    </div>
+  <div class="hdr">
+    <div class="mark">A</div>
+    <div class="who">Anvi <span>Portfolios · AgilePlace · OKRs — 4 sources, as of 24 Jul 2026</span></div>
   </div>
 
-  <div class="cols">
-
-    <div class="stack">
-
-      <section class="card">
-        <h2>Route 7 dependency chain</h2>
-        <p class="sub">Upstream traversal from card PCF-R7-SPLICE</p>
-
-        <div class="chainwrap">
-          <svg viewBox="0 0 980 292" xmlns="http://www.w3.org/2000/svg" role="img"
-               aria-label="Dependency chain from permit and make-ready through fiber splice to contracted customer acceptance milestone">
-            <defs>
-              <marker id="ar-red" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto">
-                <path d="M0,0 L9,4.5 L0,9 z" fill="#E4002B"/>
-              </marker>
-              <marker id="ar-amb" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto">
-                <path d="M0,0 L9,4.5 L0,9 z" fill="#B87400"/>
-              </marker>
-              <marker id="ar-gry" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto">
-                <path d="M0,0 L9,4.5 L0,9 z" fill="#a3a3a9"/>
-              </marker>
-            </defs>
-
-            <text x="8" y="20" font-family="-apple-system,Segoe UI,sans-serif" font-size="9.5"
-                  font-weight="700" letter-spacing="1.1" fill="#a3a3a9">NETWORK BUILD</text>
-            <line x1="8" y1="28" x2="972" y2="28" stroke="#f0f0f1" stroke-width="1"/>
-
-            <text x="8" y="200" font-family="-apple-system,Segoe UI,sans-serif" font-size="9.5"
-                  font-weight="700" letter-spacing="1.1" fill="#a3a3a9">PLATFORM SERVICES</text>
-            <line x1="8" y1="208" x2="972" y2="208" stroke="#f0f0f1" stroke-width="1"/>
-
-            <rect x="8" y="44" width="176" height="66" rx="4" fill="#fff" stroke="#B87400" stroke-width="2"/>
-            <text x="20" y="63" font-family="-apple-system,Segoe UI,sans-serif" font-size="11.5" font-weight="700" fill="#111112">Permit &amp; Make-Ready</text>
-            <text x="20" y="79" font-family="-apple-system,Segoe UI,sans-serif" font-size="10" fill="#77777d">41 poles</text>
-            <text x="20" y="96" font-family="ui-monospace,Menlo,monospace" font-size="9.5" fill="#B87400">FLOAT 6d · 9d LATE</text>
-
-            <rect x="212" y="44" width="176" height="66" rx="4" fill="#fff" stroke="#E4002B" stroke-width="2"/>
-            <text x="224" y="63" font-family="-apple-system,Segoe UI,sans-serif" font-size="11.5" font-weight="700" fill="#111112">Conduit / IRU Access</text>
-            <text x="224" y="79" font-family="-apple-system,Segoe UI,sans-serif" font-size="10" fill="#77777d">Route 7</text>
-            <text x="224" y="96" font-family="ui-monospace,Menlo,monospace" font-size="9.5" fill="#E4002B">FLOAT 0d</text>
-
-            <rect x="416" y="44" width="176" height="66" rx="4" fill="#fffdfd" stroke="#E4002B" stroke-width="3"/>
-            <text x="428" y="63" font-family="-apple-system,Segoe UI,sans-serif" font-size="11.5" font-weight="700" fill="#111112">Intercity Fiber Splice</text>
-            <text x="428" y="79" font-family="-apple-system,Segoe UI,sans-serif" font-size="10" fill="#77777d">4 crews · Outside Plant Eng.</text>
-            <text x="428" y="96" font-family="ui-monospace,Menlo,monospace" font-size="9.5" font-weight="700" fill="#E4002B">AT RISK · FLOAT 0d</text>
-
-            <rect x="620" y="44" width="176" height="66" rx="4" fill="#fff" stroke="#E4002B" stroke-width="2"/>
-            <text x="632" y="63" font-family="-apple-system,Segoe UI,sans-serif" font-size="11.5" font-weight="700" fill="#111112">400G Wave Provisioning</text>
-            <text x="632" y="79" font-family="-apple-system,Segoe UI,sans-serif" font-size="10" fill="#77777d">PRG-4108</text>
-            <text x="632" y="96" font-family="ui-monospace,Menlo,monospace" font-size="9.5" fill="#E4002B">FLOAT 0d · CROSS-PROGRAM</text>
-
-            <rect x="824" y="44" width="148" height="66" rx="4" fill="#E4002B" stroke="#B00021" stroke-width="2"/>
-            <text x="836" y="63" font-family="-apple-system,Segoe UI,sans-serif" font-size="11.5" font-weight="700" fill="#ffffff">Customer</text>
-            <text x="836" y="77" font-family="-apple-system,Segoe UI,sans-serif" font-size="11.5" font-weight="700" fill="#ffffff">Acceptance — M4</text>
-            <text x="836" y="96" font-family="ui-monospace,Menlo,monospace" font-size="9.5" fill="#ffd6de">MustFinishOn</text>
-
-            <line x1="184" y1="77" x2="206" y2="77" stroke="#B87400" stroke-width="2" marker-end="url(#ar-amb)"/>
-            <line x1="388" y1="77" x2="410" y2="77" stroke="#E4002B" stroke-width="2" marker-end="url(#ar-red)"/>
-            <line x1="592" y1="77" x2="614" y2="77" stroke="#E4002B" stroke-width="2.5" marker-end="url(#ar-red)"/>
-            <line x1="796" y1="77" x2="818" y2="77" stroke="#E4002B" stroke-width="2.5" marker-end="url(#ar-red)"/>
-
-            <path d="M504,110 L504,150 L504,224" stroke="#E4002B" stroke-width="2"
-                  stroke-dasharray="5 4" fill="none" marker-end="url(#ar-red)"/>
-            <path d="M708,110 L708,150 L716,150 L716,224" stroke="#a3a3a9" stroke-width="1.75"
-                  stroke-dasharray="4 4" fill="none" marker-end="url(#ar-gry)"/>
-
-            <rect x="416" y="228" width="176" height="60" rx="4" fill="#fff" stroke="#E4002B" stroke-width="2"/>
-            <text x="428" y="247" font-family="-apple-system,Segoe UI,sans-serif" font-size="11.5" font-weight="700" fill="#111112">Edge Node</text>
-            <text x="428" y="261" font-family="-apple-system,Segoe UI,sans-serif" font-size="11.5" font-weight="700" fill="#111112">Activation</text>
-            <text x="428" y="278" font-family="ui-monospace,Menlo,monospace" font-size="9.5" fill="#E4002B">FLOAT 0d · PRG-4127</text>
-
-            <rect x="628" y="228" width="176" height="60" rx="4" fill="#fff" stroke="#e2e2e4" stroke-width="1.5"/>
-            <text x="640" y="247" font-family="-apple-system,Segoe UI,sans-serif" font-size="11.5" font-weight="700" fill="#3d3d40">Cloud Gateway</text>
-            <text x="640" y="261" font-family="-apple-system,Segoe UI,sans-serif" font-size="11.5" font-weight="700" fill="#3d3d40">Region 2</text>
-            <text x="640" y="278" font-family="ui-monospace,Menlo,monospace" font-size="9.5" fill="#77777d">FLOAT 4d</text>
-
-            <line x1="592" y1="258" x2="622" y2="258" stroke="#a3a3a9" stroke-width="1.75"
-                  stroke-dasharray="4 4" marker-end="url(#ar-gry)"/>
-          </svg>
-        </div>
-
-        <div class="legend">
-          <span><i class="sw" style="border-color:#E4002B"></i> Float 0d</span>
-          <span><i class="sw" style="border-color:#B87400"></i> Float remaining, currently late</span>
-          <span><i class="sw" style="border-top-style:dashed;border-color:#E4002B"></i> Cross-program edge</span>
-          <span><i class="sw" style="border-top-style:dashed;border-color:#a3a3a9"></i> Standard dependency</span>
-          <span><span style="display:inline-block;width:11px;height:11px;background:#E4002B;border-radius:2px"></span> Contracted milestone</span>
-        </div>
-
-        <div class="basis">
-          Basis — AgilePlace <b>getBoardDependencyGraph</b> upstream traversal on card <b>PCF-R7-SPLICE</b>.
-          Float and constraint type from Portfolios <b>TOTAL_FLOAT</b> and <b>ConstraintDate</b>.
-          Late days = baseline finish minus forecast finish.
-        </div>
-      </section>
-
-      <section class="card">
-        <h2>Zero-float milestones downstream of at-risk work</h2>
-        <p class="sub">TOTAL_FLOAT = 0 &middot; due &lt; 90d &middot; at-risk upstream predecessor</p>
-        <table>
-          <thead>
-            <tr>
-              <th>Milestone</th><th>Program</th>
-              <th class="r">Due in</th><th class="r">Float</th><th>Upstream at-risk</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><b>Customer Acceptance — M4</b><div class="mono">MustFinishOn</div></td>
-              <td>Route 7</td><td class="r">18d</td><td class="r zero">0d</td>
-              <td>Intercity Fiber Splice</td>
-            </tr>
-            <tr>
-              <td><b>400G Wave Turn-Up — Phase A</b></td>
-              <td>PRG-4108</td><td class="r">24d</td><td class="r zero">0d</td>
-              <td>Conduit / IRU Access</td>
-            </tr>
-            <tr>
-              <td><b>Edge Node Activation</b></td>
-              <td>PRG-4127</td><td class="r">31d</td><td class="r zero">0d</td>
-              <td>Intercity Fiber Splice</td>
-            </tr>
-            <tr>
-              <td><b>TDM Cutover Window — Wave 3</b><div class="mono">Regulatory notice filed</div></td>
-              <td>Legacy Decom</td><td class="r">39d</td><td class="r zero">0d</td>
-              <td>Subscriber Migration Batch 7</td>
-            </tr>
-            <tr>
-              <td><b>Copper Retirement Certification</b></td>
-              <td>Legacy Decom</td><td class="r">47d</td><td class="r zero">0d</td>
-              <td>TDM Cutover Window</td>
-            </tr>
-            <tr>
-              <td><b>Customer Acceptance — M5</b><div class="mono">MustFinishOn</div></td>
-              <td>Route 7</td><td class="r">62d</td><td class="r zero">0d</td>
-              <td>400G Wave Turn-Up</td>
-            </tr>
-          </tbody>
-        </table>
-        <div class="basis">
-          6 of 11 shown. Filter — <b>IsMilestone = true</b>, <b>TOTAL_FLOAT = 0</b>,
-          <b>ConstraintDate</b> within 90 days, at least one upstream
-          <span class="edge">finishToStart</span> predecessor with status At Risk or Blocked.
-        </div>
-      </section>
-
-    </div>
-
-    <div class="stack">
-
-      <section class="card">
-        <h2>Dependency chains</h2>
-        <p class="sub">AgilePlace edges joined to Portfolios float</p>
-
-        <div class="casc">
-          <div class="p">Route 7 — Intercity Fiber Splice <span class="rag rag-risk">At Risk</span></div>
-          <div class="arrow"><b>6</b> downstream edges <span class="edge">finishToStart</span> into milestones with <b>TOTAL_FLOAT = 0</b>, all due inside 90 days</div>
-          <div class="arrow">Blocks <b>400G Wave Provisioning</b> → objective <b>contracted capacity delivered on date</b></div>
-          <div class="arrow"><b>2 edges cross program boundaries</b> — into PRG-4108 and PRG-4127</div>
-          <div class="arrow">Owning pool <b>Outside Plant Engineering</b> · Resourcing RAG red</div>
-          <div class="arrow">Terminal node is a contracted milestone (<b>MustFinishOn</b>)</div>
-        </div>
-
-        <div class="casc">
-          <div class="p">Legacy TDM Decom — Wave 3 <span class="rag rag-risk">At Risk</span></div>
-          <div class="arrow"><b>3</b> downstream edges <span class="edge">finishToStart</span> into zero-float milestones inside 90 days</div>
-          <div class="arrow">Blocks <b>Copper Retirement Certification</b> → objective <b>opex per route mile</b></div>
-          <div class="arrow">Cutover window has a filed regulatory notice</div>
-          <div class="arrow">Owning pool <b>Outside Plant Engineering</b> — same pool as above</div>
-        </div>
-
-        <div class="casc watch">
-          <div class="p">Cloud Gateway — Region 2 <span class="rag rag-watch">Watch</span></div>
-          <div class="arrow"><b>2</b> downstream edges · float <b>4d</b></div>
-          <div class="arrow">No contracted milestone downstream</div>
-        </div>
-
-        <div class="basis">
-          Basis — AgilePlace <b>getBoardDependencyGraph</b> joined to Portfolios
-          <b>TOTAL_FLOAT</b>, <b>FREE_FLOAT</b>, <b>IsMilestone</b>, <b>ConstraintDate</b>.
-        </div>
-      </section>
-
-      <section class="card">
-        <h2>Resource pools</h2>
-        <p class="sub">Owning pool for each at-risk chain</p>
-
-        <div class="stats stats-3">
-          <div class="stat alert">
-            <div class="k">At-risk programs owned</div>
-            <div class="v num">2</div>
-            <div class="f">of 2</div>
-          </div>
-          <div class="stat alert">
-            <div class="k">Zero-float milestones downstream</div>
-            <div class="v num">9</div>
-            <div class="f">of 11</div>
-          </div>
-          <div class="stat warn">
-            <div class="k">Splice crews assigned vs. planned</div>
-            <div class="v num">4<span style="font-size:15px;color:var(--ink-3)">/7</span></div>
-            <div class="f">3 unfilled</div>
-          </div>
-        </div>
-
-        <div class="rule"></div>
-        <table>
-          <thead><tr><th>Pool</th><th class="r">Cost variance</th><th>Resourcing RAG</th></tr></thead>
-          <tbody>
-            <tr><td><b>Outside Plant Engineering</b></td><td class="r zero">−$2.4M</td><td><span class="rag rag-risk">Red</span></td></tr>
-            <tr><td>Network Operations</td><td class="r">−$310K</td><td><span class="rag rag-watch">Amber</span></td></tr>
-            <tr><td>Platform Engineering</td><td class="r" style="color:var(--green);font-weight:600">+$180K</td><td><span class="rag rag-ok">Green</span></td></tr>
-          </tbody>
-        </table>
-
-        <div class="basis">
-          Basis — Portfolios <b>Cost Variance</b> against baseline, rolled to owning resource pool.
-          Budget at Completion is not populated at pool level in this tenant.
-        </div>
-      </section>
-
-      <section class="card">
-        <h2>Linked objectives</h2>
-        <p class="sub">Objectives with a chain reaching a zero-float milestone</p>
-        <table>
-          <thead><tr><th>Objective</th><th class="r">Progress</th><th class="r">Chains at risk</th></tr></thead>
-          <tbody>
-            <tr><td><b>Contracted capacity delivered on date</b></td><td class="r">58%</td><td class="r zero">2</td></tr>
-            <tr><td><b>Opex per route mile</b></td><td class="r">41%</td><td class="r zero">1</td></tr>
-            <tr><td><b>Platform adoption</b></td><td class="r">67%</td><td class="r" style="color:var(--amber);font-weight:700">1</td></tr>
-          </tbody>
-        </table>
-        <div class="basis">
-          Basis — card-to-objective association; progress values read live, not recomputed.
-          Chain counted where at least one <span class="edge">finishToStart</span> path reaches a
-          zero-float milestone contributing to the objective.
-        </div>
-      </section>
-
-    </div>
+  <div class="narrative">
+    <p>Your 44 nodes carry <strong>$687.0M</strong> of planned 2026 investment and <strong>3,450 FTE</strong>. Sized by spend, the structure looks different than it does on the org chart: the 19 shared platform and enabler capabilities are 43% of the node count but <strong>38.1% of the money</strong> — $262.0M — and they sit underneath every customer-facing product line.</p>
+    <div class="flag">Five platform capabilities totalling <strong>$38.6M</strong> have no objective linked to them. They're funded, staffed, and delivering — against nothing you're measuring.</div>
   </div>
 
-  <footer class="foot">
-    Illustrative environment. Programs, milestones, and figures are representative, not customer data.
-  </footer>
+  <div class="kpis">
+    <div class="kpi"><div class="k">Planned investment 2026</div><div class="v">$687.0M</div><div class="s">44 products · 6 segments</div></div>
+    <div class="kpi"><div class="k">Headcount</div><div class="v">3,450</div><div class="s">387 teams · $199K blended</div></div>
+    <div class="kpi"><div class="k">Shared platform load</div><div class="v">38.1%</div><div class="s">$262.0M across 19 capabilities</div></div>
+    <div class="kpi alert"><div class="k">Unlinked to an objective</div><div class="v">$38.6M</div><div class="s">5 capabilities · 194 FTE</div></div>
+  </div>
+
+  <div class="vizwrap">
+    <div class="viz"><svg id="tm" viewBox="0 0 900 620" role="img"
+         aria-label="Treemap of Huntington product structure sized by 2026 planned investment"></svg></div>
+    <aside class="rail" id="rail">
+      <div class="empty">Select a product to see its teams, funding and delivery.</div>
+    </aside>
+  </div>
+
+  <div class="legend">
+    <span><i style="background:var(--hnb-2)"></i>Product groups — customer-facing (25)</span>
+    <span><i style="background:var(--plat-2)"></i>Shared platforms &amp; enablers (19)</span>
+    <span><i style="background:repeating-linear-gradient(45deg,var(--pv-red) 0 2px,#fff 2px 4px);border:1px solid var(--rule)"></i>No objective linked</span>
+    <span>Area = 2026 planned investment</span>
+  </div>
+
+  <div class="foot">
+    <div>Generated by <strong>Anvi</strong> from Planview Portfolios (funding, headcount), AgilePlace (epics in flight), and Objectives &amp; Key Results. Figures are plan-of-record, not actuals.</div>
+    <div><code>pv-anvi-4471 · 24 Jul 2026 21:14 UTC</code></div>
+  </div>
 
 </div>
-</body>
-</html>
+</div>
+
+<script>
+const GREENS=['#0D4F4C','#1A6F63','#3A9179','#6FB392','#A8D3B4','#C6E0CB'];
+const SLATES=['#3E4A57','#5A6672','#78838E','#98A2AC','#B8C0C8'];
+
+// n:[name, $M, teams, HC, epics, okrs[], leader]
+const DATA=[
+ {g:'Individuals / Small Business',plat:0,c:GREENS[1],n:[
+  ['Consumer Join & Activate',21.8,12,109,34,['Grow primary-bank households 6%','Cut digital onboarding to <7 min']],
+  ['Consumer Serve',18.6,10,93,28,['Deflect 25% of servicing calls to digital']],
+  ['Business Join & Activate',14.2,8,71,21,['Double small-business digital originations']],
+  ['Wealth Investments',12.4,7,62,17,['Lift advisor-managed assets 9%']],
+  ['Business Serve',11.9,6,60,19,['Deflect 25% of servicing calls to digital']],
+  ['Explore',9.4,5,47,14,['Grow primary-bank households 6%']],
+  ['Marketing',8.7,5,44,12,['Reduce cost per funded account 15%']],
+  ['Insurance',7.0,4,35,9,[]]]},
+ {g:'Payments',plat:0,c:GREENS[0],n:[
+  ['Card and Consumer Platforms',31.5,17,158,47,['Grow interchange revenue 8%','Card platform on modern core by Q4']],
+  ['Payment Channels',22.4,12,113,33,['Real-time payments coverage to 90% of volume']],
+  ['Merchant',18.9,10,95,29,['Grow merchant processing volume 12%']],
+  ['Servicing, Onboarding & Tooling',13.7,8,69,24,['Commercial onboarding cycle to <10 days']],
+  ['TM Emerging Solutions',12.6,7,63,18,['Launch 3 new treasury products']],
+  ['TM Core Cash Management',9.5,5,48,15,['Real-time payments coverage to 90% of volume']],
+  ['Connectivity Ecosystem',9.4,5,47,13,['Partner API adoption by top 50 clients']]]},
+ {g:'Lending',plat:0,c:GREENS[2],n:[
+  ['Consumer Lending',41.3,22,208,61,['Auto/HELOC decisioning under 60 seconds','Grow consumer loan book 7%']],
+  ['Business Lending',27.6,15,139,42,['Small-business approval in 48 hours']],
+  ['Commercial Lending',23.1,13,116,36,['Grow commercial originations 10%','Credit review cycle down 30%']]]},
+ {g:'Deposits',plat:0,c:GREENS[3],n:[
+  ['Consumer Engage',26.8,14,135,39,['Grow primary-bank households 6%','Reduce deposit attrition to <4%']],
+  ['Business Engage',19.4,10,98,30,['Grow business deposit balances 9%']],
+  ['Commercial Deposits',14.8,8,74,22,['Grow business deposit balances 9%']]]},
+ {g:'Medium / Large Business',plat:0,c:GREENS[4],n:[
+  ['Advise',14.6,8,73,22,['Lift relationship-manager coverage ratio']],
+  ['Engage',12.2,7,61,18,['Grow commercial originations 10%']],
+  ['Welcome',11.2,6,56,17,['Commercial onboarding cycle to <10 days']]]},
+ {g:'Specialty Corp.',plat:0,c:GREENS[5],dark:1,n:[
+  ['Commercial Trade',12.0,6,60,19,['Grow trade finance fee income 11%']]]},
+ {g:'Shared Platforms & Enablers',plat:1,c:SLATES[1],n:[
+  ['Contact Center & IVR',24.6,13,124,35,['Deflect 25% of servicing calls to digital']],
+  ['Fraud',22.7,12,114,33,['Hold fraud losses under 3.2 bps']],
+  ['Data Foundations — Warehouse',22.1,12,111,31,['Retire 40% of legacy data marts']],
+  ['Customer Info Systems',21.4,11,108,29,['Single customer record across all channels']],
+  ['Customer Operations',18.3,10,92,26,['Straight-through processing to 70%']],
+  ['Transaction Info Systems',17.9,9,90,25,['Single customer record across all channels']],
+  ['Risk, Compliance & Legal',15.4,8,77,22,['Zero material audit findings']],
+  ['Data Foundations — Mastering',14.8,8,74,21,['Single customer record across all channels']],
+  ['Agent Core',14.2,8,71,20,['Deflect 25% of servicing calls to digital']],
+  ['Data Management',13.2,7,66,18,[]],
+  ['Sales Support',12.8,7,64,19,['Lift relationship-manager coverage ratio']],
+  ['Finance & Treasury',11.6,6,58,16,['Close cycle to 4 business days']],
+  ['Data Use',10.3,6,52,15,['Retire 40% of legacy data marts']],
+  ['Risk Mgmt',9.2,5,46,13,['Zero material audit findings']],
+  ['Colleague Experiences',8.1,4,41,12,['Raise colleague eNPS to +38']],
+  ['SDLC Tooling',7.4,4,37,11,[]],
+  ['Request Fulfillment',6.8,4,34,10,[]],
+  ['Workforce Management',6.3,3,32,9,[]],
+  ['Procurement & TPM',4.9,3,25,7,[]]]}
+];
+
+/* ---------- squarified treemap ---------- */
+function squarify(items,x,y,w,h){
+  const out=[],total=items.reduce((s,i)=>s+i.v,0);
+  if(!total)return out;
+  let scale=(w*h)/total, rest=items.map(i=>({...i,a:i.v*scale}));
+  let cx=x,cy=y,cw=w,ch=h;
+  const worst=(row,len)=>{const s=row.reduce((a,b)=>a+b.a,0);
+    const mx=Math.max(...row.map(r=>r.a)),mn=Math.min(...row.map(r=>r.a));
+    return Math.max((len*len*mx)/(s*s),(s*s)/(len*len*mn));};
+  while(rest.length){
+    const vert=cw>=ch, len=vert?ch:cw;
+    let row=[rest[0]],i=1;
+    while(i<rest.length&&worst(row.concat(rest[i]),len)<=worst(row,len)){row.push(rest[i]);i++;}
+    const s=row.reduce((a,b)=>a+b.a,0), thick=s/len;
+    let off=vert?cy:cx;
+    row.forEach(r=>{const sz=r.a/thick;
+      out.push({...r, x:vert?cx:off, y:vert?off:cy, w:vert?thick:sz, h:vert?sz:thick});
+      off+=sz;});
+    if(vert){cx+=thick;cw-=thick;}else{cy+=thick;ch-=thick;}
+    rest=rest.slice(row.length);
+  }
+  return out;
+}
+
+const W=900,H=620,PAD=3,HDR=22;
+const svg=document.getElementById('tm');
+const NS='http://www.w3.org/2000/svg';
+const el=(t,a)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);return e;};
+
+// hatch pattern for unlinked nodes
+const defs=el('defs');
+defs.innerHTML=`<pattern id="hatch" width="6" height="6" patternTransform="rotate(45)" patternUnits="userSpaceOnUse">
+  <rect width="6" height="6" fill="none"/><line x1="0" y1="0" x2="0" y2="6" stroke="#E01931" stroke-width="2.4" opacity=".9"/></pattern>`;
+svg.appendChild(defs);
+
+const groups=DATA.map(g=>({...g,v:g.n.reduce((s,n)=>s+n[1],0)}));
+const gLayout=squarify(groups,0,0,W,H);
+
+gLayout.forEach(g=>{
+  const gEl=el('g');
+  gEl.appendChild(el('rect',{x:g.x+PAD/2,y:g.y+PAD/2,width:Math.max(0,g.w-PAD),height:Math.max(0,g.h-PAD),
+    fill:g.plat?'#2C3742':'#0A3F3C',rx:2}));
+  const t=el('text',{x:g.x+PAD/2+8,y:g.y+PAD/2+15,class:'glabel'});t.textContent=g.g.toUpperCase();
+  gEl.appendChild(t);
+  const st=el('text',{x:g.x+g.w-PAD/2-8,y:g.y+PAD/2+15,class:'gsub','text-anchor':'end'});
+  st.textContent='$'+g.v.toFixed(1)+'M · '+(g.v/687*100).toFixed(1)+'%';
+  gEl.appendChild(st);
+
+  const ramp=g.plat?SLATES:GREENS;
+  const inner=squarify(g.n.map((n,i)=>({v:n[1],d:n,i})),
+    g.x+PAD/2+4, g.y+PAD/2+HDR, Math.max(1,g.w-PAD-8), Math.max(1,g.h-PAD-HDR-4));
+
+  inner.forEach((c,idx)=>{
+    const [name,val,teams,hc,epics,okrs]=c.d;
+    const shade=ramp[Math.min(ramp.length-1,Math.floor(idx/Math.max(1,inner.length/ramp.length)))];
+    const light=(!g.plat&&idx>=inner.length*0.66)||(g.plat&&idx>=inner.length*0.78);
+    const cell=el('g',{class:'cell',tabindex:0});
+    cell.appendChild(el('rect',{class:'fill',x:c.x,y:c.y,width:Math.max(0,c.w-1.5),height:Math.max(0,c.h-1.5),
+      fill:shade,rx:1.5}));
+    if(!okrs.length)
+      cell.appendChild(el('rect',{x:c.x,y:c.y,width:Math.max(0,c.w-1.5),height:Math.max(0,c.h-1.5),
+        fill:'url(#hatch)',opacity:.28,rx:1.5,'pointer-events':'none'}));
+    if(c.w>62&&c.h>26){
+      const words=name.length>Math.floor(c.w/6.1)?name.slice(0,Math.floor(c.w/6.1)-1)+'…':name;
+      const nt=el('text',{x:c.x+7,y:c.y+16,class:'nlabel'+(light?' dark':'')});nt.textContent=words;
+      cell.appendChild(nt);
+      if(c.h>40){const vt=el('text',{x:c.x+7,y:c.y+30,class:'nval'+(light?' dark':'')});
+        vt.textContent='$'+val.toFixed(1)+'M · '+hc+' FTE';cell.appendChild(vt);}
+    }
+    const tip=el('title');tip.textContent=`${name}\n$${val.toFixed(1)}M · ${hc} FTE · ${teams} teams · ${epics} epics\n${okrs.length?okrs.length+' objective(s)':'No objective linked'}`;
+    cell.appendChild(tip);
+    const sel=()=>{document.querySelectorAll('.cell.sel').forEach(e=>e.classList.remove('sel'));
+      cell.classList.add('sel');render(g,c.d);};
+    cell.addEventListener('click',sel);
+    cell.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();sel();}});
+    gEl.appendChild(cell);
+  });
+  svg.appendChild(gEl);
+});
+
+const TEAMS=['Platform','Experience','Core Services','Integrations','Data & Insights','Controls','Enablement','Mobile','Origination','Servicing'];
+function render(g,d){
+  const [name,val,teams,hc,epics,okrs]=d;
+  const show=Math.min(teams,4);
+  let tl='';
+  for(let i=0;i<show;i++){
+    const share=Math.round(hc*(i===0?.34:i===1?.27:i===2?.22:.17));
+    tl+=`<div class="team"><span>${name.split(' ')[0]} ${TEAMS[(i*3+name.length)%TEAMS.length]}</span><em>${share} FTE</em></div>`;
+  }
+  if(teams>show)tl+=`<div class="team"><span style="color:var(--ink-3)">+ ${teams-show} more teams</span><em>${hc-Math.round(hc*.34)-Math.round(hc*.27)-Math.round(hc*.22)-Math.round(hc*.17)+0} FTE</em></div>`;
+  const ol=okrs.length
+    ? okrs.map((o,i)=>`<div class="okr"><b>OBJ-${(name.length*7+i*13)%900+100}</b>${o}</div>`).join('')
+    : `<div class="none">No objective linked. $${val.toFixed(1)}M and ${hc} FTE are funded outside the measured portfolio.</div>`;
+  document.getElementById('rail').innerHTML=`
+    <div class="eyebrow">${g.plat?'Shared platform':'Product'}</div>
+    <h3>${name}</h3>
+    <div class="path">${g.g}</div>
+    <div class="metric"><span>Planned investment 2026</span><span>$${val.toFixed(1)}M</span></div>
+    <div class="metric"><span>Share of portfolio</span><span>${(val/687*100).toFixed(1)}%</span></div>
+    <div class="metric"><span>Headcount</span><span>${hc} FTE</span></div>
+    <div class="metric"><span>Teams</span><span>${teams}</span></div>
+    <div class="metric"><span>Epics in flight</span><span>${epics}</span></div>
+    <div class="metric"><span>Cost per FTE</span><span>$${Math.round(val*1e6/hc/1000)}K</span></div>
+    <div class="sect"><h4>Teams</h4>${tl}</div>
+    <div class="sect"><h4>Objectives supported</h4>${ol}</div>`;
+}
+</script>
