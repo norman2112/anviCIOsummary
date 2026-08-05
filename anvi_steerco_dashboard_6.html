@@ -1,334 +1,881 @@
-<!--
-  ============================================================
-  ANVI GENERATIVE UI RESPONSE
-  session:      a7f3-2c91-hnb-pom
-  prompt_id:    pv-anvi-4471
-  surface:      Portfolios / Product Operating Model
-  tools_called: portfolios.getPortfolioInvestment,
-                portfolios.getCostCenterRollup,
-                agileplace.listCards(boardIds=[...]),
-                okr.listObjectives
-  data_asof:    2026-07-24T21:14:00Z
-  render:       treemap.squarified / PVDS tokens / customer-brand override
-  confidence:   high (funding, headcount) | medium (OKR linkage — 5 nodes unmapped)
-  ============================================================
--->
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Anvi — Huntington Product Operating Model</title>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ensemble Health Partners — Executive Outcomes Dashboard</title>
 <style>
-  :root{
-    /* Anvi / PVDS chrome */
-    --pv-red:#E01931;
-    --ink:#101418;
-    --ink-2:#3D454E;
-    --ink-3:#6B7580;
-    --rule:#E3E7EB;
-    --surface:#FFFFFF;
-    --canvas:#F4F6F8;
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
-    /* Customer brand — Huntington deck palette */
-    --hnb-deep:#0D4F4C;
-    --hnb-1:#0D4F4C;
-    --hnb-2:#1A6F63;
-    --hnb-3:#3A9179;
-    --hnb-4:#6FB392;
-    --hnb-5:#A8D3B4;
-    --hnb-6:#D3E9D6;
+  * { margin: 0; padding: 0; box-sizing: border-box; }
 
-    /* Shared platforms — deliberately desaturated */
-    --plat-1:#3E4A57;
-    --plat-2:#5A6672;
-    --plat-3:#78838E;
-    --plat-4:#98A2AC;
-    --plat-5:#B8C0C8;
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: #ffffff;
+    color: #1a1a1a;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
   }
-  *{box-sizing:border-box}
-  html,body{margin:0;background:var(--canvas);color:var(--ink);
-    font-family:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
-    font-feature-settings:"tnum" 1,"cv05" 1;-webkit-font-smoothing:antialiased}
 
-  .shell{max-width:1240px;margin:0 auto;padding:28px 20px 56px}
+  .dashboard {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 32px 40px;
+  }
 
-  /* ---- Anvi response card ---- */
-  .anvi{background:var(--surface);border:1px solid var(--rule);border-radius:6px;
-    box-shadow:0 1px 2px rgba(16,20,24,.05),0 8px 24px rgba(16,20,24,.04);overflow:hidden}
-  .anvi:before{content:"";display:block;height:3px;background:var(--pv-red)}
+  /* ── Header ── */
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 32px;
+    padding-bottom: 24px;
+    border-bottom: 3px solid #C8102E;
+  }
 
+  .header-left h1 {
+    font-size: 22px;
+    font-weight: 700;
+    color: #1a1a1a;
+    letter-spacing: -0.3px;
+  }
 
-  .hdr{display:flex;align-items:flex-start;gap:12px;padding:22px 24px 0}
-  .mark{width:26px;height:26px;border-radius:50%;flex:0 0 26px;
-    background:conic-gradient(from 210deg,var(--pv-red),#7A0E1B 65%,var(--pv-red));
-    display:grid;place-items:center;color:#fff;font-size:11px;font-weight:700;letter-spacing:.02em}
-  .who{font-size:12px;font-weight:650;color:var(--ink);letter-spacing:.01em}
-  .who span{font-weight:400;color:var(--ink-3);margin-left:8px;letter-spacing:0}
+  .header-left .subtitle {
+    font-size: 14px;
+    color: #666;
+    margin-top: 4px;
+  }
 
-  .narrative{padding:10px 24px 0 62px;max-width:860px}
-  .narrative p{margin:0 0 10px;font-size:14.5px;line-height:1.62;color:var(--ink-2)}
-  .narrative strong{color:var(--ink);font-weight:640}
-  .flag{display:inline-block;border-left:2px solid var(--pv-red);padding:2px 0 2px 10px;
-    font-size:13.5px;line-height:1.55;color:var(--ink-2);margin:2px 0 14px}
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
 
-  /* ---- KPI strip ---- */
-  .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--rule);
-    border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);margin-top:18px}
-  .kpi{background:var(--surface);padding:14px 24px}
-  .kpi .k{font-size:10px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3);font-weight:600}
-  .kpi .v{font-size:23px;font-weight:660;letter-spacing:-.02em;margin-top:3px}
-  .kpi .s{font-size:11.5px;color:var(--ink-3);margin-top:1px}
-  .kpi.alert .v{color:var(--pv-red)}
+  .header-date {
+    font-size: 13px;
+    color: #888;
+    text-align: right;
+  }
 
-  /* ---- viz ---- */
-  .vizwrap{display:grid;grid-template-columns:1fr 288px;gap:0}
-  @media(max-width:900px){.vizwrap{grid-template-columns:1fr}}
-  .viz{padding:18px 8px 18px 18px}
-  svg{display:block;width:100%;height:auto}
+  .anvi-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: linear-gradient(135deg, #C8102E, #8B0A1E);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 6px 12px;
+    border-radius: 20px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
 
-  .cell rect{stroke:#fff;stroke-width:1.25;transition:opacity .13s ease}
-  .cell:hover rect.fill{opacity:.82}
-  .cell{cursor:pointer}
-  .cell.sel rect.fill{stroke:var(--ink);stroke-width:2.5}
-  .glabel{font-size:11px;font-weight:700;letter-spacing:.055em;text-transform:uppercase;fill:#fff}
-  .gsub{font-size:10px;font-weight:500;fill:rgba(255,255,255,.72)}
-  .nlabel{font-size:11px;font-weight:600;fill:#fff;pointer-events:none}
-  .nval{font-size:10.5px;font-weight:500;fill:rgba(255,255,255,.78);pointer-events:none}
-  .nlabel.dark{fill:#1C2530}.nval.dark{fill:rgba(28,37,48,.68)}
+  .anvi-badge::before {
+    content: '✦';
+    font-size: 10px;
+  }
 
-  /* ---- detail rail ---- */
-  .rail{border-left:1px solid var(--rule);padding:20px 20px 20px 18px;background:#FBFCFD;min-height:520px}
-  .rail .eyebrow{font-size:10px;letter-spacing:.11em;text-transform:uppercase;color:var(--ink-3);font-weight:600}
-  .rail h3{margin:5px 0 2px;font-size:17px;font-weight:650;letter-spacing:-.015em;line-height:1.25}
-  .rail .path{font-size:11.5px;color:var(--ink-3);margin-bottom:16px}
-  .metric{display:flex;justify-content:space-between;align-items:baseline;
-    padding:8px 0;border-bottom:1px solid var(--rule);font-size:12.5px}
-  .metric span:first-child{color:var(--ink-3)}
-  .metric span:last-child{font-weight:640;font-size:13.5px}
-  .sect{margin-top:18px}
-  .sect h4{margin:0 0 8px;font-size:10px;letter-spacing:.11em;text-transform:uppercase;color:var(--ink-3);font-weight:600}
-  .team{font-size:12.5px;padding:5px 0;color:var(--ink-2);display:flex;justify-content:space-between;gap:10px}
-  .team em{font-style:normal;color:var(--ink-3);font-size:11.5px;white-space:nowrap}
-  .okr{font-size:12.5px;line-height:1.45;padding:7px 0 7px 11px;border-left:2px solid var(--hnb-3);
-    color:var(--ink-2);margin-bottom:7px}
-  .okr b{display:block;font-weight:640;color:var(--ink);font-size:11px;letter-spacing:.05em;
-    text-transform:uppercase;margin-bottom:2px}
-  .none{font-size:12.5px;color:var(--pv-red);border-left:2px solid var(--pv-red);padding:7px 0 7px 11px;line-height:1.45}
-  .empty{font-size:13px;color:var(--ink-3);line-height:1.6;padding-top:60px;text-align:center}
+  /* ── KPI Strip ── */
+  .kpi-strip {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 36px;
+  }
 
-  /* ---- legend + footer ---- */
-  .legend{display:flex;flex-wrap:wrap;gap:18px;padding:0 24px 18px;font-size:11.5px;color:var(--ink-3)}
-  .legend i{display:inline-block;width:11px;height:11px;border-radius:2px;margin-right:6px;
-    vertical-align:-1px;font-style:normal}
-  .foot{border-top:1px solid var(--rule);padding:13px 24px 15px;background:#FBFCFD;
-    font-size:11px;color:var(--ink-3);line-height:1.6;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
-  .foot code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;color:var(--ink-2)}
+  .kpi-card {
+    background: #fafafa;
+    border: 1px solid #e8e8e8;
+    border-radius: 8px;
+    padding: 20px;
+    position: relative;
+  }
+
+  .kpi-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    border-radius: 8px 8px 0 0;
+  }
+
+  .kpi-card:nth-child(1)::before { background: #C8102E; }
+  .kpi-card:nth-child(2)::before { background: #2E7D32; }
+  .kpi-card:nth-child(3)::before { background: #1565C0; }
+  .kpi-card:nth-child(4)::before { background: #6A1B9A; }
+
+  .kpi-label {
+    font-size: 12px;
+    font-weight: 500;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+  }
+
+  .kpi-value {
+    font-size: 32px;
+    font-weight: 700;
+    color: #1a1a1a;
+    line-height: 1;
+  }
+
+  .kpi-detail {
+    font-size: 12px;
+    color: #999;
+    margin-top: 6px;
+  }
+
+  /* ── Section Headers ── */
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+    margin-top: 8px;
+  }
+
+  .section-header h2 {
+    font-size: 16px;
+    font-weight: 700;
+    color: #1a1a1a;
+    letter-spacing: -0.2px;
+  }
+
+  .section-badge {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 12px;
+    background: #f0f0f0;
+    color: #666;
+  }
+
+  /* ── OKR Blocks ── */
+  .okr-block {
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    margin-bottom: 24px;
+    overflow: hidden;
+  }
+
+  .okr-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 24px;
+    background: #fafafa;
+    border-bottom: 1px solid #e8e8e8;
+  }
+
+  .okr-title-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .okr-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: #1a1a1a;
+  }
+
+  .status-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+    flex-shrink: 0;
+  }
+
+  .status-green { background: #2E7D32; }
+  .status-amber { background: #F57C00; }
+  .status-red { background: #C62828; }
+
+  .okr-progress-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 180px;
+  }
+
+  .progress-bar-bg {
+    flex: 1;
+    height: 8px;
+    background: #e8e8e8;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .progress-bar-fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.3s ease;
+  }
+
+  .progress-bar-fill.green { background: #2E7D32; }
+  .progress-bar-fill.amber { background: #F57C00; }
+  .progress-bar-fill.red { background: #C62828; }
+
+  .progress-pct {
+    font-size: 14px;
+    font-weight: 600;
+    color: #1a1a1a;
+    min-width: 36px;
+    text-align: right;
+  }
+
+  /* ── Capability Rows ── */
+  .capability-list {
+    padding: 0;
+  }
+
+  .capability-row {
+    display: grid;
+    grid-template-columns: 24px 1fr 120px 100px 80px;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 24px;
+    border-bottom: 1px solid #f0f0f0;
+  }
+
+  .capability-row:last-child {
+    border-bottom: none;
+  }
+
+  .capability-row:hover {
+    background: #fafafa;
+  }
+
+  .cap-icon {
+    width: 24px;
+    height: 24px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+    color: #fff;
+    flex-shrink: 0;
+  }
+
+  .cap-icon.capability { background: #C8102E; }
+  .cap-icon.feature { background: #555; }
+
+  .cap-name {
+    font-size: 13px;
+    font-weight: 500;
+    color: #333;
+  }
+
+  .cap-name.indent {
+    padding-left: 20px;
+    color: #555;
+    font-weight: 400;
+  }
+
+  .cap-type-label {
+    font-size: 11px;
+    color: #999;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+  }
+
+  .cap-progress {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .cap-progress .progress-bar-bg {
+    width: 60px;
+    height: 6px;
+  }
+
+  .cap-progress-pct {
+    font-size: 12px;
+    font-weight: 600;
+    color: #555;
+    min-width: 32px;
+    text-align: right;
+  }
+
+  .cap-status {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* ── Outcomes Summary ── */
+  .outcomes-strip {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 36px;
+  }
+
+  .outcome-card {
+    background: #fafafa;
+    border: 1px solid #e8e8e8;
+    border-radius: 8px;
+    padding: 18px 20px;
+  }
+
+  .outcome-card .oc-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+  }
+
+  .outcome-card .oc-value {
+    font-size: 24px;
+    font-weight: 700;
+    color: #1a1a1a;
+  }
+
+  .outcome-card .oc-detail {
+    font-size: 12px;
+    color: #999;
+    margin-top: 4px;
+  }
+
+  /* ── Client Health Table ── */
+  .client-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 32px;
+  }
+
+  .client-table thead th {
+    font-size: 11px;
+    font-weight: 600;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    text-align: left;
+    padding: 10px 16px;
+    border-bottom: 2px solid #e0e0e0;
+  }
+
+  .client-table thead th:not(:first-child) {
+    text-align: center;
+  }
+
+  .client-table tbody td {
+    font-size: 13px;
+    padding: 12px 16px;
+    border-bottom: 1px solid #f0f0f0;
+    color: #333;
+  }
+
+  .client-table tbody td:not(:first-child) {
+    text-align: center;
+  }
+
+  .client-table tbody tr:hover {
+    background: #fafafa;
+  }
+
+  .client-name {
+    font-weight: 500;
+  }
+
+  .metric-val {
+    font-weight: 600;
+    font-size: 13px;
+  }
+
+  .trend-up { color: #2E7D32; }
+  .trend-down { color: #C62828; }
+  .trend-flat { color: #888; }
+
+  /* ── Footer ── */
+  .footer {
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid #e0e0e0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footer-left {
+    font-size: 11px;
+    color: #bbb;
+  }
+
+  .footer-right {
+    font-size: 11px;
+    color: #bbb;
+  }
+
+  .anvi-reasoning {
+    background: #f8f8f8;
+    border-left: 3px solid #C8102E;
+    padding: 14px 18px;
+    margin: 0 24px 16px 24px;
+    border-radius: 0 6px 6px 0;
+  }
+
+  .anvi-reasoning .label {
+    font-size: 10px;
+    font-weight: 700;
+    color: #C8102E;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    margin-bottom: 4px;
+  }
+
+  .anvi-reasoning p {
+    font-size: 12px;
+    color: #666;
+    font-style: italic;
+    line-height: 1.6;
+  }
 </style>
+</head>
+<body>
 
-<div class="shell">
-<div class="anvi">
+<!-- anvi:generation-manifest
+  model: planview-anvi-v2.4
+  generated_at: 2026-07-14T14:30:00Z
+  confidence: 0.91
+  data_sources: [Planview Portfolios, Planview OKRs, Planview AgilePlace]
+  org_scope: Ensemble Health Partners — All Client Portfolios
+  refresh_cadence: weekly
+-->
 
-  <div class="hdr">
-    <div class="mark">A</div>
-    <div class="who">Anvi <span>Portfolios · AgilePlace · OKRs — 4 sources, as of 24 Jul 2026</span></div>
+<div class="dashboard">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="header-left">
+      <h1>Ensemble Health Partners — Client Outcomes Dashboard</h1>
+      <div class="subtitle">Executive Portfolio View · Revenue Cycle Management</div>
+    </div>
+    <div class="header-right">
+      <div class="header-date">
+        Monday, July 14, 2026<br>
+        <span style="font-size:11px; color:#aaa;">Q3 2026 · Reporting Period</span>
+      </div>
+      <div class="anvi-badge">Anvi Generated</div>
+    </div>
   </div>
 
-  <div class="narrative">
-    <p>Your 44 nodes carry <strong>$687.0M</strong> of planned 2026 investment and <strong>3,450 FTE</strong>. Sized by spend, the structure looks different than it does on the org chart: the 19 shared platform and enabler capabilities are 43% of the node count but <strong>38.1% of the money</strong> — $262.0M — and they sit underneath every customer-facing product line.</p>
-    <div class="flag">Five platform capabilities totalling <strong>$38.6M</strong> have no objective linked to them. They're funded, staffed, and delivering — against nothing you're measuring.</div>
+  <!-- KPI Strip -->
+  <div class="kpi-strip">
+    <div class="kpi-card">
+      <div class="kpi-label">Active Client Health Systems</div>
+      <div class="kpi-value">30</div>
+      <div class="kpi-detail">Across 4 service regions</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Capabilities On Track</div>
+      <div class="kpi-value">74%</div>
+      <div class="kpi-detail">23 of 31 capabilities green</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Avg Minutes Saved / Task</div>
+      <div class="kpi-value">8.4</div>
+      <div class="kpi-detail">▲ 1.2 min vs. Q2</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Annualized Value Realized</div>
+      <div class="kpi-value">$14.2M</div>
+      <div class="kpi-detail">Net savings across all clients</div>
+    </div>
   </div>
 
-  <div class="kpis">
-    <div class="kpi"><div class="k">Planned investment 2026</div><div class="v">$687.0M</div><div class="s">44 products · 6 segments</div></div>
-    <div class="kpi"><div class="k">Headcount</div><div class="v">3,450</div><div class="s">387 teams · $199K blended</div></div>
-    <div class="kpi"><div class="k">Shared platform load</div><div class="v">38.1%</div><div class="s">$262.0M across 19 capabilities</div></div>
-    <div class="kpi alert"><div class="k">Unlinked to an objective</div><div class="v">$38.6M</div><div class="s">5 capabilities · 194 FTE</div></div>
+  <!-- Strategic OKRs -->
+  <div class="section-header">
+    <h2>Strategic OKRs + Connected Capabilities</h2>
+    <span class="section-badge">Q3 2026</span>
   </div>
 
-  <div class="vizwrap">
-    <div class="viz"><svg id="tm" viewBox="0 0 900 620" role="img"
-         aria-label="Treemap of Huntington product structure sized by 2026 planned investment"></svg></div>
-    <aside class="rail" id="rail">
-      <div class="empty">Select a product to see its teams, funding and delivery.</div>
-    </aside>
+  <!-- OKR 1 -->
+  <div class="okr-block">
+    <div class="okr-header">
+      <div class="okr-title-row">
+        <span class="status-dot status-green"></span>
+        <span class="okr-title">Standardize Outcome Measurement Across All Clients</span>
+      </div>
+      <div class="okr-progress-container">
+        <div class="progress-bar-bg"><div class="progress-bar-fill green" style="width:68%"></div></div>
+        <span class="progress-pct">68%</span>
+      </div>
+    </div>
+    <div class="capability-list">
+      <!-- Capability 1.1 -->
+      <div class="capability-row">
+        <div class="cap-icon capability">C</div>
+        <div class="cap-name">Unified Client Scorecard Framework</div>
+        <div class="cap-type-label">Capability</div>
+        <div class="cap-progress">
+          <div class="progress-bar-bg"><div class="progress-bar-fill green" style="width:82%"></div></div>
+          <span class="cap-progress-pct">82%</span>
+        </div>
+        <div class="cap-status"><span class="status-dot status-green"></span></div>
+      </div>
+      <div class="capability-row">
+        <div class="cap-icon feature">F</div>
+        <div class="cap-name indent">Standardized KPI taxonomy (minutes saved, cost avoidance, NPR lift)</div>
+        <div class="cap-type-label">Feature</div>
+        <div class="cap-progress">
+          <div class="progress-bar-bg"><div class="progress-bar-fill green" style="width:95%"></div></div>
+          <span class="cap-progress-pct">95%</span>
+        </div>
+        <div class="cap-status"><span class="status-dot status-green"></span></div>
+      </div>
+      <div class="capability-row">
+        <div class="cap-icon feature">F</div>
+        <div class="cap-name indent">Client-level outcome roll-up reporting</div>
+        <div class="cap-type-label">Feature</div>
+        <div class="cap-progress">
+          <div class="progress-bar-bg"><div class="progress-bar-fill green" style="width:72%"></div></div>
+          <span class="cap-progress-pct">72%</span>
+        </div>
+        <div class="cap-status"><span class="status-dot status-green"></span></div>
+      </div>
+      <div class="capability-row">
+        <div class="cap-icon feature">F</div>
+        <div class="cap-name indent">Executive dashboard — single view across 30 clients</div>
+        <div class="cap-type-label">Feature</div>
+        <div class="cap-progress">
+          <div class="progress-bar-bg"><div class="progress-bar-fill amber" style="width:55%"></div></div>
+          <span class="cap-progress-pct">55%</span>
+        </div>
+        <div class="cap-status"><span class="status-dot status-amber"></span></div>
+      </div>
+
+      <!-- Capability 1.2 -->
+      <div class="capability-row">
+        <div class="cap-icon capability">C</div>
+        <div class="cap-name">Automated Time-to-Task Capture</div>
+        <div class="cap-type-label">Capability</div>
+        <div class="cap-progress">
+          <div class="progress-bar-bg"><div class="progress-bar-fill amber" style="width:58%"></div></div>
+          <span class="cap-progress-pct">58%</span>
+        </div>
+        <div class="cap-status"><span class="status-dot status-amber"></span></div>
+      </div>
+      <div class="capability-row">
+        <div class="cap-icon feature">F</div>
+        <div class="cap-name indent">Process mining integration — pre/post task duration</div>
+        <div class="cap-type-label">Feature</div>
+        <div class="cap-progress">
+          <div class="progress-bar-bg"><div class="progress-bar-fill amber" style="width:45%"></div></div>
+          <span class="cap-progress-pct">45%</span>
+        </div>
+        <div class="cap-status"><span class="status-dot status-amber"></span></div>
+      </div>
+      <div class="capability-row">
+        <div class="cap-icon feature">F</div>
+        <div class="cap-name indent">Minutes-to-dollars conversion engine (by role, by client)</div>
+        <div class="cap-type-label">Feature</div>
+        <div class="cap-progress">
+          <div class="progress-bar-bg"><div class="progress-bar-fill green" style="width:71%"></div></div>
+          <span class="cap-progress-pct">71%</span>
+        </div>
+        <div class="cap-status"><span class="status-dot status-green"></span></div>
+      </div>
+    </div>
+
+    <div class="anvi-reasoning">
+      <div class="label">Anvi Insight</div>
+      <p>This OKR is on track. The scorecard framework is nearly complete, with the executive dashboard feature as the primary remaining dependency. Automated time capture is progressing but blocked on process mining vendor integration timelines at 3 client sites.</p>
+    </div>
   </div>
 
-  <div class="legend">
-    <span><i style="background:var(--hnb-2)"></i>Product groups — customer-facing (25)</span>
-    <span><i style="background:var(--plat-2)"></i>Shared platforms &amp; enablers (19)</span>
-    <span><i style="background:repeating-linear-gradient(45deg,var(--pv-red) 0 2px,#fff 2px 4px);border:1px solid var(--rule)"></i>No objective linked</span>
-    <span>Area = 2026 planned investment</span>
+  <!-- OKR 2 -->
+  <div class="okr-block">
+    <div class="okr-header">
+      <div class="okr-title-row">
+        <span class="status-dot status-amber"></span>
+        <span class="okr-title">Reduce Denial Rate Across Managed Clients by 15%</span>
+      </div>
+      <div class="okr-progress-container">
+        <div class="progress-bar-bg"><div class="progress-bar-fill amber" style="width:51%"></div></div>
+        <span class="progress-pct">51%</span>
+      </div>
+    </div>
+    <div class="capability-list">
+      <!-- Capability 2.1 -->
+      <div class="capability-row">
+        <div class="cap-icon capability">C</div>
+        <div class="cap-name">AI-Powered Denial Prevention</div>
+        <div class="cap-type-label">Capability</div>
+        <div class="cap-progress">
+          <div class="progress-bar-bg"><div class="progress-bar-fill amber" style="width:48%"></div></div>
+          <span class="cap-progress-pct">48%</span>
+        </div>
+        <div class="cap-status"><span class="status-dot status-amber"></span></div>
+      </div>
+      <div class="capability-row">
+        <div class="cap-icon feature">F</div>
+        <div class="cap-name indent">Pre-submission claim validation rules engine</div>
+        <div class="cap-type-label">Feature</div>
+        <div class="cap-progress">
+          <div class="progress-bar-bg"><div class="progress-bar-fill green" style="width:75%"></div></div>
+          <span class="cap-progress-pct">75%</span>
+        </div>
+        <div class="cap-status"><span class="status-dot status-green"></span></div>
+      </div>
+      <div class="capability-row">
+        <div class="cap-icon feature">F</div>
+        <div class="cap-name indent">Payer-specific denial pattern detection</div>
+        <div class="cap-type-label">Feature</div>
+        <div class="cap-progress">
+          <div class="progress-bar-bg"><div class="progress-bar-fill red" style="width:28%"></div></div>
+          <span class="cap-progress-pct">28%</span>
+        </div>
+        <div class="cap-status"><span class="status-dot status-red"></span></div>
+      </div>
+      <div class="capability-row">
+        <div class="cap-icon feature">F</div>
+        <div class="cap-name indent">Automated appeal letter generation</div>
+        <div class="cap-type-label">Feature</div>
+        <div class="cap-progress">
+          <div class="progress-bar-bg"><div class="progress-bar-fill amber" style="width:40%"></div></div>
+          <span class="cap-progress-pct">40%</span>
+        </div>
+        <div class="cap-status"><span class="status-dot status-amber"></span></div>
+      </div>
+
+      <!-- Capability 2.2 -->
+      <div class="capability-row">
+        <div class="cap-icon capability">C</div>
+        <div class="cap-name">Coding Accuracy Improvement Program</div>
+        <div class="cap-type-label">Capability</div>
+        <div class="cap-progress">
+          <div class="progress-bar-bg"><div class="progress-bar-fill green" style="width:64%"></div></div>
+          <span class="cap-progress-pct">64%</span>
+        </div>
+        <div class="cap-status"><span class="status-dot status-green"></span></div>
+      </div>
+      <div class="capability-row">
+        <div class="cap-icon feature">F</div>
+        <div class="cap-name indent">CDI query workflow standardization</div>
+        <div class="cap-type-label">Feature</div>
+        <div class="cap-progress">
+          <div class="progress-bar-bg"><div class="progress-bar-fill green" style="width:80%"></div></div>
+          <span class="cap-progress-pct">80%</span>
+        </div>
+        <div class="cap-status"><span class="status-dot status-green"></span></div>
+      </div>
+      <div class="capability-row">
+        <div class="cap-icon feature">F</div>
+        <div class="cap-name indent">Real-time coding audit feedback loop</div>
+        <div class="cap-type-label">Feature</div>
+        <div class="cap-progress">
+          <div class="progress-bar-bg"><div class="progress-bar-fill amber" style="width:50%"></div></div>
+          <span class="cap-progress-pct">50%</span>
+        </div>
+        <div class="cap-status"><span class="status-dot status-amber"></span></div>
+      </div>
+    </div>
+
+    <div class="anvi-reasoning">
+      <div class="label">Anvi Insight</div>
+      <p>Denial reduction is at risk of missing target. Payer-specific pattern detection is behind schedule due to data-sharing agreements with 2 major payers still in legal review. Coding accuracy gains are partially offsetting the gap — CDI query standardization alone has contributed a 4.1% denial rate improvement at 12 client sites.</p>
+    </div>
   </div>
 
-  <div class="foot">
-    <div>Generated by <strong>Anvi</strong> from Planview Portfolios (funding, headcount), AgilePlace (epics in flight), and Objectives &amp; Key Results. Figures are plan-of-record, not actuals.</div>
-    <div><code>pv-anvi-4471 · 24 Jul 2026 21:14 UTC</code></div>
+  <!-- OKR 3 -->
+  <div class="okr-block">
+    <div class="okr-header">
+      <div class="okr-title-row">
+        <span class="status-dot status-green"></span>
+        <span class="okr-title">Accelerate Patient Access Cycle Time by 20%</span>
+      </div>
+      <div class="okr-progress-container">
+        <div class="progress-bar-bg"><div class="progress-bar-fill green" style="width:73%"></div></div>
+        <span class="progress-pct">73%</span>
+      </div>
+    </div>
+    <div class="capability-list">
+      <!-- Capability 3.1 -->
+      <div class="capability-row">
+        <div class="cap-icon capability">C</div>
+        <div class="cap-name">Digital Front Door — Registration & Scheduling</div>
+        <div class="cap-type-label">Capability</div>
+        <div class="cap-progress">
+          <div class="progress-bar-bg"><div class="progress-bar-fill green" style="width:78%"></div></div>
+          <span class="cap-progress-pct">78%</span>
+        </div>
+        <div class="cap-status"><span class="status-dot status-green"></span></div>
+      </div>
+      <div class="capability-row">
+        <div class="cap-icon feature">F</div>
+        <div class="cap-name indent">Self-service eligibility verification portal</div>
+        <div class="cap-type-label">Feature</div>
+        <div class="cap-progress">
+          <div class="progress-bar-bg"><div class="progress-bar-fill green" style="width:90%"></div></div>
+          <span class="cap-progress-pct">90%</span>
+        </div>
+        <div class="cap-status"><span class="status-dot status-green"></span></div>
+      </div>
+      <div class="capability-row">
+        <div class="cap-icon feature">F</div>
+        <div class="cap-name indent">Automated prior authorization status tracking</div>
+        <div class="cap-type-label">Feature</div>
+        <div class="cap-progress">
+          <div class="progress-bar-bg"><div class="progress-bar-fill green" style="width:68%"></div></div>
+          <span class="cap-progress-pct">68%</span>
+        </div>
+        <div class="cap-status"><span class="status-dot status-green"></span></div>
+      </div>
+
+      <!-- Capability 3.2 -->
+      <div class="capability-row">
+        <div class="cap-icon capability">C</div>
+        <div class="cap-name">Call Center Optimization</div>
+        <div class="cap-type-label">Capability</div>
+        <div class="cap-progress">
+          <div class="progress-bar-bg"><div class="progress-bar-fill green" style="width:70%"></div></div>
+          <span class="cap-progress-pct">70%</span>
+        </div>
+        <div class="cap-status"><span class="status-dot status-green"></span></div>
+      </div>
+      <div class="capability-row">
+        <div class="cap-icon feature">F</div>
+        <div class="cap-name indent">IVR-to-agent intelligent routing</div>
+        <div class="cap-type-label">Feature</div>
+        <div class="cap-progress">
+          <div class="progress-bar-bg"><div class="progress-bar-fill green" style="width:85%"></div></div>
+          <span class="cap-progress-pct">85%</span>
+        </div>
+        <div class="cap-status"><span class="status-dot status-green"></span></div>
+      </div>
+      <div class="capability-row">
+        <div class="cap-icon feature">F</div>
+        <div class="cap-name indent">One-call resolution workflow redesign</div>
+        <div class="cap-type-label">Feature</div>
+        <div class="cap-progress">
+          <div class="progress-bar-bg"><div class="progress-bar-fill amber" style="width:55%"></div></div>
+          <span class="cap-progress-pct">55%</span>
+        </div>
+        <div class="cap-status"><span class="status-dot status-amber"></span></div>
+      </div>
+    </div>
+
+    <div class="anvi-reasoning">
+      <div class="label">Anvi Insight</div>
+      <p>Patient access acceleration is ahead of plan. Self-service eligibility verification has driven the largest single improvement — 11.3 minutes saved per registration across 18 active client sites. Call center optimization is tracking well with IVR routing deployed; one-call resolution redesign is in pilot at 4 sites with early results showing 23% fewer callback requests.</p>
+    </div>
+  </div>
+
+  <!-- Client Outcome Highlights -->
+  <div class="section-header">
+    <h2>Client Outcome Highlights</h2>
+    <span class="section-badge">Top 8 by Value Realized</span>
+  </div>
+
+  <table class="client-table">
+    <thead>
+      <tr>
+        <th>Client Health System</th>
+        <th>Capabilities Active</th>
+        <th>Avg Min Saved / Task</th>
+        <th>Denial Rate Δ</th>
+        <th>Annualized Savings</th>
+        <th>Health</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="client-name">Mercy Health Partners</td>
+        <td>9 / 12</td>
+        <td class="metric-val">11.2</td>
+        <td class="metric-val trend-up">▼ 6.3%</td>
+        <td class="metric-val">$2.8M</td>
+        <td><span class="status-dot status-green"></span></td>
+      </tr>
+      <tr>
+        <td class="client-name">Covenant Regional Medical</td>
+        <td>8 / 10</td>
+        <td class="metric-val">9.7</td>
+        <td class="metric-val trend-up">▼ 5.1%</td>
+        <td class="metric-val">$2.4M</td>
+        <td><span class="status-dot status-green"></span></td>
+      </tr>
+      <tr>
+        <td class="client-name">Northridge Health System</td>
+        <td>7 / 11</td>
+        <td class="metric-val">8.9</td>
+        <td class="metric-val trend-up">▼ 4.8%</td>
+        <td class="metric-val">$1.9M</td>
+        <td><span class="status-dot status-green"></span></td>
+      </tr>
+      <tr>
+        <td class="client-name">Children's Minnesota</td>
+        <td>6 / 8</td>
+        <td class="metric-val">10.1</td>
+        <td class="metric-val trend-up">▼ 3.9%</td>
+        <td class="metric-val">$1.7M</td>
+        <td><span class="status-dot status-green"></span></td>
+      </tr>
+      <tr>
+        <td class="client-name">Appalachian Regional Healthcare</td>
+        <td>8 / 12</td>
+        <td class="metric-val">7.6</td>
+        <td class="metric-val trend-up">▼ 4.2%</td>
+        <td class="metric-val">$1.5M</td>
+        <td><span class="status-dot status-amber"></span></td>
+      </tr>
+      <tr>
+        <td class="client-name">Bon Secours Mercy Health</td>
+        <td>10 / 12</td>
+        <td class="metric-val">6.8</td>
+        <td class="metric-val trend-up">▼ 2.7%</td>
+        <td class="metric-val">$1.3M</td>
+        <td><span class="status-dot status-amber"></span></td>
+      </tr>
+      <tr>
+        <td class="client-name">Summit Health Network</td>
+        <td>5 / 9</td>
+        <td class="metric-val">8.3</td>
+        <td class="metric-val trend-down">▲ 0.4%</td>
+        <td class="metric-val">$1.1M</td>
+        <td><span class="status-dot status-amber"></span></td>
+      </tr>
+      <tr>
+        <td class="client-name">Valley Baptist Health</td>
+        <td>4 / 7</td>
+        <td class="metric-val">7.1</td>
+        <td class="metric-val trend-up">▼ 3.1%</td>
+        <td class="metric-val">$0.9M</td>
+        <td><span class="status-dot status-green"></span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Footer -->
+  <div class="footer">
+    <div class="footer-left">
+      Planview Anvi · Generated from Planview Portfolios + OKRs · Ensemble Health Partners
+    </div>
+    <div class="footer-right">
+      Data as of July 14, 2026 · Confidence: 91%
+    </div>
   </div>
 
 </div>
-</div>
 
-<script>
-const GREENS=['#0D4F4C','#1A6F63','#3A9179','#6FB392','#A8D3B4','#C6E0CB'];
-const SLATES=['#3E4A57','#5A6672','#78838E','#98A2AC','#B8C0C8'];
+<!-- anvi:generation-summary
+  total_queries: 14
+  data_modules: [Portfolios, OKRs, AgilePlace]
+  cache_ratio: 0.72
+  generation_time: 3.4s
+-->
 
-// n:[name, $M, teams, HC, epics, okrs[], leader]
-const DATA=[
- {g:'Individuals / Small Business',plat:0,c:GREENS[1],n:[
-  ['Consumer Join & Activate',21.8,12,109,34,['Grow primary-bank households 6%','Cut digital onboarding to <7 min']],
-  ['Consumer Serve',18.6,10,93,28,['Deflect 25% of servicing calls to digital']],
-  ['Business Join & Activate',14.2,8,71,21,['Double small-business digital originations']],
-  ['Wealth Investments',12.4,7,62,17,['Lift advisor-managed assets 9%']],
-  ['Business Serve',11.9,6,60,19,['Deflect 25% of servicing calls to digital']],
-  ['Explore',9.4,5,47,14,['Grow primary-bank households 6%']],
-  ['Marketing',8.7,5,44,12,['Reduce cost per funded account 15%']],
-  ['Insurance',7.0,4,35,9,[]]]},
- {g:'Payments',plat:0,c:GREENS[0],n:[
-  ['Card and Consumer Platforms',31.5,17,158,47,['Grow interchange revenue 8%','Card platform on modern core by Q4']],
-  ['Payment Channels',22.4,12,113,33,['Real-time payments coverage to 90% of volume']],
-  ['Merchant',18.9,10,95,29,['Grow merchant processing volume 12%']],
-  ['Servicing, Onboarding & Tooling',13.7,8,69,24,['Commercial onboarding cycle to <10 days']],
-  ['TM Emerging Solutions',12.6,7,63,18,['Launch 3 new treasury products']],
-  ['TM Core Cash Management',9.5,5,48,15,['Real-time payments coverage to 90% of volume']],
-  ['Connectivity Ecosystem',9.4,5,47,13,['Partner API adoption by top 50 clients']]]},
- {g:'Lending',plat:0,c:GREENS[2],n:[
-  ['Consumer Lending',41.3,22,208,61,['Auto/HELOC decisioning under 60 seconds','Grow consumer loan book 7%']],
-  ['Business Lending',27.6,15,139,42,['Small-business approval in 48 hours']],
-  ['Commercial Lending',23.1,13,116,36,['Grow commercial originations 10%','Credit review cycle down 30%']]]},
- {g:'Deposits',plat:0,c:GREENS[3],n:[
-  ['Consumer Engage',26.8,14,135,39,['Grow primary-bank households 6%','Reduce deposit attrition to <4%']],
-  ['Business Engage',19.4,10,98,30,['Grow business deposit balances 9%']],
-  ['Commercial Deposits',14.8,8,74,22,['Grow business deposit balances 9%']]]},
- {g:'Medium / Large Business',plat:0,c:GREENS[4],n:[
-  ['Advise',14.6,8,73,22,['Lift relationship-manager coverage ratio']],
-  ['Engage',12.2,7,61,18,['Grow commercial originations 10%']],
-  ['Welcome',11.2,6,56,17,['Commercial onboarding cycle to <10 days']]]},
- {g:'Specialty Corp.',plat:0,c:GREENS[5],dark:1,n:[
-  ['Commercial Trade',12.0,6,60,19,['Grow trade finance fee income 11%']]]},
- {g:'Shared Platforms & Enablers',plat:1,c:SLATES[1],n:[
-  ['Contact Center & IVR',24.6,13,124,35,['Deflect 25% of servicing calls to digital']],
-  ['Fraud',22.7,12,114,33,['Hold fraud losses under 3.2 bps']],
-  ['Data Foundations — Warehouse',22.1,12,111,31,['Retire 40% of legacy data marts']],
-  ['Customer Info Systems',21.4,11,108,29,['Single customer record across all channels']],
-  ['Customer Operations',18.3,10,92,26,['Straight-through processing to 70%']],
-  ['Transaction Info Systems',17.9,9,90,25,['Single customer record across all channels']],
-  ['Risk, Compliance & Legal',15.4,8,77,22,['Zero material audit findings']],
-  ['Data Foundations — Mastering',14.8,8,74,21,['Single customer record across all channels']],
-  ['Agent Core',14.2,8,71,20,['Deflect 25% of servicing calls to digital']],
-  ['Data Management',13.2,7,66,18,[]],
-  ['Sales Support',12.8,7,64,19,['Lift relationship-manager coverage ratio']],
-  ['Finance & Treasury',11.6,6,58,16,['Close cycle to 4 business days']],
-  ['Data Use',10.3,6,52,15,['Retire 40% of legacy data marts']],
-  ['Risk Mgmt',9.2,5,46,13,['Zero material audit findings']],
-  ['Colleague Experiences',8.1,4,41,12,['Raise colleague eNPS to +38']],
-  ['SDLC Tooling',7.4,4,37,11,[]],
-  ['Request Fulfillment',6.8,4,34,10,[]],
-  ['Workforce Management',6.3,3,32,9,[]],
-  ['Procurement & TPM',4.9,3,25,7,[]]]}
-];
-
-/* ---------- squarified treemap ---------- */
-function squarify(items,x,y,w,h){
-  const out=[],total=items.reduce((s,i)=>s+i.v,0);
-  if(!total)return out;
-  let scale=(w*h)/total, rest=items.map(i=>({...i,a:i.v*scale}));
-  let cx=x,cy=y,cw=w,ch=h;
-  const worst=(row,len)=>{const s=row.reduce((a,b)=>a+b.a,0);
-    const mx=Math.max(...row.map(r=>r.a)),mn=Math.min(...row.map(r=>r.a));
-    return Math.max((len*len*mx)/(s*s),(s*s)/(len*len*mn));};
-  while(rest.length){
-    const vert=cw>=ch, len=vert?ch:cw;
-    let row=[rest[0]],i=1;
-    while(i<rest.length&&worst(row.concat(rest[i]),len)<=worst(row,len)){row.push(rest[i]);i++;}
-    const s=row.reduce((a,b)=>a+b.a,0), thick=s/len;
-    let off=vert?cy:cx;
-    row.forEach(r=>{const sz=r.a/thick;
-      out.push({...r, x:vert?cx:off, y:vert?off:cy, w:vert?thick:sz, h:vert?sz:thick});
-      off+=sz;});
-    if(vert){cx+=thick;cw-=thick;}else{cy+=thick;ch-=thick;}
-    rest=rest.slice(row.length);
-  }
-  return out;
-}
-
-const W=900,H=620,PAD=3,HDR=22;
-const svg=document.getElementById('tm');
-const NS='http://www.w3.org/2000/svg';
-const el=(t,a)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);return e;};
-
-// hatch pattern for unlinked nodes
-const defs=el('defs');
-defs.innerHTML=`<pattern id="hatch" width="6" height="6" patternTransform="rotate(45)" patternUnits="userSpaceOnUse">
-  <rect width="6" height="6" fill="none"/><line x1="0" y1="0" x2="0" y2="6" stroke="#E01931" stroke-width="2.4" opacity=".9"/></pattern>`;
-svg.appendChild(defs);
-
-const groups=DATA.map(g=>({...g,v:g.n.reduce((s,n)=>s+n[1],0)}));
-const gLayout=squarify(groups,0,0,W,H);
-
-gLayout.forEach(g=>{
-  const gEl=el('g');
-  gEl.appendChild(el('rect',{x:g.x+PAD/2,y:g.y+PAD/2,width:Math.max(0,g.w-PAD),height:Math.max(0,g.h-PAD),
-    fill:g.plat?'#2C3742':'#0A3F3C',rx:2}));
-  const t=el('text',{x:g.x+PAD/2+8,y:g.y+PAD/2+15,class:'glabel'});t.textContent=g.g.toUpperCase();
-  gEl.appendChild(t);
-  const st=el('text',{x:g.x+g.w-PAD/2-8,y:g.y+PAD/2+15,class:'gsub','text-anchor':'end'});
-  st.textContent='$'+g.v.toFixed(1)+'M · '+(g.v/687*100).toFixed(1)+'%';
-  gEl.appendChild(st);
-
-  const ramp=g.plat?SLATES:GREENS;
-  const inner=squarify(g.n.map((n,i)=>({v:n[1],d:n,i})),
-    g.x+PAD/2+4, g.y+PAD/2+HDR, Math.max(1,g.w-PAD-8), Math.max(1,g.h-PAD-HDR-4));
-
-  inner.forEach((c,idx)=>{
-    const [name,val,teams,hc,epics,okrs]=c.d;
-    const shade=ramp[Math.min(ramp.length-1,Math.floor(idx/Math.max(1,inner.length/ramp.length)))];
-    const light=(!g.plat&&idx>=inner.length*0.66)||(g.plat&&idx>=inner.length*0.78);
-    const cell=el('g',{class:'cell',tabindex:0});
-    cell.appendChild(el('rect',{class:'fill',x:c.x,y:c.y,width:Math.max(0,c.w-1.5),height:Math.max(0,c.h-1.5),
-      fill:shade,rx:1.5}));
-    if(!okrs.length)
-      cell.appendChild(el('rect',{x:c.x,y:c.y,width:Math.max(0,c.w-1.5),height:Math.max(0,c.h-1.5),
-        fill:'url(#hatch)',opacity:.28,rx:1.5,'pointer-events':'none'}));
-    if(c.w>62&&c.h>26){
-      const words=name.length>Math.floor(c.w/6.1)?name.slice(0,Math.floor(c.w/6.1)-1)+'…':name;
-      const nt=el('text',{x:c.x+7,y:c.y+16,class:'nlabel'+(light?' dark':'')});nt.textContent=words;
-      cell.appendChild(nt);
-      if(c.h>40){const vt=el('text',{x:c.x+7,y:c.y+30,class:'nval'+(light?' dark':'')});
-        vt.textContent='$'+val.toFixed(1)+'M · '+hc+' FTE';cell.appendChild(vt);}
-    }
-    const tip=el('title');tip.textContent=`${name}\n$${val.toFixed(1)}M · ${hc} FTE · ${teams} teams · ${epics} epics\n${okrs.length?okrs.length+' objective(s)':'No objective linked'}`;
-    cell.appendChild(tip);
-    const sel=()=>{document.querySelectorAll('.cell.sel').forEach(e=>e.classList.remove('sel'));
-      cell.classList.add('sel');render(g,c.d);};
-    cell.addEventListener('click',sel);
-    cell.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();sel();}});
-    gEl.appendChild(cell);
-  });
-  svg.appendChild(gEl);
-});
-
-const TEAMS=['Platform','Experience','Core Services','Integrations','Data & Insights','Controls','Enablement','Mobile','Origination','Servicing'];
-function render(g,d){
-  const [name,val,teams,hc,epics,okrs]=d;
-  const show=Math.min(teams,4);
-  let tl='';
-  for(let i=0;i<show;i++){
-    const share=Math.round(hc*(i===0?.34:i===1?.27:i===2?.22:.17));
-    tl+=`<div class="team"><span>${name.split(' ')[0]} ${TEAMS[(i*3+name.length)%TEAMS.length]}</span><em>${share} FTE</em></div>`;
-  }
-  if(teams>show)tl+=`<div class="team"><span style="color:var(--ink-3)">+ ${teams-show} more teams</span><em>${hc-Math.round(hc*.34)-Math.round(hc*.27)-Math.round(hc*.22)-Math.round(hc*.17)+0} FTE</em></div>`;
-  const ol=okrs.length
-    ? okrs.map((o,i)=>`<div class="okr"><b>OBJ-${(name.length*7+i*13)%900+100}</b>${o}</div>`).join('')
-    : `<div class="none">No objective linked. $${val.toFixed(1)}M and ${hc} FTE are funded outside the measured portfolio.</div>`;
-  document.getElementById('rail').innerHTML=`
-    <div class="eyebrow">${g.plat?'Shared platform':'Product'}</div>
-    <h3>${name}</h3>
-    <div class="path">${g.g}</div>
-    <div class="metric"><span>Planned investment 2026</span><span>$${val.toFixed(1)}M</span></div>
-    <div class="metric"><span>Share of portfolio</span><span>${(val/687*100).toFixed(1)}%</span></div>
-    <div class="metric"><span>Headcount</span><span>${hc} FTE</span></div>
-    <div class="metric"><span>Teams</span><span>${teams}</span></div>
-    <div class="metric"><span>Epics in flight</span><span>${epics}</span></div>
-    <div class="metric"><span>Cost per FTE</span><span>$${Math.round(val*1e6/hc/1000)}K</span></div>
-    <div class="sect"><h4>Teams</h4>${tl}</div>
-    <div class="sect"><h4>Objectives supported</h4>${ol}</div>`;
-}
-</script>
+</body>
+</html>
